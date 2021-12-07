@@ -39,10 +39,8 @@ class PostHouseholdItemReviewFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentPostHouseHoldItemReviewBinding =
-            FragmentPostHouseHoldItemReviewBinding.inflate(inflater, container, false)
-        householdItemViewModel =
-            ViewModelProvider(requireActivity())[HouseholdItemViewModel::class.java]
+        fragmentPostHouseHoldItemReviewBinding = FragmentPostHouseHoldItemReviewBinding.inflate(inflater, container, false)
+        householdItemViewModel = ViewModelProvider(requireActivity())[HouseholdItemViewModel::class.java]
         return fragmentPostHouseHoldItemReviewBinding.root
     }
 
@@ -56,8 +54,7 @@ class PostHouseholdItemReviewFragment : BaseFragment() {
 
     private fun setUpRecyclerView() {
         propertyRentalImageAdapter = PropertyRentalImageAdapter(mutableListOf()) {}
-        fragmentPostHouseHoldItemReviewBinding.rvSelectedImages.layoutManager =
-            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        fragmentPostHouseHoldItemReviewBinding.rvSelectedImages.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         fragmentPostHouseHoldItemReviewBinding.rvSelectedImages.setHasFixedSize(true)
         fragmentPostHouseHoldItemReviewBinding.rvSelectedImages.adapter = propertyRentalImageAdapter
     }
@@ -91,17 +88,12 @@ class PostHouseholdItemReviewFragment : BaseFragment() {
             .observe(viewLifecycleOwner, {
                 if (it.isNotEmpty()) {
                     houseHoldItemEntity = it[0]
-                    fragmentPostHouseHoldItemReviewBinding.tvRentPerMonth.text =
-                        houseHoldItemEntity?.price.toString()
-                    fragmentPostHouseHoldItemReviewBinding.tvRentalType.text =
-                        houseHoldItemEntity?.itemConditionType
-                    fragmentPostHouseHoldItemReviewBinding.tvTownLocality.text =
-                        houseHoldItemEntity?.town
+                    fragmentPostHouseHoldItemReviewBinding.tvRentPerMonth.text = houseHoldItemEntity?.price.toString()
+                    fragmentPostHouseHoldItemReviewBinding.tvRentalType.text = houseHoldItemEntity?.itemConditionType
+                    fragmentPostHouseHoldItemReviewBinding.tvTownLocality.text = houseHoldItemEntity?.town
                     fragmentPostHouseHoldItemReviewBinding.tvCityArea.text = houseHoldItemEntity?.city
-                    fragmentPostHouseHoldItemReviewBinding.tvLandmark.text =
-                        houseHoldItemEntity?.landmark
-                    fragmentPostHouseHoldItemReviewBinding.tvRentalAddress.text =
-                        houseHoldItemEntity?.address
+                    fragmentPostHouseHoldItemReviewBinding.tvLandmark.text = houseHoldItemEntity?.landmark
+                    fragmentPostHouseHoldItemReviewBinding.tvRentalAddress.text = houseHoldItemEntity?.address
 
                     propertyRentalImageAdapter.addAllImages(houseHoldItemEntity?.images)
                 }
@@ -153,5 +145,4 @@ class PostHouseholdItemReviewFragment : BaseFragment() {
         }
         return mimeType
     }
-
 }

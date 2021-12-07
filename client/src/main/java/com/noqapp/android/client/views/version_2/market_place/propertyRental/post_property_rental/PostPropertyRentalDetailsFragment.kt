@@ -37,12 +37,11 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val intent = result.data
-                val jsonUserAddress =
-                    intent?.getSerializableExtra(Constants.JSON_USER_ADDRESS) as JsonUserAddress
+                val jsonUserAddress = intent?.getSerializableExtra(Constants.JSON_USER_ADDRESS) as JsonUserAddress
                 this.jsonUserAddress = jsonUserAddress
-                if (jsonUserAddress.address != null && jsonUserAddress.address != "")
-                    fragmentPostPropertyRentalDetails.tvAddress.text =
-                        jsonUserAddress.address
+                if (jsonUserAddress.address != null && jsonUserAddress.address != "") {
+                    fragmentPostPropertyRentalDetails.tvAddress.text = jsonUserAddress.address
+                }
                 fragmentPostPropertyRentalDetails.etCityArea.setText(jsonUserAddress.area.toString())
                 fragmentPostPropertyRentalDetails.etTownLocality.setText(jsonUserAddress.town.toString())
 
@@ -76,10 +75,8 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentPostPropertyRentalDetails =
-            FragmentPostPropertyRentalDetailsBinding.inflate(inflater, container, false)
-        propertyRentalViewModel =
-            ViewModelProvider(requireActivity())[PropertyRentalViewModel::class.java]
+        fragmentPostPropertyRentalDetails = FragmentPostPropertyRentalDetailsBinding.inflate(inflater, container, false)
+        propertyRentalViewModel = ViewModelProvider(requireActivity())[PropertyRentalViewModel::class.java]
         return fragmentPostPropertyRentalDetails.root
     }
 
@@ -102,8 +99,7 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
                     propertyRentalEntityVal = propertyRentalEntity
 
                     if (propertyRentalEntity.address != null && propertyRentalEntity.address != "")
-                        fragmentPostPropertyRentalDetails.tvAddress.text =
-                            propertyRentalEntity.address
+                        fragmentPostPropertyRentalDetails.tvAddress.text = propertyRentalEntity.address
 
                     if (propertyRentalEntity.coordinates[0] != 0.0) {
                         googleMap.moveCamera(
@@ -121,8 +117,7 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
                     fragmentPostPropertyRentalDetails.etCityArea.setText(propertyRentalEntity.city)
                     fragmentPostPropertyRentalDetails.etCarpetArea.setText(propertyRentalEntity.carpetArea.toString())
                     fragmentPostPropertyRentalDetails.etRentPerMonth.setText(propertyRentalEntity.price.toString())
-                    fragmentPostPropertyRentalDetails.tvAvailableFrom.text =
-                        propertyRentalEntity.availableFrom
+                    fragmentPostPropertyRentalDetails.tvAvailableFrom.text = propertyRentalEntity.availableFrom
                     fragmentPostPropertyRentalDetails.spinnerRentalType.setSelection(RentalTypeEnum.asListOfDescription().indexOf(propertyRentalEntity.rentalType))
 
                     selectBedroom(propertyRentalEntity.bedroom)
@@ -132,82 +127,62 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
     }
 
     private fun selectBedroom(bedRoom: Int) {
-        fragmentPostPropertyRentalDetails.tv1Bhk.background =
-            ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
-        fragmentPostPropertyRentalDetails.tv2Bhk.background =
-            ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
-        fragmentPostPropertyRentalDetails.tv3Bhk.background =
-            ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
-        fragmentPostPropertyRentalDetails.tv4Bhk.background =
-            ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
-        fragmentPostPropertyRentalDetails.tv5Bhk.background =
-            ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
+        fragmentPostPropertyRentalDetails.tv1Bhk.background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
+        fragmentPostPropertyRentalDetails.tv2Bhk.background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
+        fragmentPostPropertyRentalDetails.tv3Bhk.background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
+        fragmentPostPropertyRentalDetails.tv4Bhk.background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
+        fragmentPostPropertyRentalDetails.tv5Bhk.background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
 
         when (bedRoom) {
             1 -> {
-                fragmentPostPropertyRentalDetails.tv1Bhk.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
+                fragmentPostPropertyRentalDetails.tv1Bhk.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
                 propertyRentalEntityVal?.bedroom = 1
             }
             2 -> {
-                fragmentPostPropertyRentalDetails.tv2Bhk.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
+                fragmentPostPropertyRentalDetails.tv2Bhk.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
                 propertyRentalEntityVal?.bedroom = 2
             }
             3 -> {
-                fragmentPostPropertyRentalDetails.tv3Bhk.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
+                fragmentPostPropertyRentalDetails.tv3Bhk.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
                 propertyRentalEntityVal?.bedroom = 3
             }
             4 -> {
-                fragmentPostPropertyRentalDetails.tv4Bhk.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
+                fragmentPostPropertyRentalDetails.tv4Bhk.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
                 propertyRentalEntityVal?.bedroom = 4
             }
             else -> {
-                fragmentPostPropertyRentalDetails.tv5Bhk.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
+                fragmentPostPropertyRentalDetails.tv5Bhk.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
                 propertyRentalEntityVal?.bedroom = 5
             }
         }
     }
 
     private fun selectBathRoom(bathRoom: Int) {
-        fragmentPostPropertyRentalDetails.tv1Bath.background =
-            ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
-        fragmentPostPropertyRentalDetails.tv2Bath.background =
-            ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
-        fragmentPostPropertyRentalDetails.tv3Bath.background =
-            ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
-        fragmentPostPropertyRentalDetails.tv4Bath.background =
-            ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
-        fragmentPostPropertyRentalDetails.tv5Bath.background =
-            ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
+        fragmentPostPropertyRentalDetails.tv1Bath.background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
+        fragmentPostPropertyRentalDetails.tv2Bath.background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
+        fragmentPostPropertyRentalDetails.tv3Bath.background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
+        fragmentPostPropertyRentalDetails.tv4Bath.background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
+        fragmentPostPropertyRentalDetails.tv5Bath.background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_corner_cyan_background)
 
         when (bathRoom) {
             1 -> {
-                fragmentPostPropertyRentalDetails.tv1Bath.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
+                fragmentPostPropertyRentalDetails.tv1Bath.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
                 propertyRentalEntityVal?.bathroom = 1
             }
             2 -> {
-                fragmentPostPropertyRentalDetails.tv2Bath.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
+                fragmentPostPropertyRentalDetails.tv2Bath.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
                 propertyRentalEntityVal?.bathroom = 2
             }
             3 -> {
-                fragmentPostPropertyRentalDetails.tv3Bath.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
+                fragmentPostPropertyRentalDetails.tv3Bath.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
                 propertyRentalEntityVal?.bathroom = 3
             }
             4 -> {
-                fragmentPostPropertyRentalDetails.tv4Bath.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
+                fragmentPostPropertyRentalDetails.tv4Bath.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
                 propertyRentalEntityVal?.bathroom = 4
             }
             else -> {
-                fragmentPostPropertyRentalDetails.tv5Bath.background =
-                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
+                fragmentPostPropertyRentalDetails.tv5Bath.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_theme_color_select)
                 propertyRentalEntityVal?.bathroom = 5
             }
         }
@@ -215,32 +190,21 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
 
     private fun setListeners() {
         fragmentPostPropertyRentalDetails.cvNext.setOnClickListener {
-            propertyRentalEntityVal?.address =
-                fragmentPostPropertyRentalDetails.tvAddress.text.toString()
-            propertyRentalEntityVal?.town =
-                fragmentPostPropertyRentalDetails.etTownLocality.text.toString()
-            propertyRentalEntityVal?.city =
-                fragmentPostPropertyRentalDetails.etCityArea.text.toString()
-            propertyRentalEntityVal?.landmark =
-                fragmentPostPropertyRentalDetails.etLandmark.text.toString()
-            propertyRentalEntityVal?.carpetArea =
-                fragmentPostPropertyRentalDetails.etCarpetArea.text.toString().toInt()
-            propertyRentalEntityVal?.price =
-                fragmentPostPropertyRentalDetails.etRentPerMonth.text.toString().toInt()
+            propertyRentalEntityVal?.address = fragmentPostPropertyRentalDetails.tvAddress.text.toString()
+            propertyRentalEntityVal?.town = fragmentPostPropertyRentalDetails.etTownLocality.text.toString()
+            propertyRentalEntityVal?.city = fragmentPostPropertyRentalDetails.etCityArea.text.toString()
+            propertyRentalEntityVal?.landmark = fragmentPostPropertyRentalDetails.etLandmark.text.toString()
+            propertyRentalEntityVal?.carpetArea = fragmentPostPropertyRentalDetails.etCarpetArea.text.toString().toInt()
+            propertyRentalEntityVal?.price = fragmentPostPropertyRentalDetails.etRentPerMonth.text.toString().toInt()
 
             jsonUserAddress?.let { jua ->
                 propertyRentalEntityVal?.coordinates =
                     listOf(jua.latitude.toDouble(), jua.longitude.toDouble())
             }
             propertyRentalEntityVal?.rentalType = fragmentPostPropertyRentalDetails.spinnerRentalType.selectedItem.toString()
+            propertyRentalEntityVal?.availableFrom = fragmentPostPropertyRentalDetails.tvAvailableFrom.text.toString()
 
-            propertyRentalEntityVal?.availableFrom =
-                fragmentPostPropertyRentalDetails.tvAvailableFrom.text.toString()
-
-            propertyRentalViewModel.insertPropertyRental(
-                requireContext(),
-                propertyRentalEntityVal
-            )
+            propertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntityVal)
 
             postPropertyRentalDetailsFragmentInteractionListener.goToPostPropertyRentalImageUploadFragment()
         }
