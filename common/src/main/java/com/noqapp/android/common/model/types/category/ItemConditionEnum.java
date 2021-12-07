@@ -38,14 +38,13 @@ public enum ItemConditionEnum {
     }
 
     public static ItemConditionEnum getNameByDescription(String description) {
-        switch (description) {
-            case "Used":
-                return ItemConditionEnum.U;
-            case "Brand New, Unused":
-                return ItemConditionEnum.B;
-            default:
-                return ItemConditionEnum.U;
+        for (ItemConditionEnum itemConditionEnum : ItemConditionEnum.values()) {
+            if (description.equals(itemConditionEnum.description)) {
+                return itemConditionEnum;
+            }
         }
+
+        return ItemConditionEnum.U;
     }
 
     public static String findByName(String name) {
