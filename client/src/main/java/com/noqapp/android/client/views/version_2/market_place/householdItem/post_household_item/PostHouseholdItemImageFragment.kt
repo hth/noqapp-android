@@ -51,8 +51,9 @@ class PostHouseHoldItemImageFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is PostHouseHoldItemImageFragmentInteractionListener)
+        if (context is PostHouseHoldItemImageFragmentInteractionListener) {
             postHouseHoldItemImageFragmentInteractionListener = context
+        }
     }
 
     override fun onCreateView(
@@ -60,10 +61,8 @@ class PostHouseHoldItemImageFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentPostPropertyRentalUpload =
-            FragmentUploadPropertyRentalImagesBinding.inflate(inflater, container, false)
-        householdItemViewModel =
-            ViewModelProvider(requireActivity())[HouseholdItemViewModel::class.java]
+        fragmentPostPropertyRentalUpload = FragmentUploadPropertyRentalImagesBinding.inflate(inflater, container, false)
+        householdItemViewModel = ViewModelProvider(requireActivity())[HouseholdItemViewModel::class.java]
         return fragmentPostPropertyRentalUpload.root
     }
 
@@ -98,8 +97,7 @@ class PostHouseHoldItemImageFragment : BaseFragment() {
             }
             householdItemViewModel.insertHouseHoldItem(requireContext(), houseHoldItemEntity)
         }
-        fragmentPostPropertyRentalUpload.rvSelectedImages.layoutManager =
-            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        fragmentPostPropertyRentalUpload.rvSelectedImages.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         fragmentPostPropertyRentalUpload.rvSelectedImages.setHasFixedSize(true)
         fragmentPostPropertyRentalUpload.rvSelectedImages.adapter = propertyRentalImageAdapter
     }
@@ -166,8 +164,7 @@ class PostHouseHoldItemImageFragment : BaseFragment() {
             listPermissionsNeeded.add(Manifest.permission.CAMERA)
         }
         if (wExtStorePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded
-                .add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
         if (listPermissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(
@@ -354,7 +351,6 @@ class PostHouseHoldItemImageFragment : BaseFragment() {
         }
         return mimeType
     }
-
 }
 
 interface PostHouseHoldItemImageFragmentInteractionListener {

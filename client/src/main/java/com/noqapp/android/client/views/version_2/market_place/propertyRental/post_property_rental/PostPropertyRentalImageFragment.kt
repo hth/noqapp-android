@@ -51,8 +51,9 @@ class PostPropertyRentalImageFragment : BaseFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is PostPropertyRentalImageFragmentInteractionListener)
+        if (context is PostPropertyRentalImageFragmentInteractionListener) {
             postPropertyRentalImageFragmentInteractionListener = context
+        }
     }
 
     override fun onCreateView(
@@ -60,10 +61,8 @@ class PostPropertyRentalImageFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentPostPropertyRentalUpload =
-            FragmentUploadPropertyRentalImagesBinding.inflate(inflater, container, false)
-        propertyRentalViewModel =
-            ViewModelProvider(requireActivity())[PropertyRentalViewModel::class.java]
+        fragmentPostPropertyRentalUpload = FragmentUploadPropertyRentalImagesBinding.inflate(inflater, container, false)
+        propertyRentalViewModel = ViewModelProvider(requireActivity())[PropertyRentalViewModel::class.java]
         return fragmentPostPropertyRentalUpload.root
     }
 
@@ -98,8 +97,7 @@ class PostPropertyRentalImageFragment : BaseFragment() {
             }
             propertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntity)
         }
-        fragmentPostPropertyRentalUpload.rvSelectedImages.layoutManager =
-            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        fragmentPostPropertyRentalUpload.rvSelectedImages.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         fragmentPostPropertyRentalUpload.rvSelectedImages.setHasFixedSize(true)
         fragmentPostPropertyRentalUpload.rvSelectedImages.adapter = propertyRentalImageAdapter
     }
@@ -166,8 +164,7 @@ class PostPropertyRentalImageFragment : BaseFragment() {
             listPermissionsNeeded.add(Manifest.permission.CAMERA)
         }
         if (wExtStorePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded
-                .add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
         if (listPermissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(
@@ -354,7 +351,6 @@ class PostPropertyRentalImageFragment : BaseFragment() {
         }
         return mimeType
     }
-
 }
 
 interface PostPropertyRentalImageFragmentInteractionListener {
