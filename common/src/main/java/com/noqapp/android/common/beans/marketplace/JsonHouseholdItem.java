@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.noqapp.android.common.beans.ErrorEncounteredJson;
+import com.noqapp.android.common.model.types.category.HouseholdItemCategoryEnum;
 import com.noqapp.android.common.model.types.category.ItemConditionEnum;
 
 /**
@@ -29,6 +30,9 @@ public class JsonHouseholdItem extends JsonMarketplace {
 
     @JsonProperty("ic")
     private ItemConditionEnum itemCondition;
+
+    @JsonProperty("hc")
+    private HouseholdItemCategoryEnum householdItemCategory;
 
     @JsonProperty("error")
     private ErrorEncounteredJson error;
