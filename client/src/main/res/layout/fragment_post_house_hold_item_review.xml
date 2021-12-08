@@ -15,7 +15,7 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/tv_rent_per_month_label"
+                android:id="@+id/tv_price_label"
                 style="@style/TextStyleNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,15 +37,15 @@
                 android:text="@string/txt_edit"
                 android:textStyle="normal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tv_rent_per_month_label" />
+                app:layout_constraintTop_toTopOf="@id/tv_price_label" />
 
             <TextView
-                android:id="@+id/tv_rent_per_month"
+                android:id="@+id/tv_price"
                 style="@style/TextStyleNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_faded"
-                app:layout_constraintTop_toBottomOf="@id/tv_rent_per_month_label"
+                app:layout_constraintTop_toBottomOf="@id/tv_price_label"
                 tools:text="2345" />
 
             <TextView
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/txt_house_hold_item_usages"
-                app:layout_constraintTop_toBottomOf="@id/tv_rent_per_month" />
+                app:layout_constraintTop_toBottomOf="@id/tv_price" />
 
             <TextView
                 android:id="@+id/tv_rental_type"

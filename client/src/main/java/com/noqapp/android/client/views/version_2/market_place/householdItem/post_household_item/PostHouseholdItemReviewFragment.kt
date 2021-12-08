@@ -90,7 +90,7 @@ class PostHouseholdItemReviewFragment : BaseFragment() {
             .observe(viewLifecycleOwner, {
                 if (it.isNotEmpty()) {
                     houseHoldItemEntity = it[0]
-                    fragmentPostHouseHoldItemReviewBinding.tvRentPerMonth.text = houseHoldItemEntity?.price.toString()
+                    fragmentPostHouseHoldItemReviewBinding.tvPrice.text = houseHoldItemEntity?.price.toString()
                     fragmentPostHouseHoldItemReviewBinding.tvRentalType.text = houseHoldItemEntity?.itemConditionType
                     fragmentPostHouseHoldItemReviewBinding.tvItemCategory.text = houseHoldItemEntity?.householdItemCategory
                     fragmentPostHouseHoldItemReviewBinding.tvTownLocality.text = houseHoldItemEntity?.town
