@@ -1,7 +1,12 @@
 package com.noqapp.android.common.model.types.category;
 
+import android.os.Build;
+
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * hitender
@@ -38,25 +43,30 @@ public enum RentalTypeEnum {
 
     public static List<String> asListOfDescription() {
         List<String> a = new LinkedList<>();
-        for (RentalTypeEnum rentalTypeEnum : RentalTypeEnum.values()) {
-            a.add(rentalTypeEnum.description);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            List<RentalTypeEnum> rentalTypeEnums = Stream.of(RentalTypeEnum.values())
+               .sorted(Comparator.comparing(RentalTypeEnum::getDescription))
+               .collect(Collectors.toList());
+
+            for (RentalTypeEnum rentalTypeEnum : rentalTypeEnums) {
+                a.add(rentalTypeEnum.description);
+            }
+        } else {
+            for (RentalTypeEnum rentalTypeEnum : RentalTypeEnum.values()) {
+                a.add(rentalTypeEnum.description);
+            }
         }
         return a;
     }
 
     public static RentalTypeEnum getNameByDescription(String description) {
-        switch (description) {
-            case "Apartment":
-                return RentalTypeEnum.A;
-            case "Bungalow/House":
-                return RentalTypeEnum.H;
-            case "Sublet Room":
-                return RentalTypeEnum.R;
-            case "Townhouse":
-                return RentalTypeEnum.T;
-            default:
-                return RentalTypeEnum.A;
+        for (RentalTypeEnum rentalTypeEnum : RentalTypeEnum.values()) {
+            if (description.equals(rentalTypeEnum.description)) {
+                return rentalTypeEnum;
+            }
         }
+
+        return RentalTypeEnum.A;
     }
 
     @Override

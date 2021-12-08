@@ -21,8 +21,9 @@ class PostPropertyRentalTitleFragment : BaseFragment() {
     private var savedPropertyRentalEntityInstance: PropertyRentalEntity? = null
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is PostPropertyRentalTitleFragmentInteractionListener)
+        if (context is PostPropertyRentalTitleFragmentInteractionListener) {
             postPropertyRentalTitleFragmentInteractionListener = context
+        }
     }
 
     override fun onCreateView(
@@ -30,10 +31,8 @@ class PostPropertyRentalTitleFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentPostPropertyRentalTitle =
-            FragmentPostPropertyRentalTitleBinding.inflate(inflater, container, false)
-        propertyRentalViewModel =
-            ViewModelProvider(requireActivity())[PropertyRentalViewModel::class.java]
+        fragmentPostPropertyRentalTitle = FragmentPostPropertyRentalTitleBinding.inflate(inflater, container, false)
+        propertyRentalViewModel = ViewModelProvider(requireActivity())[PropertyRentalViewModel::class.java]
         return fragmentPostPropertyRentalTitle.root
     }
 
@@ -73,7 +72,7 @@ class PostPropertyRentalTitleFragment : BaseFragment() {
     }
 
     private fun insertPropertyRentalInDb() {
-        if(null == savedPropertyRentalEntityInstance) {
+        if (null == savedPropertyRentalEntityInstance) {
             savedPropertyRentalEntityInstance = PropertyRentalEntity(
                 1,
                 0,
@@ -92,10 +91,9 @@ class PostPropertyRentalTitleFragment : BaseFragment() {
                 null,
                 listOf()
             )
-        }else{
+        } else {
             savedPropertyRentalEntityInstance!!.title = fragmentPostPropertyRentalTitle.etTitle.text.toString()
-            savedPropertyRentalEntityInstance!!.description =fragmentPostPropertyRentalTitle.etDescription.text.toString()
-
+            savedPropertyRentalEntityInstance!!.description = fragmentPostPropertyRentalTitle.etDescription.text.toString()
         }
         propertyRentalViewModel.insertPropertyRental(requireContext(), savedPropertyRentalEntityInstance)
     }

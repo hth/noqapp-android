@@ -15,7 +15,7 @@ import com.noqapp.android.common.pojos.PropertyRentalEntity
 
 @Database(
     entities = [DisplayNotification::class, ReviewData::class, JsonTokenAndQueue::class, ForegroundNotificationModel::class, PropertyRentalEntity::class, HouseHoldItemEntity::class],
-    version = 3
+    version = 4
 )
 @TypeConverters(
     BusinessTypeConverter::class,

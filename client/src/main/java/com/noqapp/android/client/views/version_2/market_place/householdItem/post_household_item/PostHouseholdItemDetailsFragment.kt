@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.activities.AddAddressActivity
 import com.noqapp.android.common.beans.JsonUserAddress
+import com.noqapp.android.common.model.types.category.HouseholdItemCategoryEnum
 import com.noqapp.android.common.model.types.category.ItemConditionEnum
 
 class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMapReadyCallback {
@@ -34,12 +35,11 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val intent = result.data
-                val jsonUserAddress =
-                    intent?.getSerializableExtra(Constants.JSON_USER_ADDRESS) as JsonUserAddress
+                val jsonUserAddress = intent?.getSerializableExtra(Constants.JSON_USER_ADDRESS) as JsonUserAddress
                 this.jsonUserAddress = jsonUserAddress
-                if (jsonUserAddress.address != null && jsonUserAddress.address != "")
-                    fragmentPostHouseHoldItemDetailsBinding.tvAddress.text =
-                        jsonUserAddress.address
+                if (jsonUserAddress.address != null && jsonUserAddress.address != "") {
+                    fragmentPostHouseHoldItemDetailsBinding.tvAddress.text = jsonUserAddress.address
+                }
                 fragmentPostHouseHoldItemDetailsBinding.etCityArea.setText(jsonUserAddress.area.toString())
                 fragmentPostHouseHoldItemDetailsBinding.etTownLocality.setText(jsonUserAddress.town.toString())
 
@@ -64,8 +64,9 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is PostHouseHoldItemDetailsFragmentInteractionListener)
+        if (context is PostHouseHoldItemDetailsFragmentInteractionListener) {
             postHouseHoldItemDetailsFragmentInteractionListener = context
+        }
     }
 
     override fun onCreateView(
@@ -73,10 +74,8 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentPostHouseHoldItemDetailsBinding =
-            FragmentPostHouseHoldItemDetailsBinding.inflate(inflater, container, false)
-        householdItemViewModel =
-            ViewModelProvider(requireActivity())[HouseholdItemViewModel::class.java]
+        fragmentPostHouseHoldItemDetailsBinding = FragmentPostHouseHoldItemDetailsBinding.inflate(inflater, container, false)
+        householdItemViewModel = ViewModelProvider(requireActivity())[HouseholdItemViewModel::class.java]
         return fragmentPostHouseHoldItemDetailsBinding.root
     }
 
@@ -85,8 +84,10 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
         view.setOnTouchListener { _, _ -> true }
         observeData()
         setListeners()
-        val spAdapter = ArrayAdapter(requireActivity(),android.R.layout.simple_spinner_item, ItemConditionEnum.asListOfDescription())
-        fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.adapter = spAdapter
+        val spItemConditionAdapter = ArrayAdapter(requireActivity(),android.R.layout.simple_spinner_item, ItemConditionEnum.asListOfDescription())
+        fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.adapter = spItemConditionAdapter
+        val spItemCategoryAdapter = ArrayAdapter(requireActivity(),android.R.layout.simple_spinner_item, HouseholdItemCategoryEnum.asListOfDescription())
+        fragmentPostHouseHoldItemDetailsBinding.spinnerItemCategoryType.adapter = spItemCategoryAdapter
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
     }
@@ -98,9 +99,9 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
                     val houseHoldItemEntity = it[0]
                     houseHoldItemEntityVal = houseHoldItemEntity
 
-                    if (houseHoldItemEntity.address != null && houseHoldItemEntity.address != "")
-                        fragmentPostHouseHoldItemDetailsBinding.tvAddress.text =
-                            houseHoldItemEntity.address
+                    if (houseHoldItemEntity.address != null && houseHoldItemEntity.address != "") {
+                        fragmentPostHouseHoldItemDetailsBinding.tvAddress.text = houseHoldItemEntity.address
+                    }
 
                     if (houseHoldItemEntity.coordinates[0] != 0.0) {
                         googleMap.moveCamera(
@@ -116,9 +117,9 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
                     fragmentPostHouseHoldItemDetailsBinding.etLandmark.setText(houseHoldItemEntity.landmark)
                     fragmentPostHouseHoldItemDetailsBinding.etTownLocality.setText(houseHoldItemEntity.town)
                     fragmentPostHouseHoldItemDetailsBinding.etCityArea.setText(houseHoldItemEntity.city)
-                    fragmentPostHouseHoldItemDetailsBinding.etRentPerMonth.setText(houseHoldItemEntity.price.toString())
+                    fragmentPostHouseHoldItemDetailsBinding.etPrice.setText(houseHoldItemEntity.price.toString())
                     fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.setSelection(ItemConditionEnum.asListOfDescription().indexOf(houseHoldItemEntity.itemConditionType))
-
+                    fragmentPostHouseHoldItemDetailsBinding.spinnerItemCategoryType.setSelection(HouseholdItemCategoryEnum.asListOfDescription().indexOf(houseHoldItemEntity.householdItemCategory))
                 }
             })
     }
@@ -126,16 +127,11 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
 
     private fun setListeners() {
         fragmentPostHouseHoldItemDetailsBinding.cvNext.setOnClickListener {
-            houseHoldItemEntityVal?.address =
-                fragmentPostHouseHoldItemDetailsBinding.tvAddress.text.toString()
-            houseHoldItemEntityVal?.town =
-                fragmentPostHouseHoldItemDetailsBinding.etTownLocality.text.toString()
-            houseHoldItemEntityVal?.city =
-                fragmentPostHouseHoldItemDetailsBinding.etCityArea.text.toString()
-            houseHoldItemEntityVal?.landmark =
-                fragmentPostHouseHoldItemDetailsBinding.etLandmark.text.toString()
-            houseHoldItemEntityVal?.price =
-                fragmentPostHouseHoldItemDetailsBinding.etRentPerMonth.text.toString().toInt()
+            houseHoldItemEntityVal?.address = fragmentPostHouseHoldItemDetailsBinding.tvAddress.text.toString()
+            houseHoldItemEntityVal?.town = fragmentPostHouseHoldItemDetailsBinding.etTownLocality.text.toString()
+            houseHoldItemEntityVal?.city = fragmentPostHouseHoldItemDetailsBinding.etCityArea.text.toString()
+            houseHoldItemEntityVal?.landmark = fragmentPostHouseHoldItemDetailsBinding.etLandmark.text.toString()
+            houseHoldItemEntityVal?.price = fragmentPostHouseHoldItemDetailsBinding.etPrice.text.toString().toInt()
 
             jsonUserAddress?.let { jua ->
                 houseHoldItemEntityVal?.coordinates =
@@ -143,10 +139,9 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
             }
 
             houseHoldItemEntityVal?.itemConditionType = fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.selectedItem.toString()
-            householdItemViewModel.insertHouseHoldItem(
-                requireContext(),
-                houseHoldItemEntityVal
-            )
+            houseHoldItemEntityVal?.householdItemCategory = fragmentPostHouseHoldItemDetailsBinding.spinnerItemCategoryType.selectedItem.toString()
+
+            householdItemViewModel.insertHouseHoldItem(requireContext(), houseHoldItemEntityVal)
 
             postHouseHoldItemDetailsFragmentInteractionListener.goToHouseHoldItemImageUploadFragment()
         }

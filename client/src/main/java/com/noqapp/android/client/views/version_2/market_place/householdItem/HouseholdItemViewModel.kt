@@ -13,6 +13,7 @@ import com.noqapp.android.common.beans.JsonResponse
 import com.noqapp.android.common.beans.marketplace.JsonHouseholdItem
 import com.noqapp.android.common.beans.marketplace.MarketplaceElasticList
 import com.noqapp.android.common.model.types.BusinessTypeEnum
+import com.noqapp.android.common.model.types.category.HouseholdItemCategoryEnum
 import com.noqapp.android.common.model.types.category.ItemConditionEnum
 import com.noqapp.android.common.pojos.HouseHoldItemEntity
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +62,8 @@ class HouseholdItemViewModel : ViewModel() {
         landmark: String?,
         latitude: Double,
         longitude: Double,
-        itemConditionEnum: ItemConditionEnum
+        itemConditionEnum: ItemConditionEnum,
+        householdItemCategoryEnum: HouseholdItemCategoryEnum
     ) {
         val jsonHouseholdItem = JsonHouseholdItem()
         jsonHouseholdItem.town = town
@@ -74,6 +76,7 @@ class HouseholdItemViewModel : ViewModel() {
         jsonHouseholdItem.description = description
         jsonHouseholdItem.landmark = landmark
         jsonHouseholdItem.itemCondition = itemConditionEnum
+        jsonHouseholdItem.householdItemCategory = householdItemCategoryEnum
         Log.i(tag, "Post $jsonHouseholdItem")
 
         householdItemRepository.postMarketPlace(

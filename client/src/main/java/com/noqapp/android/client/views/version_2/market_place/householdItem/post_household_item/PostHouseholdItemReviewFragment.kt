@@ -15,6 +15,7 @@ import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentPostHouseHoldItemReviewBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.market_place.householdItem.HouseholdItemViewModel
+import com.noqapp.android.common.model.types.category.HouseholdItemCategoryEnum
 import com.noqapp.android.common.model.types.category.ItemConditionEnum
 import com.noqapp.android.common.pojos.HouseHoldItemEntity
 import com.squareup.okhttp.MediaType
@@ -39,10 +40,8 @@ class PostHouseholdItemReviewFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentPostHouseHoldItemReviewBinding =
-            FragmentPostHouseHoldItemReviewBinding.inflate(inflater, container, false)
-        householdItemViewModel =
-            ViewModelProvider(requireActivity())[HouseholdItemViewModel::class.java]
+        fragmentPostHouseHoldItemReviewBinding = FragmentPostHouseHoldItemReviewBinding.inflate(inflater, container, false)
+        householdItemViewModel = ViewModelProvider(requireActivity())[HouseholdItemViewModel::class.java]
         return fragmentPostHouseHoldItemReviewBinding.root
     }
 
@@ -56,8 +55,7 @@ class PostHouseholdItemReviewFragment : BaseFragment() {
 
     private fun setUpRecyclerView() {
         propertyRentalImageAdapter = PropertyRentalImageAdapter(mutableListOf()) {}
-        fragmentPostHouseHoldItemReviewBinding.rvSelectedImages.layoutManager =
-            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        fragmentPostHouseHoldItemReviewBinding.rvSelectedImages.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         fragmentPostHouseHoldItemReviewBinding.rvSelectedImages.setHasFixedSize(true)
         fragmentPostHouseHoldItemReviewBinding.rvSelectedImages.adapter = propertyRentalImageAdapter
     }
@@ -80,7 +78,8 @@ class PostHouseholdItemReviewFragment : BaseFragment() {
                     pre.landmark,
                     pre.coordinates[1],
                     pre.coordinates[0],
-                    ItemConditionEnum.getNameByDescription(pre.itemConditionType)
+                    ItemConditionEnum.getNameByDescription(pre.itemConditionType),
+                    HouseholdItemCategoryEnum.getNameByDescription(pre.householdItemCategory)
                 )
             }
         }
@@ -91,17 +90,13 @@ class PostHouseholdItemReviewFragment : BaseFragment() {
             .observe(viewLifecycleOwner, {
                 if (it.isNotEmpty()) {
                     houseHoldItemEntity = it[0]
-                    fragmentPostHouseHoldItemReviewBinding.tvRentPerMonth.text =
-                        houseHoldItemEntity?.price.toString()
-                    fragmentPostHouseHoldItemReviewBinding.tvRentalType.text =
-                        houseHoldItemEntity?.itemConditionType
-                    fragmentPostHouseHoldItemReviewBinding.tvTownLocality.text =
-                        houseHoldItemEntity?.town
+                    fragmentPostHouseHoldItemReviewBinding.tvRentPerMonth.text = houseHoldItemEntity?.price.toString()
+                    fragmentPostHouseHoldItemReviewBinding.tvRentalType.text = houseHoldItemEntity?.itemConditionType
+                    fragmentPostHouseHoldItemReviewBinding.tvItemCategory.text = houseHoldItemEntity?.householdItemCategory
+                    fragmentPostHouseHoldItemReviewBinding.tvTownLocality.text = houseHoldItemEntity?.town
                     fragmentPostHouseHoldItemReviewBinding.tvCityArea.text = houseHoldItemEntity?.city
-                    fragmentPostHouseHoldItemReviewBinding.tvLandmark.text =
-                        houseHoldItemEntity?.landmark
-                    fragmentPostHouseHoldItemReviewBinding.tvRentalAddress.text =
-                        houseHoldItemEntity?.address
+                    fragmentPostHouseHoldItemReviewBinding.tvLandmark.text = houseHoldItemEntity?.landmark
+                    fragmentPostHouseHoldItemReviewBinding.tvRentalAddress.text = houseHoldItemEntity?.address
 
                     propertyRentalImageAdapter.addAllImages(houseHoldItemEntity?.images)
                 }
@@ -153,5 +148,4 @@ class PostHouseholdItemReviewFragment : BaseFragment() {
         }
         return mimeType
     }
-
 }

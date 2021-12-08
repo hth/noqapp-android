@@ -39,10 +39,8 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentPostPropertyRentalReview =
-            FragmentPostPropertyRentalReviewBinding.inflate(inflater, container, false)
-        propertyRentalViewModel =
-            ViewModelProvider(requireActivity())[PropertyRentalViewModel::class.java]
+        fragmentPostPropertyRentalReview = FragmentPostPropertyRentalReviewBinding.inflate(inflater, container, false)
+        propertyRentalViewModel = ViewModelProvider(requireActivity())[PropertyRentalViewModel::class.java]
         return fragmentPostPropertyRentalReview.root
     }
 
@@ -56,8 +54,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
 
     private fun setUpRecyclerView() {
         propertyRentalImageAdapter = PropertyRentalImageAdapter(mutableListOf()) {}
-        fragmentPostPropertyRentalReview.rvSelectedImages.layoutManager =
-            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        fragmentPostPropertyRentalReview.rvSelectedImages.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         fragmentPostPropertyRentalReview.rvSelectedImages.setHasFixedSize(true)
         fragmentPostPropertyRentalReview.rvSelectedImages.adapter = propertyRentalImageAdapter
     }
@@ -95,25 +92,16 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
             .observe(viewLifecycleOwner, {
                 if (it.isNotEmpty()) {
                     propertyRentalEntity = it[0]
-                    fragmentPostPropertyRentalReview.tvAvailableFrom.text =
-                        propertyRentalEntity?.availableFrom
-                    fragmentPostPropertyRentalReview.tvBathrooms.text =
-                        propertyRentalEntity?.bathroom.toString()
-                    fragmentPostPropertyRentalReview.tvBedrooms.text =
-                        propertyRentalEntity?.bedroom.toString()
-                    fragmentPostPropertyRentalReview.tvCarpetArea.text =
-                        propertyRentalEntity?.carpetArea.toString()
-                    fragmentPostPropertyRentalReview.tvRentPerMonth.text =
-                        propertyRentalEntity?.price.toString()
-                    fragmentPostPropertyRentalReview.tvRentalType.text =
-                        propertyRentalEntity?.rentalType
-                    fragmentPostPropertyRentalReview.tvTownLocality.text =
-                        propertyRentalEntity?.town
+                    fragmentPostPropertyRentalReview.tvAvailableFrom.text = propertyRentalEntity?.availableFrom
+                    fragmentPostPropertyRentalReview.tvBathrooms.text = propertyRentalEntity?.bathroom.toString()
+                    fragmentPostPropertyRentalReview.tvBedrooms.text = propertyRentalEntity?.bedroom.toString()
+                    fragmentPostPropertyRentalReview.tvCarpetArea.text = propertyRentalEntity?.carpetArea.toString()
+                    fragmentPostPropertyRentalReview.tvRentPerMonth.text = propertyRentalEntity?.price.toString()
+                    fragmentPostPropertyRentalReview.tvRentalType.text = propertyRentalEntity?.rentalType
+                    fragmentPostPropertyRentalReview.tvTownLocality.text = propertyRentalEntity?.town
                     fragmentPostPropertyRentalReview.tvCityArea.text = propertyRentalEntity?.city
-                    fragmentPostPropertyRentalReview.tvLandmark.text =
-                        propertyRentalEntity?.landmark
-                    fragmentPostPropertyRentalReview.tvRentalAddress.text =
-                        propertyRentalEntity?.address
+                    fragmentPostPropertyRentalReview.tvLandmark.text = propertyRentalEntity?.landmark
+                    fragmentPostPropertyRentalReview.tvRentalAddress.text = propertyRentalEntity?.address
 
                     propertyRentalImageAdapter.addAllImages(propertyRentalEntity?.images)
                 }
@@ -165,5 +153,4 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
         }
         return mimeType
     }
-
 }

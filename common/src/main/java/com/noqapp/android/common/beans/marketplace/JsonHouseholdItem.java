@@ -46,6 +46,15 @@ public class JsonHouseholdItem extends JsonMarketplace {
         return this;
     }
 
+    public HouseholdItemCategoryEnum getHouseholdItemCategory() {
+        return householdItemCategory;
+    }
+
+    public JsonHouseholdItem setHouseholdItemCategory(HouseholdItemCategoryEnum householdItemCategory) {
+        this.householdItemCategory = householdItemCategory;
+        return this;
+    }
+
     @Override
     public ErrorEncounteredJson getError() {
         return error;

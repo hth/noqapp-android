@@ -591,7 +591,8 @@
     <string name="txt_price_range">Price range</string>
     <string name="slider_desc">"Price range "</string>
     <string name="txt_rental_type">Rental type</string>
-    <string name="txt_house_hold_item_usages">Item usages/condition</string>
+    <string name="txt_house_hold_item_usages">Item Condition</string>
+    <string name="txt_house_hold_item_category">Item Category</string>
     <string name="txt_carpet_area">Carpet area (sq. ft.):</string>
     <string name="txt_title">Title</string>
     <string name="txt_description">Description</string>
@@ -617,8 +618,8 @@
     <string name="txt_1_bhk">1 bhk</string>
     <string name="txt_1_rk">1 rk</string>
     <string name="txt_upload_images">Upload Images</string>
-    <string name="txt_post_rental_progress_data">Posting property rental data, please wait ...</string>
-    <string name="txt_post_household_progress_data">Posting your household Ad\'s, please wait ...</string>
+    <string name="txt_post_rental_progress_data">Posting your property rental, please wait ...</string>
+    <string name="txt_post_household_progress_data">Posting your household item, please wait ...</string>
     <string name="txt_images">Images</string>
     <string name="txt_set_address">Set Address</string>
     <string name="txt_select_address">Select Address</string>

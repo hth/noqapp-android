@@ -64,7 +64,25 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_faded"
                 app:layout_constraintTop_toBottomOf="@id/tv_rental_type_label"
-                tools:text="House" />
+                tools:text="Item Usage" />
+
+            <TextView
+                android:id="@+id/tv_item_category_label"
+                style="@style/TextStyleNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/txt_house_hold_item_category"
+                app:layout_constraintTop_toBottomOf="@id/tv_rental_type" />
+
+            <TextView
+                android:id="@+id/tv_item_category"
+                style="@style/TextStyleNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_faded"
+                app:layout_constraintTop_toBottomOf="@id/tv_item_category_label"
+                tools:text="Item Category" />
 
             <TextView
                 android:id="@+id/tv_rental_address_label"
@@ -73,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/txt_address"
-                app:layout_constraintTop_toBottomOf="@id/tv_rental_type" />
+                app:layout_constraintTop_toBottomOf="@id/tv_item_category" />
 
             <TextView
                 android:id="@+id/tv_rental_address"
