@@ -96,7 +96,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
                     fragmentPostPropertyRentalReview.tvBathrooms.text = propertyRentalEntity?.bathroom.toString()
                     fragmentPostPropertyRentalReview.tvBedrooms.text = propertyRentalEntity?.bedroom.toString()
                     fragmentPostPropertyRentalReview.tvCarpetArea.text = propertyRentalEntity?.carpetArea.toString()
-                    fragmentPostPropertyRentalReview.tvRentPerMonth.text = propertyRentalEntity?.price.toString()
+                    fragmentPostPropertyRentalReview.tvPrice.text = propertyRentalEntity?.price.toString()
                     fragmentPostPropertyRentalReview.tvRentalType.text = propertyRentalEntity?.rentalType
                     fragmentPostPropertyRentalReview.tvTownLocality.text = propertyRentalEntity?.town
                     fragmentPostPropertyRentalReview.tvCityArea.text = propertyRentalEntity?.city
