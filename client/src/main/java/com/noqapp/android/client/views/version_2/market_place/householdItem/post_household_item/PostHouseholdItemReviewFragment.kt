@@ -15,6 +15,7 @@ import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentPostHouseHoldItemReviewBinding
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.market_place.householdItem.HouseholdItemViewModel
+import com.noqapp.android.common.model.types.category.HouseholdItemCategoryEnum
 import com.noqapp.android.common.model.types.category.ItemConditionEnum
 import com.noqapp.android.common.pojos.HouseHoldItemEntity
 import com.squareup.okhttp.MediaType
@@ -77,7 +78,8 @@ class PostHouseholdItemReviewFragment : BaseFragment() {
                     pre.landmark,
                     pre.coordinates[1],
                     pre.coordinates[0],
-                    ItemConditionEnum.getNameByDescription(pre.itemConditionType)
+                    ItemConditionEnum.getNameByDescription(pre.itemConditionType),
+                    HouseholdItemCategoryEnum.getNameByDescription(pre.householdItemCategory)
                 )
             }
         }
@@ -90,6 +92,7 @@ class PostHouseholdItemReviewFragment : BaseFragment() {
                     houseHoldItemEntity = it[0]
                     fragmentPostHouseHoldItemReviewBinding.tvRentPerMonth.text = houseHoldItemEntity?.price.toString()
                     fragmentPostHouseHoldItemReviewBinding.tvRentalType.text = houseHoldItemEntity?.itemConditionType
+                    fragmentPostHouseHoldItemReviewBinding.tvItemCategory.text = houseHoldItemEntity?.householdItemCategory
                     fragmentPostHouseHoldItemReviewBinding.tvTownLocality.text = houseHoldItemEntity?.town
                     fragmentPostHouseHoldItemReviewBinding.tvCityArea.text = houseHoldItemEntity?.city
                     fragmentPostHouseHoldItemReviewBinding.tvLandmark.text = houseHoldItemEntity?.landmark

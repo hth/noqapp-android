@@ -1,7 +1,12 @@
 package com.noqapp.android.common.model.types.category;
 
+import android.os.Build;
+
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * hitender
@@ -33,8 +38,18 @@ public enum HouseholdItemCategoryEnum {
 
     public static List<String> asListOfDescription() {
         List<String> a = new LinkedList<>();
-        for (HouseholdItemCategoryEnum householdItemCategoryEnum : HouseholdItemCategoryEnum.values()) {
-            a.add(householdItemCategoryEnum.description);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            List<HouseholdItemCategoryEnum> householdItemCategoryEnums = Stream.of(HouseholdItemCategoryEnum.values())
+               .sorted(Comparator.comparing(HouseholdItemCategoryEnum::getDescription))
+               .collect(Collectors.toList());
+
+            for (HouseholdItemCategoryEnum householdItemCategoryEnum : householdItemCategoryEnums) {
+                a.add(householdItemCategoryEnum.description);
+            }
+        } else {
+            for (HouseholdItemCategoryEnum householdItemCategoryEnum : HouseholdItemCategoryEnum.values()) {
+                a.add(householdItemCategoryEnum.description);
+            }
         }
         return a;
     }

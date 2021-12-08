@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.activities.AddAddressActivity
 import com.noqapp.android.common.beans.JsonUserAddress
+import com.noqapp.android.common.model.types.category.HouseholdItemCategoryEnum
 import com.noqapp.android.common.model.types.category.ItemConditionEnum
 
 class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMapReadyCallback {
@@ -83,8 +84,10 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
         view.setOnTouchListener { _, _ -> true }
         observeData()
         setListeners()
-        val spAdapter = ArrayAdapter(requireActivity(),android.R.layout.simple_spinner_item, ItemConditionEnum.asListOfDescription())
-        fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.adapter = spAdapter
+        val spItemConditionAdapter = ArrayAdapter(requireActivity(),android.R.layout.simple_spinner_item, ItemConditionEnum.asListOfDescription())
+        fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.adapter = spItemConditionAdapter
+        val spItemCategoryAdapter = ArrayAdapter(requireActivity(),android.R.layout.simple_spinner_item, HouseholdItemCategoryEnum.asListOfDescription())
+        fragmentPostHouseHoldItemDetailsBinding.spinnerItemCategoryType.adapter = spItemCategoryAdapter
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
     }
@@ -116,6 +119,7 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
                     fragmentPostHouseHoldItemDetailsBinding.etCityArea.setText(houseHoldItemEntity.city)
                     fragmentPostHouseHoldItemDetailsBinding.etRentPerMonth.setText(houseHoldItemEntity.price.toString())
                     fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.setSelection(ItemConditionEnum.asListOfDescription().indexOf(houseHoldItemEntity.itemConditionType))
+                    fragmentPostHouseHoldItemDetailsBinding.spinnerItemCategoryType.setSelection(HouseholdItemCategoryEnum.asListOfDescription().indexOf(houseHoldItemEntity.householdItemCategory))
                 }
             })
     }
@@ -135,6 +139,7 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
             }
 
             houseHoldItemEntityVal?.itemConditionType = fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.selectedItem.toString()
+            houseHoldItemEntityVal?.householdItemCategory = fragmentPostHouseHoldItemDetailsBinding.spinnerItemCategoryType.selectedItem.toString()
 
             householdItemViewModel.insertHouseHoldItem(requireContext(), houseHoldItemEntityVal)
 

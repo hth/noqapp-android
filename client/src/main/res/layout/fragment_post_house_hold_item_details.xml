@@ -50,8 +50,30 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/rounded_corner_cyan_background"
+                android:layout_weight=".5"
+                android:background="@drawable/sp_background"
+                android:padding="5dp"
                 app:layout_constraintTop_toBottomOf="@+id/tv_rent_type" />
+
+            <TextView
+                android:id="@+id/tv_item_category_label"
+                style="@style/TextStyleNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/txt_house_hold_item_category"
+                app:layout_constraintTop_toBottomOf="@id/spinner_rental_type" />
+
+            <Spinner
+                android:id="@+id/spinner_item_category_type"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight=".5"
+                android:background="@drawable/sp_background"
+                android:padding="5dp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_item_category_label" />
 
             <View
                 android:id="@+id/view_rental_type"
@@ -68,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/txt_address"
-                app:layout_constraintTop_toBottomOf="@id/spinner_rental_type" />
+                app:layout_constraintTop_toBottomOf="@id/spinner_item_category_type" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_rental_address"

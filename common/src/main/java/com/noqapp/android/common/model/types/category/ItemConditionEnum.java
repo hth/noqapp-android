@@ -1,9 +1,12 @@
 package com.noqapp.android.common.model.types.category;
 
-import com.noqapp.android.common.model.types.InventoryStateEnum;
+import android.os.Build;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * hitender
@@ -31,8 +34,18 @@ public enum ItemConditionEnum {
 
     public static List<String> asListOfDescription() {
         List<String> a = new LinkedList<>();
-        for (ItemConditionEnum itemConditionEnum : ItemConditionEnum.values()) {
-            a.add(itemConditionEnum.description);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            List<ItemConditionEnum> itemConditionEnums = Stream.of(ItemConditionEnum.values())
+               .sorted(Comparator.comparing(ItemConditionEnum::getDescription))
+               .collect(Collectors.toList());
+
+            for (ItemConditionEnum itemConditionEnum : itemConditionEnums) {
+                a.add(itemConditionEnum.description);
+            }
+        } else {
+            for (ItemConditionEnum itemConditionEnum : ItemConditionEnum.values()) {
+                a.add(itemConditionEnum.description);
+            }
         }
         return a;
     }

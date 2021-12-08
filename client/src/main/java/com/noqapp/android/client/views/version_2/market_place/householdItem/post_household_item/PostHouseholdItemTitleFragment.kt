@@ -76,6 +76,7 @@ class PostHouseHoldItemTitleFragment : BaseFragment() {
             savedHouseHoldItemEntityInstance = HouseHoldItemEntity(
                 1,
                 ItemConditionEnum.B.description,
+                HouseholdItemCategoryEnum.AUTO.description,
                 listOf(0.0, 0.0),
                 0,
                 fragmentPostHouseHoldItemTitleBinding.etTitle.text.toString(),
