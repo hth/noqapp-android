@@ -15,7 +15,7 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/tv_rent_label"
+                android:id="@+id/tv_price_label"
                 style="@style/TextStyleNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/et_rent_per_month"
+                android:id="@+id/et_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -33,7 +33,7 @@
                 android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_rent_label" />
+                app:layout_constraintTop_toBottomOf="@id/tv_price_label" />
 
             <TextView
                 android:id="@+id/tv_rent_type"
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/txt_rental_type"
-                app:layout_constraintTop_toBottomOf="@id/et_rent_per_month" />
+                app:layout_constraintTop_toBottomOf="@id/et_price" />
 
             <Spinner
                 android:id="@+id/spinner_rental_type"

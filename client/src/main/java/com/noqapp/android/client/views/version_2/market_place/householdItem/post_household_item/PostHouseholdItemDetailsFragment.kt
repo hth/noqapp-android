@@ -117,7 +117,7 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
                     fragmentPostHouseHoldItemDetailsBinding.etLandmark.setText(houseHoldItemEntity.landmark)
                     fragmentPostHouseHoldItemDetailsBinding.etTownLocality.setText(houseHoldItemEntity.town)
                     fragmentPostHouseHoldItemDetailsBinding.etCityArea.setText(houseHoldItemEntity.city)
-                    fragmentPostHouseHoldItemDetailsBinding.etRentPerMonth.setText(houseHoldItemEntity.price.toString())
+                    fragmentPostHouseHoldItemDetailsBinding.etPrice.setText(houseHoldItemEntity.price.toString())
                     fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.setSelection(ItemConditionEnum.asListOfDescription().indexOf(houseHoldItemEntity.itemConditionType))
                     fragmentPostHouseHoldItemDetailsBinding.spinnerItemCategoryType.setSelection(HouseholdItemCategoryEnum.asListOfDescription().indexOf(houseHoldItemEntity.householdItemCategory))
                 }
@@ -131,7 +131,7 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
             houseHoldItemEntityVal?.town = fragmentPostHouseHoldItemDetailsBinding.etTownLocality.text.toString()
             houseHoldItemEntityVal?.city = fragmentPostHouseHoldItemDetailsBinding.etCityArea.text.toString()
             houseHoldItemEntityVal?.landmark = fragmentPostHouseHoldItemDetailsBinding.etLandmark.text.toString()
-            houseHoldItemEntityVal?.price = fragmentPostHouseHoldItemDetailsBinding.etRentPerMonth.text.toString().toInt()
+            houseHoldItemEntityVal?.price = fragmentPostHouseHoldItemDetailsBinding.etPrice.text.toString().toInt()
 
             jsonUserAddress?.let { jua ->
                 houseHoldItemEntityVal?.coordinates =

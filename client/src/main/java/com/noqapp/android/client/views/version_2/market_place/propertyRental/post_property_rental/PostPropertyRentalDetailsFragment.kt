@@ -116,7 +116,7 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
                     fragmentPostPropertyRentalDetails.etTownLocality.setText(propertyRentalEntity.town)
                     fragmentPostPropertyRentalDetails.etCityArea.setText(propertyRentalEntity.city)
                     fragmentPostPropertyRentalDetails.etCarpetArea.setText(propertyRentalEntity.carpetArea.toString())
-                    fragmentPostPropertyRentalDetails.etRentPerMonth.setText(propertyRentalEntity.price.toString())
+                    fragmentPostPropertyRentalDetails.etPrice.setText(propertyRentalEntity.price.toString())
                     fragmentPostPropertyRentalDetails.tvAvailableFrom.text = propertyRentalEntity.availableFrom
                     fragmentPostPropertyRentalDetails.spinnerRentalType.setSelection(RentalTypeEnum.asListOfDescription().indexOf(propertyRentalEntity.rentalType))
 
@@ -195,7 +195,7 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
             propertyRentalEntityVal?.city = fragmentPostPropertyRentalDetails.etCityArea.text.toString()
             propertyRentalEntityVal?.landmark = fragmentPostPropertyRentalDetails.etLandmark.text.toString()
             propertyRentalEntityVal?.carpetArea = fragmentPostPropertyRentalDetails.etCarpetArea.text.toString().toInt()
-            propertyRentalEntityVal?.price = fragmentPostPropertyRentalDetails.etRentPerMonth.text.toString().toInt()
+            propertyRentalEntityVal?.price = fragmentPostPropertyRentalDetails.etPrice.text.toString().toInt()
 
             jsonUserAddress?.let { jua ->
                 propertyRentalEntityVal?.coordinates =
