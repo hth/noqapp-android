@@ -23,6 +23,7 @@ import com.noqapp.android.common.model.types.category.ItemConditionEnum
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*
+import com.noqapp.android.client.utils.AppUtils
 
 class ViewHouseHoldItemDetailsActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var activityViewHouseholdItemDetailsBinding: ActivityViewHouseholdItemDetailsBinding
@@ -67,10 +68,10 @@ class ViewHouseHoldItemDetailsActivity : BaseActivity(), OnMapReadyCallback {
             nf.format(BigDecimal(marketPlaceElastic.productPrice)) + "/-"
         activityViewHouseholdItemDetailsBinding.tvDescription.text = marketPlaceElastic.description
         activityViewHouseholdItemDetailsBinding.toolbar.title = marketPlaceElastic.title
-        activityViewHouseholdItemDetailsBinding.tvBedrooms.text =
-            getString(R.string.txt_house_hold_item_usages) + " - " + ItemConditionEnum.valueOf(marketPlaceElastic.getValueFromTag("IC"))
-        activityViewHouseholdItemDetailsBinding.tvBathrooms.text =
-            getString(R.string.txt_house_hold_item_price) + " - " + nf.format(BigDecimal(marketPlaceElastic.productPrice))
+        activityViewHouseholdItemDetailsBinding.tvItemCondition.text = AppUtils.halfTextBold(
+            getString(R.string.txt_house_hold_item_usages) + " - " , ItemConditionEnum.valueOf(marketPlaceElastic.getValueFromTag("IC")).description)
+        activityViewHouseholdItemDetailsBinding.tvItemPrice.text = AppUtils.halfTextBold(
+            getString(R.string.txt_house_hold_item_price) + " - " , nf.format(BigDecimal(marketPlaceElastic.productPrice)))
 
         latitude = GeoHashUtils.decodeLatitude(marketPlaceElastic.geoHash)
         longitude = GeoHashUtils.decodeLongitude(marketPlaceElastic.geoHash)

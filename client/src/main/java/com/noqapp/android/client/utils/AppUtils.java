@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -18,7 +19,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -669,6 +673,17 @@ public class AppUtils extends CommonHelper {
             return area;
         }
         return StringUtils.isNotBlank(town) ? town : "";
+    }
+
+    public static String halfTextBold(String boldText, String normalText) {
+        SpannableString str = new SpannableString(boldText + normalText);
+        str.setSpan(
+                new StyleSpan(Typeface.BOLD),
+                0,
+                boldText.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+        return str.toString();
     }
 }
 

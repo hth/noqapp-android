@@ -13,6 +13,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.tabs.TabLayoutMediator
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityViewPropertyRentalDetailsBinding
+import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.GeoHashUtils
 import com.noqapp.android.client.views.activities.BaseActivity
@@ -66,15 +67,15 @@ class ViewPropertyRentalDetailsActivity : BaseActivity(), OnMapReadyCallback {
             nf.format(BigDecimal(marketPlaceElastic.productPrice)) + "/-"
         activityViewPropertyRentalDetailsBinding.tvDescription.text = marketPlaceElastic.description
         activityViewPropertyRentalDetailsBinding.toolbar.title = marketPlaceElastic.title
-        activityViewPropertyRentalDetailsBinding.tvBedrooms.text =
-            getString(R.string.txt_number_of_bedrooms) + " " + marketPlaceElastic.getValueFromTag("BE")
-        activityViewPropertyRentalDetailsBinding.tvBathrooms.text =
-            getString(R.string.txt_number_of_bathrooms) + " " + marketPlaceElastic.getValueFromTag("BR")
-        activityViewPropertyRentalDetailsBinding.tvCarpetArea.text =
-            getString(R.string.txt_carpet_area) + " " + marketPlaceElastic.getValueFromTag("CA")
+        activityViewPropertyRentalDetailsBinding.tvBedrooms.text = AppUtils.halfTextBold(
+            getString(R.string.txt_number_of_bedrooms) + " " , marketPlaceElastic.getValueFromTag("BE"))
+        activityViewPropertyRentalDetailsBinding.tvBathrooms.text = AppUtils.halfTextBold(
+            getString(R.string.txt_number_of_bathrooms) + " " , marketPlaceElastic.getValueFromTag("BR"))
+        activityViewPropertyRentalDetailsBinding.tvCarpetArea.text = AppUtils.halfTextBold(
+            getString(R.string.txt_carpet_area) + " " , marketPlaceElastic.getValueFromTag("CA"))
         //Rental Type = RentalTypeEnum.valueOf(marketPlaceElastic.getValueFromTag("RT"))
-        activityViewPropertyRentalDetailsBinding.tvAvailableFrom.text =
-            getString(R.string.txt_available_from) + " " + marketPlaceElastic.getValueFromTag("RA")
+        activityViewPropertyRentalDetailsBinding.tvAvailableFrom.text = AppUtils.halfTextBold(
+            getString(R.string.txt_available_from) + " " , marketPlaceElastic.getValueFromTag("RA"))
 
         latitude = GeoHashUtils.decodeLatitude(marketPlaceElastic.geoHash)
         longitude = GeoHashUtils.decodeLongitude(marketPlaceElastic.geoHash)
