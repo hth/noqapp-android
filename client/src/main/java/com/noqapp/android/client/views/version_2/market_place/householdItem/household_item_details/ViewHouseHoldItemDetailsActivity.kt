@@ -28,6 +28,7 @@ import java.util.*
 import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.PaginationListener
 import com.noqapp.android.common.model.types.BusinessTypeEnum
+import com.noqapp.android.common.model.types.category.HouseholdItemCategoryEnum
 
 class ViewHouseHoldItemDetailsActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var activityViewHouseholdItemDetailsBinding: ActivityViewHouseholdItemDetailsBinding
@@ -87,7 +88,7 @@ class ViewHouseHoldItemDetailsActivity : BaseActivity(), OnMapReadyCallback {
         activityViewHouseholdItemDetailsBinding.tvItemPrice.text = AppUtils.halfTextBold(
             getString(R.string.txt_house_hold_item_price) + " - " , nf.format(BigDecimal(marketPlaceElastic.productPrice)))
         activityViewHouseholdItemDetailsBinding.tvItemCategory.text = AppUtils.halfTextBold(
-            getString(R.string.txt_house_hold_item_category) + " - " , "NA")
+            getString(R.string.txt_house_hold_item_category) + " - " , HouseholdItemCategoryEnum.valueOf(marketPlaceElastic.getValueFromTag("HC")).description)
 
         latitude = GeoHashUtils.decodeLatitude(marketPlaceElastic.geoHash)
         longitude = GeoHashUtils.decodeLongitude(marketPlaceElastic.geoHash)
