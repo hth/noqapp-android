@@ -86,7 +86,7 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
         view.setOnTouchListener { _, _ -> true }
         observeData()
         setListeners()
-        val spAdapter = ArrayAdapter(requireActivity(),android.R.layout.simple_spinner_item, RentalTypeEnum.asListOfDescription())
+        val spAdapter = ArrayAdapter(requireActivity(),R.layout.spinner_item, RentalTypeEnum.asListOfDescription())
         fragmentPostPropertyRentalDetails.spinnerRentalType.adapter = spAdapter
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)

@@ -176,21 +176,10 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:padding="8dp"
-                android:editable="true"
-                android:enabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_town_locality" />
 
-            <View
-                android:id="@+id/view_town_locality"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:clickable="true"
-                app:layout_constraintBottom_toBottomOf="@id/et_town_locality"
-                app:layout_constraintEnd_toEndOf="@id/et_town_locality"
-                app:layout_constraintStart_toStartOf="@id/et_town_locality"
-                app:layout_constraintTop_toTopOf="@id/et_town_locality" />
 
             <TextView
                 android:id="@+id/tv_landmark"

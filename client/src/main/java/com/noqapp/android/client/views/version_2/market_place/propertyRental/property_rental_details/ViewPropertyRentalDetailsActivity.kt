@@ -4,21 +4,25 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityViewPropertyRentalDetailsBinding
 import com.noqapp.android.client.utils.AppUtils
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.GeoHashUtils
+import com.noqapp.android.client.utils.PaginationListener
 import com.noqapp.android.client.views.activities.BaseActivity
 import com.noqapp.android.client.views.version_2.market_place.propertyRental.PropertyRentalViewModel
 import com.noqapp.android.common.beans.marketplace.MarketplaceElastic
+import com.noqapp.android.common.model.types.BusinessTypeEnum
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*
@@ -45,7 +49,7 @@ class ViewPropertyRentalDetailsActivity : BaseActivity(), OnMapReadyCallback {
         }
 
         setListeners()
-
+        observeData()
     }
 
 
@@ -136,4 +140,14 @@ class ViewPropertyRentalDetailsActivity : BaseActivity(), OnMapReadyCallback {
         startActivity(mapIntent)
     }
 
+    private fun observeData() {
+        propertyRentalViewModel.shownInterestLiveData.observe(this, {
+            if (it) {
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.txt_owner_notified),
+                    Snackbar.LENGTH_SHORT)
+                    .show()
+                propertyRentalViewModel.shownInterestLiveData.value = false
+            }
+        })
+    }
 }
