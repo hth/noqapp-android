@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityHouseholdItemListBinding
@@ -16,6 +15,7 @@ import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.PaginationListener
 import com.noqapp.android.client.utils.PaginationListener.PAGE_START
 import com.noqapp.android.client.views.activities.BaseActivity
+import com.noqapp.android.client.views.customviews.RecyclerViewItemDecorator
 import com.noqapp.android.client.views.version_2.HomeActivity
 import com.noqapp.android.client.views.version_2.market_place.householdItem.HouseholdItemViewModel
 import com.noqapp.android.client.views.version_2.market_place.householdItem.household_item_details.ViewHouseHoldItemDetailsActivity
@@ -84,6 +84,8 @@ class HouseholdItemListActivity : BaseActivity() {
         val layoutManager = GridLayoutManager(this, 2)
         activityHouseholdItemListBinding.rvMarketPlace.layoutManager = layoutManager
         activityHouseholdItemListBinding.rvMarketPlace.adapter = householdItemListAdapter
+
+        activityHouseholdItemListBinding.rvMarketPlace.addItemDecoration(RecyclerViewItemDecorator(10))
 
         activityHouseholdItemListBinding.rvMarketPlace.addOnScrollListener(object :
             PaginationListener(layoutManager) {
