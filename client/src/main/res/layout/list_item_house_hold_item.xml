@@ -6,7 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="3dp"
     app:cardUseCompatPadding="true"
     app:contentPadding="12dp">
 
@@ -16,8 +16,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_market_place"
-            android:layout_width="150dp"
-            android:layout_height="160dp"
+            android:layout_width="140dp"
+            android:layout_height="150dp"
             android:layout_marginStart="10dp"
             android:background="@color/color_grey_bg"
             android:scaleType="centerCrop"
@@ -41,6 +41,7 @@
                 android:text="Rs. 44, 000/-"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:gravity="center_horizontal"
                 android:textColor="#E75A30" />
 
 
@@ -53,6 +54,7 @@
                 android:textColor="@color/color_black"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:gravity="center_horizontal"
                 app:layout_constraintStart_toEndOf="@+id/iv_market_place_rental"
                 app:layout_constraintTop_toTopOf="@+id/iv_market_place_rental" />
 
@@ -64,6 +66,7 @@
                 android:maxLines="2"
                 android:textColor="@color/color_black"
                 android:textSize="15sp"
+                android:gravity="center_horizontal"
                 app:layout_constraintStart_toStartOf="@+id/tv_property_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_property_title"
                 tools:text="26, Spaze Street, Gurgaon, Sector 22" />

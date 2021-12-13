@@ -343,8 +343,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/rounded_corner_cyan_background"
-                android:enabled="false"
-                android:imeOptions="actionNext"
                 android:inputType="text"
                 android:maxLines="1"
                 android:padding="8dp"

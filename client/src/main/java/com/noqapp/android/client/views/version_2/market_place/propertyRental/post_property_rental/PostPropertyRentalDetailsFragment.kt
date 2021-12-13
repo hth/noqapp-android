@@ -26,6 +26,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.snackbar.Snackbar
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.activities.AddAddressActivity
 import com.noqapp.android.common.beans.JsonUserAddress
@@ -190,23 +191,36 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
 
     private fun setListeners() {
         fragmentPostPropertyRentalDetails.cvNext.setOnClickListener {
-            propertyRentalEntityVal?.address = fragmentPostPropertyRentalDetails.tvAddress.text.toString()
-            propertyRentalEntityVal?.town = fragmentPostPropertyRentalDetails.etTownLocality.text.toString()
-            propertyRentalEntityVal?.city = fragmentPostPropertyRentalDetails.etCityArea.text.toString()
-            propertyRentalEntityVal?.landmark = fragmentPostPropertyRentalDetails.etLandmark.text.toString()
-            propertyRentalEntityVal?.carpetArea = fragmentPostPropertyRentalDetails.etCarpetArea.text.toString().toInt()
-            propertyRentalEntityVal?.price = fragmentPostPropertyRentalDetails.etPrice.text.toString().toInt()
+            if(validate()) {
+                propertyRentalEntityVal?.address =
+                    fragmentPostPropertyRentalDetails.tvAddress.text.toString()
+                propertyRentalEntityVal?.town =
+                    fragmentPostPropertyRentalDetails.etTownLocality.text.toString()
+                propertyRentalEntityVal?.city =
+                    fragmentPostPropertyRentalDetails.etCityArea.text.toString()
+                propertyRentalEntityVal?.landmark =
+                    fragmentPostPropertyRentalDetails.etLandmark.text.toString()
+                propertyRentalEntityVal?.carpetArea =
+                    fragmentPostPropertyRentalDetails.etCarpetArea.text.toString().toInt()
+                propertyRentalEntityVal?.price =
+                    fragmentPostPropertyRentalDetails.etPrice.text.toString().toInt()
 
-            jsonUserAddress?.let { jua ->
-                propertyRentalEntityVal?.coordinates =
-                    listOf(jua.latitude.toDouble(), jua.longitude.toDouble())
+                jsonUserAddress?.let { jua ->
+                    propertyRentalEntityVal?.coordinates =
+                        listOf(jua.latitude.toDouble(), jua.longitude.toDouble())
+                }
+                propertyRentalEntityVal?.rentalType =
+                    fragmentPostPropertyRentalDetails.spinnerRentalType.selectedItem.toString()
+                propertyRentalEntityVal?.availableFrom =
+                    fragmentPostPropertyRentalDetails.tvAvailableFrom.text.toString()
+
+                propertyRentalViewModel.insertPropertyRental(
+                    requireContext(),
+                    propertyRentalEntityVal
+                )
+
+                postPropertyRentalDetailsFragmentInteractionListener.goToPostPropertyRentalImageUploadFragment()
             }
-            propertyRentalEntityVal?.rentalType = fragmentPostPropertyRentalDetails.spinnerRentalType.selectedItem.toString()
-            propertyRentalEntityVal?.availableFrom = fragmentPostPropertyRentalDetails.tvAvailableFrom.text.toString()
-
-            propertyRentalViewModel.insertPropertyRental(requireContext(), propertyRentalEntityVal)
-
-            postPropertyRentalDetailsFragmentInteractionListener.goToPostPropertyRentalImageUploadFragment()
         }
 
         fragmentPostPropertyRentalDetails.tv1Bhk.setOnClickListener {
@@ -263,13 +277,6 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
             startForResult.launch(setAddressIntent)
         }
 
-        fragmentPostPropertyRentalDetails.viewTownLocality.setOnClickListener {
-            val setAddressIntent = Intent(requireContext(), AddAddressActivity::class.java).apply {
-                putExtra(Constants.REQUEST_ADDRESS_FROM, Constants.POST_PROPERTY_RENTAL)
-            }
-            startForResult.launch(setAddressIntent)
-        }
-
         fragmentPostPropertyRentalDetails.tvAvailableFrom.setOnClickListener {
             val mCalendar: Calendar = Calendar.getInstance()
             val year: Int = mCalendar.get(Calendar.YEAR)
@@ -282,10 +289,37 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
                 month,
                 dayOfMonth
             )
-
+            datePickerDialog.datePicker.minDate = System.currentTimeMillis()
             datePickerDialog.show()
         }
 
+    }
+
+    private fun validate(): Boolean {
+        if (fragmentPostPropertyRentalDetails.etPrice.text.isNullOrEmpty()) {
+            showSnackBar("Please enter item price.")
+            return false
+        }else if (fragmentPostPropertyRentalDetails.etPrice.text.toString().toInt() <=0) {
+            showSnackBar("Item price cannot be 0 or less than 0.")
+            return false
+        }else if (fragmentPostPropertyRentalDetails.etCarpetArea.text.isNullOrEmpty()) {
+            showSnackBar("Please enter carpet area.")
+            return false
+        }else if (fragmentPostPropertyRentalDetails.etCarpetArea.text.toString().toInt() <=0) {
+            showSnackBar("Carpet area cannot be 0 or less than 0.")
+            return false
+        }else if (fragmentPostPropertyRentalDetails.tvAvailableFrom.text.isNullOrEmpty()) {
+            showSnackBar("Available from date cannot be empty.")
+            return false
+        }
+        return true
+    }
+
+    private fun showSnackBar(text: String) {
+        Snackbar.make(
+            fragmentPostPropertyRentalDetails.root, text,
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {

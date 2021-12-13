@@ -23,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.snackbar.Snackbar
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.activities.AddAddressActivity
 import com.noqapp.android.common.beans.JsonUserAddress
@@ -127,23 +128,32 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
 
     private fun setListeners() {
         fragmentPostHouseHoldItemDetailsBinding.cvNext.setOnClickListener {
-            houseHoldItemEntityVal?.address = fragmentPostHouseHoldItemDetailsBinding.tvAddress.text.toString()
-            houseHoldItemEntityVal?.town = fragmentPostHouseHoldItemDetailsBinding.etTownLocality.text.toString()
-            houseHoldItemEntityVal?.city = fragmentPostHouseHoldItemDetailsBinding.etCityArea.text.toString()
-            houseHoldItemEntityVal?.landmark = fragmentPostHouseHoldItemDetailsBinding.etLandmark.text.toString()
-            houseHoldItemEntityVal?.price = fragmentPostHouseHoldItemDetailsBinding.etPrice.text.toString().toInt()
+            if(validate()) {
+                houseHoldItemEntityVal?.address =
+                    fragmentPostHouseHoldItemDetailsBinding.tvAddress.text.toString()
+                houseHoldItemEntityVal?.town =
+                    fragmentPostHouseHoldItemDetailsBinding.etTownLocality.text.toString()
+                houseHoldItemEntityVal?.city =
+                    fragmentPostHouseHoldItemDetailsBinding.etCityArea.text.toString()
+                houseHoldItemEntityVal?.landmark =
+                    fragmentPostHouseHoldItemDetailsBinding.etLandmark.text.toString()
+                houseHoldItemEntityVal?.price =
+                    fragmentPostHouseHoldItemDetailsBinding.etPrice.text.toString().toInt()
 
-            jsonUserAddress?.let { jua ->
-                houseHoldItemEntityVal?.coordinates =
-                    listOf(jua.latitude.toDouble(), jua.longitude.toDouble())
+                jsonUserAddress?.let { jua ->
+                    houseHoldItemEntityVal?.coordinates =
+                        listOf(jua.latitude.toDouble(), jua.longitude.toDouble())
+                }
+
+                houseHoldItemEntityVal?.itemConditionType =
+                    fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.selectedItem.toString()
+                houseHoldItemEntityVal?.householdItemCategory =
+                    fragmentPostHouseHoldItemDetailsBinding.spinnerItemCategoryType.selectedItem.toString()
+
+                householdItemViewModel.insertHouseHoldItem(requireContext(), houseHoldItemEntityVal)
+
+                postHouseHoldItemDetailsFragmentInteractionListener.goToHouseHoldItemImageUploadFragment()
             }
-
-            houseHoldItemEntityVal?.itemConditionType = fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.selectedItem.toString()
-            houseHoldItemEntityVal?.householdItemCategory = fragmentPostHouseHoldItemDetailsBinding.spinnerItemCategoryType.selectedItem.toString()
-
-            householdItemViewModel.insertHouseHoldItem(requireContext(), houseHoldItemEntityVal)
-
-            postHouseHoldItemDetailsFragmentInteractionListener.goToHouseHoldItemImageUploadFragment()
         }
 
         fragmentPostHouseHoldItemDetailsBinding.tvAddress.setOnClickListener {
@@ -159,14 +169,24 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
             }
             startForResult.launch(setAddressIntent)
         }
+    }
 
-        fragmentPostHouseHoldItemDetailsBinding.viewTownLocality.setOnClickListener {
-            val setAddressIntent = Intent(requireContext(), AddAddressActivity::class.java).apply {
-                putExtra(Constants.REQUEST_ADDRESS_FROM, Constants.POST_PROPERTY_RENTAL)
-            }
-            startForResult.launch(setAddressIntent)
+    private fun validate(): Boolean {
+        if (fragmentPostHouseHoldItemDetailsBinding.etPrice.text.isNullOrEmpty()) {
+            showSnackBar("Please enter item price.")
+            return false
+        }else if (fragmentPostHouseHoldItemDetailsBinding.etPrice.text.toString().toInt() <=0) {
+            showSnackBar("Item price cannot be 0 or less than 0.")
+            return false
         }
+        return true
+    }
 
+    private fun showSnackBar(text: String) {
+        Snackbar.make(
+            fragmentPostHouseHoldItemDetailsBinding.root, text,
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {

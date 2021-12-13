@@ -4,12 +4,14 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.ActivityViewHouseholdItemDetailsBinding
@@ -23,6 +25,10 @@ import com.noqapp.android.common.model.types.category.ItemConditionEnum
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*
+import com.noqapp.android.client.utils.AppUtils
+import com.noqapp.android.client.utils.PaginationListener
+import com.noqapp.android.common.model.types.BusinessTypeEnum
+import com.noqapp.android.common.model.types.category.HouseholdItemCategoryEnum
 
 class ViewHouseHoldItemDetailsActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var activityViewHouseholdItemDetailsBinding: ActivityViewHouseholdItemDetailsBinding
@@ -44,9 +50,8 @@ class ViewHouseHoldItemDetailsActivity : BaseActivity(), OnMapReadyCallback {
                 it.getSerializableExtra(Constants.POST_PROPERTY_RENTAL) as MarketplaceElastic
             setData(marketPlaceElastic)
         }
-
         setListeners()
-
+        observeData()
     }
 
     private fun setListeners() {
@@ -59,6 +64,17 @@ class ViewHouseHoldItemDetailsActivity : BaseActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun observeData() {
+        householdItemViewModel.shownInterestLiveData.observe(this, {
+            if (it) {
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.txt_owner_notified),
+                    Snackbar.LENGTH_SHORT)
+                    .show()
+                householdItemViewModel.shownInterestLiveData.value = false
+            }
+        })
+    }
+
     private fun setData(marketPlaceElastic: MarketplaceElastic) {
         val nf: NumberFormat =
             NumberFormat.getCurrencyInstance(Locale("en", marketPlaceElastic.countryShortName))
@@ -67,10 +83,12 @@ class ViewHouseHoldItemDetailsActivity : BaseActivity(), OnMapReadyCallback {
             nf.format(BigDecimal(marketPlaceElastic.productPrice)) + "/-"
         activityViewHouseholdItemDetailsBinding.tvDescription.text = marketPlaceElastic.description
         activityViewHouseholdItemDetailsBinding.toolbar.title = marketPlaceElastic.title
-        activityViewHouseholdItemDetailsBinding.tvBedrooms.text =
-            getString(R.string.txt_house_hold_item_usages) + " - " + ItemConditionEnum.valueOf(marketPlaceElastic.getValueFromTag("IC"))
-        activityViewHouseholdItemDetailsBinding.tvBathrooms.text =
-            getString(R.string.txt_house_hold_item_price) + " - " + nf.format(BigDecimal(marketPlaceElastic.productPrice))
+        activityViewHouseholdItemDetailsBinding.tvItemCondition.text = AppUtils.halfTextBold(
+            getString(R.string.txt_house_hold_item_usages) + " - " , ItemConditionEnum.valueOf(marketPlaceElastic.getValueFromTag("IC")).description)
+        activityViewHouseholdItemDetailsBinding.tvItemPrice.text = AppUtils.halfTextBold(
+            getString(R.string.txt_house_hold_item_price) + " - " , nf.format(BigDecimal(marketPlaceElastic.productPrice)))
+        activityViewHouseholdItemDetailsBinding.tvItemCategory.text = AppUtils.halfTextBold(
+            getString(R.string.txt_house_hold_item_category) + " - " , HouseholdItemCategoryEnum.valueOf(marketPlaceElastic.getValueFromTag("HC")).description)
 
         latitude = GeoHashUtils.decodeLatitude(marketPlaceElastic.geoHash)
         longitude = GeoHashUtils.decodeLongitude(marketPlaceElastic.geoHash)

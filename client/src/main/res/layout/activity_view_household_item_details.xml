@@ -172,10 +172,11 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_description" />
 
             <TextView
-                android:id="@+id/tv_bedrooms"
+                android:id="@+id/tv_item_condition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:paddingBottom="16dp"
                 android:drawablePadding="4dp"
                 android:fontFamily="sans-serif"
                 android:paddingEnd="16dp"
@@ -186,16 +187,29 @@
                 app:layout_constraintTop_toTopOf="@+id/iv_market_place_rental" />
 
             <TextView
-                android:id="@+id/tv_bathrooms"
+                android:id="@+id/tv_item_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
+                android:paddingBottom="16dp"
                 android:paddingEnd="16dp"
                 android:text="@string/txt_house_hold_item_price"
                 android:textColor="@color/color_black"
                 android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="@+id/tv_bedrooms"
-                app:layout_constraintTop_toBottomOf="@+id/tv_bedrooms" />
+                app:layout_constraintStart_toStartOf="@+id/tv_item_condition"
+                app:layout_constraintTop_toBottomOf="@+id/tv_item_condition" />
+
+            <TextView
+                android:id="@+id/tv_item_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:paddingEnd="16dp"
+                android:text="@string/txt_house_hold_item_category"
+                android:textColor="@color/color_black"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="@+id/tv_item_price"
+                app:layout_constraintTop_toBottomOf="@+id/tv_item_price" />
 
 
             <View
@@ -205,8 +219,8 @@
                 android:layout_marginTop="16dp"
                 android:background="@color/color_faded"
                 app:layout_constraintEnd_toEndOf="@id/tv_carpet_area"
-                app:layout_constraintStart_toStartOf="@id/tv_bathrooms"
-                app:layout_constraintTop_toBottomOf="@id/tv_bathrooms" />
+                app:layout_constraintStart_toStartOf="@id/tv_item_category"
+                app:layout_constraintTop_toBottomOf="@id/tv_item_category" />
 
             <TextView
                 android:id="@+id/tv_rental_address_label"
@@ -214,6 +228,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:paddingBottom="8dp"
                 android:text="@string/txt_address"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/tv_description"
@@ -280,7 +295,7 @@
                     <TextView
                         android:id="@+id/tv_interested"
                         android:layout_width="wrap_content"
-                        android:layout_height="54dp"
+                        android:layout_height="48dp"
                         android:drawableStart="@drawable/ic_market_place_arrow_next"
                         android:drawablePadding="24dp"
                         android:gravity="center"
