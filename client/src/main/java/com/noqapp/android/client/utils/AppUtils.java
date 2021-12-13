@@ -675,7 +675,7 @@ public class AppUtils extends CommonHelper {
         return StringUtils.isNotBlank(town) ? town : "";
     }
 
-    public static String halfTextBold(String boldText, String normalText) {
+    public static SpannableString halfTextBold(String boldText, String normalText) {
         SpannableString str = new SpannableString(boldText + normalText);
         str.setSpan(
                 new StyleSpan(Typeface.BOLD),
@@ -683,7 +683,7 @@ public class AppUtils extends CommonHelper {
                 boldText.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
-        return str.toString();
+        return str;
     }
 }
 

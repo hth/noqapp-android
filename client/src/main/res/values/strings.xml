@@ -603,7 +603,7 @@
     <string name="txt_available_from">Available From:</string>
     <string name="txt_rental_address">Rental Address</string>
     <string name="txt_address">Address</string>
-    <string name="txt_area_city">Area/City</string>
+    <string name="txt_area_city">City/Area</string>
     <string name="txt_town_locality_sector">Town/Locality/Sector</string>
     <string name="txt_landmark">Close by Landmark</string>
     <string name="txt_next">Next</string>
