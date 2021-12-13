@@ -184,6 +184,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:src="@drawable/ic_marketplace_rental"
+                android:tint="@color/button_color"
                 app:layout_constraintStart_toStartOf="@id/view_pager"
                 app:layout_constraintTop_toBottomOf="@id/tv_description" />
 
@@ -243,7 +244,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:src="@drawable/ic_marketplace_rental"
+                android:src="@drawable/calendar"
                 app:layout_constraintStart_toStartOf="@id/iv_market_place_rental"
                 app:layout_constraintTop_toBottomOf="@id/view_carpet_area" />
 

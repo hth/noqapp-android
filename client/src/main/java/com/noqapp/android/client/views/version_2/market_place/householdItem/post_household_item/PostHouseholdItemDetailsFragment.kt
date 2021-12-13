@@ -85,9 +85,9 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
         view.setOnTouchListener { _, _ -> true }
         observeData()
         setListeners()
-        val spItemConditionAdapter = ArrayAdapter(requireActivity(),android.R.layout.simple_spinner_item, ItemConditionEnum.asListOfDescription())
+        val spItemConditionAdapter = ArrayAdapter(requireActivity(),R.layout.spinner_item, ItemConditionEnum.asListOfDescription())
         fragmentPostHouseHoldItemDetailsBinding.spinnerRentalType.adapter = spItemConditionAdapter
-        val spItemCategoryAdapter = ArrayAdapter(requireActivity(),android.R.layout.simple_spinner_item, HouseholdItemCategoryEnum.asListOfDescription())
+        val spItemCategoryAdapter = ArrayAdapter(requireActivity(),R.layout.spinner_item, HouseholdItemCategoryEnum.asListOfDescription())
         fragmentPostHouseHoldItemDetailsBinding.spinnerItemCategoryType.adapter = spItemCategoryAdapter
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
