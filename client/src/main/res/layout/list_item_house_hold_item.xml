@@ -21,7 +21,6 @@
             android:layout_marginStart="10dp"
             android:background="@color/color_grey_bg"
             android:scaleType="centerCrop"
-            android:src="@drawable/image_foreground"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
 
         <LinearLayout

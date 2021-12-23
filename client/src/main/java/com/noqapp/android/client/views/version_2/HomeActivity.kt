@@ -591,7 +591,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                 navigateToScreenAfterLogin(CouponsActivity::class.java)
             }
             R.drawable.settings -> {
-                startActivity(Intent(this, PreferenceSettings::class.java))
+                navigateToScreenAfterLogin(PreferenceSettings::class.java)
             }
             R.drawable.ic_notification -> {
                 navController.navigate(R.id.notificationFragment)

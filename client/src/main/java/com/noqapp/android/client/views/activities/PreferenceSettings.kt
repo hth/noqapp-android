@@ -74,19 +74,22 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
             startActivity(intent)
         }
         btn_update.setOnClickListener {
-            showProgress()
-            val jsonUserPreference: JsonUserPreference = AppInitialize.getUserProfile().jsonUserPreference
-            if (isHomeDelivery) {
-                jsonUserPreference.deliveryMode = DeliveryModeEnum.HD
-            } else {
-                jsonUserPreference.deliveryMode = DeliveryModeEnum.TO
+            var jsonUserPreference: JsonUserPreference? = null
+            if (null != AppInitialize.getUserProfile() && null != AppInitialize.getUserProfile().jsonUserPreference) {
+                jsonUserPreference = AppInitialize.getUserProfile().jsonUserPreference
+                showProgress()
+                if (isHomeDelivery) {
+                    jsonUserPreference?.deliveryMode = DeliveryModeEnum.HD
+                } else {
+                    jsonUserPreference?.deliveryMode = DeliveryModeEnum.TO
+                }
+                if (isCash) {
+                    jsonUserPreference?.paymentMethod = PaymentMethodEnum.CA
+                } else {
+                    jsonUserPreference?.paymentMethod = PaymentMethodEnum.EL
+                }
+                clientPreferenceApiImpl.order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonUserPreference)
             }
-            if (isCash) {
-                jsonUserPreference.paymentMethod = PaymentMethodEnum.CA
-            } else {
-                jsonUserPreference.paymentMethod = PaymentMethodEnum.EL
-            }
-            clientPreferenceApiImpl.order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonUserPreference)
         }
         sc_msg_announce.isChecked = AppInitialize.isMsgAnnouncementEnable()
 
@@ -98,16 +101,16 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
             sc_sms.isChecked = AppInitialize.isNotificationReceiveEnable()
             sc_sound.isChecked = AppInitialize.isNotificationSoundEnable()
         } else {
-            sc_sms.isChecked = jsonUserPreference.promotionalSMS == CommunicationModeEnum.R
-            sc_sound.isChecked = jsonUserPreference.firebaseNotification == CommunicationModeEnum.R
+            sc_sms.isChecked = jsonUserPreference?.promotionalSMS == CommunicationModeEnum.R
+            sc_sound.isChecked = jsonUserPreference?.firebaseNotification == CommunicationModeEnum.R
         }
-        if (null != jsonUserPreference && jsonUserPreference.deliveryMode == DeliveryModeEnum.HD) {
+        if (null != jsonUserPreference && jsonUserPreference?.deliveryMode == DeliveryModeEnum.HD) {
             tv_home_delivery.performClick()
         } else {
             tv_take_away.performClick()
         }
 
-        if (null != jsonUserPreference && jsonUserPreference.paymentMethod == PaymentMethodEnum.CA) {
+        if (null != jsonUserPreference && jsonUserPreference?.paymentMethod == PaymentMethodEnum.CA) {
             tv_cash.performClick()
         } else {
             tv_online.performClick()
