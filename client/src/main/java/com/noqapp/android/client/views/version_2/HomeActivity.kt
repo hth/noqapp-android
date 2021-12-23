@@ -90,8 +90,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         longitude: Double?
     ) {
         activityHomeBinding.tvLocation.text = AppUtils.getLocationAsString(area, town)
-        locationArea = area!!
-        locationTown = town!!
+        locationArea = area ?: ""
+        locationTown = town ?: ""
         val searchStoreQuery = SearchQuery()
         area?.let {
             searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
