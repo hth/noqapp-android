@@ -3,6 +3,7 @@ package com.noqapp.android.client.utils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -139,6 +140,7 @@ public class ShowAlertInformation {
         } catch (Exception e) {
             // WindowManager$BadTokenException will be caught and the app would not display
             // the 'Force Close' message
+            Log.d("ShowAlertInformation", "Error while showing the dialog"+e.getMessage());
         }
     }
 
@@ -164,7 +166,13 @@ public class ShowAlertInformation {
         Button btn_no = customDialogView.findViewById(R.id.btn_no);
         btn_no.setOnClickListener((View v) -> mAlertDialog.dismiss());
         btn_yes.setOnClickListener((View v) -> mAlertDialog.dismiss());
-        mAlertDialog.show();
+        try {
+            mAlertDialog.show();
+        } catch (Exception e) {
+            // WindowManager$BadTokenException will be caught and the app would not display
+            // the 'Force Close' message
+            Log.d("ShowAlertInformation", "Error while showing the dialog"+e.getMessage());
+        }
     }
 
     public static void showThemeDialog(Activity context, String title, String message, int icon) {
