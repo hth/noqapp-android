@@ -10,7 +10,7 @@ import java.util.Calendar;
 /**
  * This class is used to set a style of calendar cells.
  * <p>
- * Created by Mateusz Kornakiewicz on 24.05.2017.
+ * Created by Mateusz  on 24.05.2017.
  */
 
 public class DayColorsUtils {
