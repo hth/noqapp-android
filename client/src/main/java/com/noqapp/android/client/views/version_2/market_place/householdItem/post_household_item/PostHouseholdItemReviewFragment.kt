@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.FragmentPostHouseHoldItemReviewBinding
+import com.noqapp.android.client.views.customviews.RecyclerViewItemDecorator
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.market_place.householdItem.HouseholdItemViewModel
 import com.noqapp.android.common.model.types.category.HouseholdItemCategoryEnum
@@ -57,6 +58,7 @@ class PostHouseholdItemReviewFragment : BaseFragment() {
         propertyRentalImageAdapter = PropertyRentalImageAdapter(mutableListOf()) {}
         fragmentPostHouseHoldItemReviewBinding.rvSelectedImages.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         fragmentPostHouseHoldItemReviewBinding.rvSelectedImages.setHasFixedSize(true)
+        fragmentPostHouseHoldItemReviewBinding.rvSelectedImages.addItemDecoration(RecyclerViewItemDecorator(10))
         fragmentPostHouseHoldItemReviewBinding.rvSelectedImages.adapter = propertyRentalImageAdapter
     }
 

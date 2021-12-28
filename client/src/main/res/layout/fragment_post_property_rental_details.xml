@@ -388,7 +388,7 @@
                     <TextView
                         android:id="@+id/tv_next"
                         android:layout_width="wrap_content"
-                        android:layout_height="54dp"
+                        android:layout_height="@dimen/button_standard_height"
                         android:drawableStart="@drawable/ic_market_place_arrow_next"
                         android:drawablePadding="24dp"
                         android:gravity="center"

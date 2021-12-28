@@ -29,6 +29,7 @@
     <dimen name="store_info">14sp</dimen>
     <dimen name="store_sub_headers">12sp</dimen>
     <dimen name="btn_height">25dp</dimen>
+    <dimen name="button_standard_height">48dp</dimen>
     <dimen name="preview_btn_height">40dp</dimen>
     <dimen name="rating_radius">35dp</dimen>
     <dimen name="review_radius">40dp</dimen>
