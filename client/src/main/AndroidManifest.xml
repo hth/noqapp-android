@@ -55,7 +55,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".views.activities.SplashScreen"
+            android:name=".views.activities.SplashActivity"
             android:label="@string/title_activity_launch"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme">

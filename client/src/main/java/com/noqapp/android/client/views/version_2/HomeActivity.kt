@@ -52,7 +52,7 @@ import com.noqapp.android.common.model.types.MessageOriginEnum
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 import com.noqapp.android.common.pojos.MenuDrawer
-import com.noqapp.android.common.presenter.DeviceRegisterPresenter
+import com.noqapp.android.common.presenter.DeviceRegisterListener
 import com.noqapp.android.common.utils.NetworkUtil
 import com.noqapp.android.common.utils.PermissionUtils
 import com.noqapp.android.common.utils.TextToSpeechHelper
@@ -62,11 +62,11 @@ import com.noqapp.android.common.views.activities.AppsLinksActivity
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.RuntimeException
 import java.util.*
 import kotlin.collections.ArrayList
 
-class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
+class HomeActivity : LocationBaseActivity(),
+    DeviceRegisterListener,
     HomeFragmentInteractionListener,
     BottomNavigationView.OnNavigationItemSelectedListener, AppBlacklistPresenter {
     private val TAG = HomeActivity::class.java.simpleName
@@ -651,9 +651,9 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         return true
     }
 
-    fun reCreateDeviceID(context: Activity, deviceRegisterPresenter: DeviceRegisterPresenter?) {
+    fun reCreateDeviceID(context: Activity, deviceRegisterListener: DeviceRegisterListener?) {
         if (NetworkUtil(context).isOnline) {
-            AppInitialize.fetchDeviceId(deviceRegisterPresenter)
+            AppInitialize.fetchDeviceId(deviceRegisterListener)
         } else {
             val builder = AlertDialog.Builder(context)
             val inflater = LayoutInflater.from(context)

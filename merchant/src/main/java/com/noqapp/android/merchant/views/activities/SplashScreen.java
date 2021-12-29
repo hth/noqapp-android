@@ -4,7 +4,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.common.presenter.DeviceRegisterListener;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 import com.noqapp.android.merchant.R;
@@ -25,7 +25,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class SplashScreen extends BaseActivity implements DeviceRegisterPresenter {
+public class SplashScreen extends BaseActivity implements DeviceRegisterListener {
     private String TAG = SplashScreen.class.getSimpleName();
 
     private SplashScreen splashScreen;

@@ -26,7 +26,7 @@ import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.common.presenter.DeviceRegisterListener;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.FontsOverride;
 
@@ -41,7 +41,7 @@ import static com.noqapp.android.client.model.APIConstant.Key.XR_MAIL;
 /**
  * Created by chandra on 5/20/17.
  */
-public class AppInitialize extends MultiDexApplication implements DeviceRegisterPresenter {
+public class AppInitialize extends MultiDexApplication implements DeviceRegisterListener {
     private static final String TAG = AppInitialize.class.getSimpleName();
     public static SharedPreferences preferences;
     public static final String PREKEY_IS_NOTIFICATION_SOUND_ENABLE = "isNotificationSoundEnable";
@@ -415,18 +415,18 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         fetchDeviceId(appInitialize);
     }
 
-    public static void fetchDeviceId(DeviceRegisterPresenter deviceRegisterPresenter) {
+    public static void fetchDeviceId(DeviceRegisterListener deviceRegisterListener) {
         DeviceToken deviceToken = new DeviceToken(
                 AppInitialize.getTokenFCM(),
                 Constants.appVersion(),
                 CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude()));
         if (UserUtils.isLogin()) {
             DeviceClientApiImpl deviceClientApi = new DeviceClientApiImpl();
-            deviceClientApi.setDeviceRegisterPresenter(deviceRegisterPresenter);
+            deviceClientApi.setDeviceRegisterPresenter(deviceRegisterListener);
             deviceClientApi.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
         } else {
             DeviceClientImpl deviceRegistration = new DeviceClientImpl();
-            deviceRegistration.setDeviceRegisterPresenter(deviceRegisterPresenter);
+            deviceRegistration.setDeviceRegisterPresenter(deviceRegisterListener);
             deviceRegistration.register(deviceToken);
         }
     }

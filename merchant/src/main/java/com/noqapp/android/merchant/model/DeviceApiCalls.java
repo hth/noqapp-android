@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.JsonLatestAppVersion;
 import com.noqapp.android.common.beans.body.DeviceToken;
-import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.common.presenter.DeviceRegisterListener;
 import com.noqapp.android.merchant.BuildConfig;
 import com.noqapp.android.merchant.model.response.open.DeviceApiUrls;
 import com.noqapp.android.merchant.network.RetrofitClient;
@@ -29,10 +29,10 @@ public class DeviceApiCalls {
 
     private static final DeviceApiUrls deviceApiUrls;
     private AppBlacklistPresenter appBlacklistPresenter;
-    private DeviceRegisterPresenter deviceRegisterPresenter;
+    private DeviceRegisterListener deviceRegisterListener;
 
-    public void setDeviceRegisterPresenter(DeviceRegisterPresenter deviceRegisterPresenter) {
-        this.deviceRegisterPresenter = deviceRegisterPresenter;
+    public void setDeviceRegisterPresenter(DeviceRegisterListener deviceRegisterListener) {
+        this.deviceRegisterListener = deviceRegisterListener;
     }
 
     public void setAppBlacklistPresenter(AppBlacklistPresenter appBlacklistPresenter) {
@@ -55,16 +55,16 @@ public class DeviceApiCalls {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d(TAG, "Registered device " + response.body());
-                        deviceRegisterPresenter.deviceRegisterResponse(response.body());
+                        deviceRegisterListener.deviceRegisterResponse(response.body());
                     } else {
                         Log.e(TAG, "Empty body");
-                        deviceRegisterPresenter.responseErrorPresenter(response.body().getError());
+                        deviceRegisterListener.responseErrorPresenter(response.body().getError());
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        deviceRegisterPresenter.authenticationFailure();
+                        deviceRegisterListener.authenticationFailure();
                     } else {
-                        deviceRegisterPresenter.responseErrorPresenter(response.code());
+                        deviceRegisterListener.responseErrorPresenter(response.code());
                     }
                 }
             }
