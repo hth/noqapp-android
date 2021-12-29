@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
@@ -32,7 +31,6 @@ public class SliderActivity extends AppCompatActivity {
     private ArrayList<String> slider_image_list = null;
     private int page_position = 0;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +44,7 @@ public class SliderActivity extends AppCompatActivity {
         } else {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
+
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         page_position = getIntent().getIntExtra("pos", 0);
         init();

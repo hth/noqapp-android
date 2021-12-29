@@ -21,6 +21,7 @@ class AppUpdateActivity : AppCompatActivity() {
         } else {
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
+
         val btn_download = findViewById<Button>(R.id.btn_download)
         btn_download.setOnClickListener {
             CommonHelper.openPlayStore(this@AppUpdateActivity)

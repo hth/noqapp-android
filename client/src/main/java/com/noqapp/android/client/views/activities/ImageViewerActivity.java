@@ -37,8 +37,8 @@ public class ImageViewerActivity extends AppCompatActivity {
         } else {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
-        TouchImageView im_slider = findViewById(R.id.im_slider);
 
+        TouchImageView im_slider = findViewById(R.id.im_slider);
         if (null != getIntent().getStringExtra(IBConstant.KEY_URL)) {
             url = getIntent().getStringExtra(IBConstant.KEY_URL);
             Picasso.get().load(url).into(im_slider);
