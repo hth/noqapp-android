@@ -90,8 +90,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         longitude: Double?
     ) {
         activityHomeBinding.tvLocation.text = AppUtils.getLocationAsString(area, town)
-        locationArea = area!!
-        locationTown = town!!
+        locationArea = area ?: ""
+        locationTown = town ?: ""
         val searchStoreQuery = SearchQuery()
         area?.let {
             searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
@@ -591,7 +591,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
                 navigateToScreenAfterLogin(CouponsActivity::class.java)
             }
             R.drawable.settings -> {
-                startActivity(Intent(this, PreferenceSettings::class.java))
+                navigateToScreenAfterLogin(PreferenceSettings::class.java)
             }
             R.drawable.ic_notification -> {
                 navController.navigate(R.id.notificationFragment)

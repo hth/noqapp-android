@@ -9,6 +9,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -109,8 +110,14 @@ public class ShowCustomDialog {
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        if (!dialog.isShowing()) {
-            dialog.show();
+        try {
+            if (!dialog.isShowing()) {
+                dialog.show();
+            }
+        } catch (Exception e) {
+            // WindowManager$BadTokenException will be caught and the app would not display
+            // the 'Force Close' message
+            Log.d("ShowCustomDialog", "Error while showing the dialog"+e.getMessage());
         }
     }
 
