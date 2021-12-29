@@ -28,6 +28,7 @@ public class ImageViewerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.layout_image_viewer);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             final WindowInsetsController insetsController = getWindow().getInsetsController();
             if (insetsController != null) {
@@ -36,7 +37,6 @@ public class ImageViewerActivity extends AppCompatActivity {
         } else {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
-        setContentView(R.layout.layout_image_viewer);
         TouchImageView im_slider = findViewById(R.id.im_slider);
 
         if (null != getIntent().getStringExtra(IBConstant.KEY_URL)) {
