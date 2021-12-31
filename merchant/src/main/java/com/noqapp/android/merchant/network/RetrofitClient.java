@@ -19,11 +19,10 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  */
 public class RetrofitClient {
     private static Retrofit retrofit;
-    private static HttpLoggingInterceptor logging = null;
-    private static long TIME_OUT = 35;
 
     public static Retrofit getClient() {
         if (null == retrofit) {
+            long TIME_OUT = 35;
             OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .readTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS);
@@ -42,9 +41,8 @@ public class RetrofitClient {
             });
 
             if (BuildConfig.DEBUG) {
-                logging = new HttpLoggingInterceptor();
+                HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
                 logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
-
                 builder.addInterceptor(logging);
             }
 
