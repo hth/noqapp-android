@@ -19,14 +19,14 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  */
 public class RetrofitClient {
     private static Retrofit retrofit = null;
-    private static HttpLoggingInterceptor logging = null;
-    private static long TIME_OUT = 35;
+
 
     public static Retrofit getClient() {
         if (null == retrofit) {
+            long TIME_OUT = 35;
             OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .readTimeout(TIME_OUT, TimeUnit.SECONDS)
-                .connectTimeout(TIME_OUT, TimeUnit.SECONDS);
+                    .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+                    .connectTimeout(TIME_OUT, TimeUnit.SECONDS);
 
             builder.addInterceptor(chain -> {
                 Request request = chain.request().newBuilder()
@@ -42,17 +42,17 @@ public class RetrofitClient {
             }).addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS));
 
             if (BuildConfig.DEBUG) {
-                logging = new HttpLoggingInterceptor();
+                HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
                 logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
 
                 builder.addInterceptor(logging);
             }
 
             retrofit = new Retrofit.Builder()
-                .baseUrl(BuildConfig.NOQAPP_MOBILE)
-                .addConverterFactory(JacksonConverterFactory.create())
-                .client(builder.build())
-                .build();
+                    .baseUrl(BuildConfig.NOQAPP_MOBILE)
+                    .addConverterFactory(JacksonConverterFactory.create())
+                    .client(builder.build())
+                    .build();
         }
         return retrofit;
     }
