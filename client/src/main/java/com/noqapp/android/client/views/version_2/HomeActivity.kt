@@ -91,7 +91,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
     }
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppInitialize.setLocationChangedManually(false)
@@ -197,6 +196,12 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
     private fun addHeaderView() {
         navHeaderMainBinding = NavHeaderMainBinding.inflate(LayoutInflater.from(this))
         activityHomeBinding.expandableDrawerListView.addHeaderView(navHeaderMainBinding.root)
+
+        (findViewById<View>(R.id.tv_version) as TextView).text =
+            if (AppUtils.isRelease()) getString(
+                R.string.version_no,
+                BuildConfig.VERSION_NAME
+            ) else getString(R.string.version_no, "Not for release")
     }
 
     private fun observeValues() {
@@ -670,8 +675,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
     }
 
     private fun setBadgeCount(context: Context, res: Int, badgeCount: Int): Drawable? {
-        val icon =
-            ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable) as LayerDrawable?
+        val icon = ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable) as LayerDrawable?
         val mainIcon = ContextCompat.getDrawable(context, res)
         val badge = BadgeDrawable(context)
         badge.setCount(badgeCount.toString())
@@ -781,13 +785,13 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
 
     override fun makeAnnouncement(jsonTextToSpeeches: List<JsonTextToSpeech?>, msgId: String) {
         if (null == cacheMsgIds.getIfPresent(MSG_IDS)) {
-            cacheMsgIds.put(MSG_IDS, java.util.ArrayList<String>())
+            cacheMsgIds.put(MSG_IDS, ArrayList<String>())
         }
         cacheMsgIds.getIfPresent(MSG_IDS)?.let { msgIds ->
             if (!TextUtils.isEmpty(msgId) && !msgIds.contains(msgId)) {
                 msgIds.add(msgId)
                 cacheMsgIds.put(MSG_IDS, msgIds)
-              val  textToSpeechHelper:TextToSpeechHelper = TextToSpeechHelper(applicationContext)
+                val textToSpeechHelper: TextToSpeechHelper = TextToSpeechHelper(applicationContext)
                 textToSpeechHelper?.makeAnnouncement(jsonTextToSpeeches)
             }
         }
@@ -844,8 +848,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
             homeViewModel.viewModelScope.launch(Dispatchers.IO) {
                 val jsonTokenAndQueueArrayList = homeViewModel.getCurrentQueueObjectList(codeQR)
                 if (jsonTokenAndQueueArrayList?.size == 1) {
-                    FirebaseMessaging.getInstance()
-                        .unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
                 }
             }
         } else {
@@ -896,6 +899,4 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
         var locationArea = ""
         var locationTown = ""
     }
-
-
 }
