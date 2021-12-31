@@ -12,11 +12,9 @@ class SplashActivity : BaseActivity() {
 
     private val TAG = SplashActivity::class.java.simpleName
 
-
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash)
-        AppInitialize.setLocationChangedManually(false)
         val animationView = findViewById<LottieAnimationView>(R.id.animation_view)
         animationView.setAnimation("data.json")
         animationView.playAnimation()

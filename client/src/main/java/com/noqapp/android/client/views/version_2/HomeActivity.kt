@@ -69,11 +69,63 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
     BottomNavigationView.OnNavigationItemSelectedListener, AppBlacklistPresenter {
     private val TAG = HomeActivity::class.java.simpleName
 
-    companion object {
-        var locationLatitude = 0.0
-        var locationLongitude = 0.0
-        var locationArea = ""
-        var locationTown = ""
+    private val menuDrawerItems = mutableListOf<MenuDrawer>()
+    private lateinit var activityHomeBinding: ActivityHomeBinding
+    private lateinit var navHeaderMainBinding: NavHeaderMainBinding
+    private var expandableListAdapter: DrawerExpandableListAdapter? = null
+    private lateinit var navHostFragment: NavHostFragment
+    private lateinit var navController: NavController
+    private var isRateUsFirstTime = true
+    private var searchQuery: SearchQuery? = null
+    private var checkIfAppIsSupported = true
+
+    private val cacheMsgIds =
+        CacheBuilder.newBuilder().maximumSize(1).build<String, ArrayList<String>>()
+    private val MSG_IDS = "messageIds"
+
+    private val homeViewModel: HomeViewModel by lazy {
+        ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory(application)
+        )[HomeViewModel::class.java]
+    }
+
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        AppInitialize.setLocationChangedManually(false)
+        activityHomeBinding = ActivityHomeBinding.inflate(LayoutInflater.from(this))
+        setContentView(activityHomeBinding.root)
+        setSupportActionBar(activityHomeBinding.toolbar)
+
+        setUpExpandableList(UserUtils.isLogin())
+
+        if (checkIfAppIsSupported) {
+            checkIfAppIsSupportedAnyMore()
+        }
+
+        updateNotificationBadgeCount()
+        setUpNavigation()
+        addHeaderView()
+        setListeners()
+        updateDrawerUI()
+        showLoginScreen()
+        observeValues()
+
+        FirebaseMessaging.getInstance().token.addOnSuccessListener(this) { token: String? ->
+            AppInitialize.setTokenFCM(token)
+            reCreateDeviceID(this, this)
+        }
+    }
+
+
+    override fun locationPermissionRequired() {
+        activityHomeBinding.clLocationAccessRequired.visibility = View.VISIBLE
+    }
+
+    override fun locationPermissionGranted() {
+        activityHomeBinding.clLocationAccessRequired.visibility = View.GONE
     }
 
     override fun displayAddressOutput(
@@ -108,67 +160,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
         homeViewModel.searchStoreQueryLiveData.value = searchStoreQuery
         this.searchQuery = searchStoreQuery
 
-    }
-
-    private val menuDrawerItems = mutableListOf<MenuDrawer>()
-    private lateinit var activityHomeBinding: ActivityHomeBinding
-    private lateinit var navHeaderMainBinding: NavHeaderMainBinding
-    private var expandableListAdapter: DrawerExpandableListAdapter? = null
-    private lateinit var navHostFragment: NavHostFragment
-    private lateinit var navController: NavController
-    private var textToSpeechHelper: TextToSpeechHelper? = null
-    private var isRateUsFirstTime = true
-    private var searchQuery: SearchQuery? = null
-    private var checkIfAppIsSupported = true
-
-    private val cacheMsgIds =
-        CacheBuilder.newBuilder().maximumSize(1).build<String, ArrayList<String>>()
-    private val MSG_IDS = "messageIds"
-
-    private val homeViewModel: HomeViewModel by lazy {
-        ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory(application)
-        )[HomeViewModel::class.java]
-    }
-
-    override fun locationPermissionRequired() {
-        activityHomeBinding.clLocationAccessRequired.visibility = View.VISIBLE
-    }
-
-    override fun locationPermissionGranted() {
-        activityHomeBinding.clLocationAccessRequired.visibility = View.GONE
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        AppInitialize.setLocationChangedManually(false)
-        activityHomeBinding = ActivityHomeBinding.inflate(LayoutInflater.from(this))
-        setContentView(activityHomeBinding.root)
-        setSupportActionBar(activityHomeBinding.toolbar)
-        textToSpeechHelper = TextToSpeechHelper(applicationContext)
-
-        setUpExpandableList(UserUtils.isLogin())
-
-        if (checkIfAppIsSupported) {
-            checkIfAppIsSupportedAnyMore()
-        }
-
-        updateNotificationBadgeCount()
-        setUpNavigation()
-
-        addHeaderView()
-        setListeners()
-        updateDrawerUI()
-
-        showLoginScreen()
-
-        observeValues()
-
-        FirebaseMessaging.getInstance().token.addOnSuccessListener(this) { token: String? ->
-            AppInitialize.setTokenFCM(token)
-            reCreateDeviceID(this, this)
-        }
     }
 
     /** Check if this current version of device is supported. */
@@ -796,6 +787,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
             if (!TextUtils.isEmpty(msgId) && !msgIds.contains(msgId)) {
                 msgIds.add(msgId)
                 cacheMsgIds.put(MSG_IDS, msgIds)
+              val  textToSpeechHelper:TextToSpeechHelper = TextToSpeechHelper(applicationContext)
                 textToSpeechHelper?.makeAnnouncement(jsonTextToSpeeches)
             }
         }
@@ -897,4 +889,13 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
             }
         }
     }
+
+    companion object {
+        var locationLatitude = 0.0
+        var locationLongitude = 0.0
+        var locationArea = ""
+        var locationTown = ""
+    }
+
+
 }
