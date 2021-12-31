@@ -70,10 +70,10 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
     private val TAG = HomeActivity::class.java.simpleName
 
     companion object {
-         var locationLatitude = 0.0
-         var locationLongitude = 0.0
-         var locationArea = ""
-         var locationTown = ""
+        var locationLatitude = 0.0
+        var locationLongitude = 0.0
+        var locationArea = ""
+        var locationTown = ""
     }
 
     override fun displayAddressOutput(
@@ -107,6 +107,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
 
         homeViewModel.searchStoreQueryLiveData.value = searchStoreQuery
         this.searchQuery = searchStoreQuery
+
     }
 
     private val menuDrawerItems = mutableListOf<MenuDrawer>()
@@ -120,7 +121,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
     private var searchQuery: SearchQuery? = null
     private var checkIfAppIsSupported = true
 
-    private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, ArrayList<String>>()
+    private val cacheMsgIds =
+        CacheBuilder.newBuilder().maximumSize(1).build<String, ArrayList<String>>()
     private val MSG_IDS = "messageIds"
 
     private val homeViewModel: HomeViewModel by lazy {
@@ -354,7 +356,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
     }
 
     private fun setUpNavigation() {
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.homeNavHostFragment) as NavHostFragment
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.homeNavHostFragment) as NavHostFragment
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(activityHomeBinding.bottomNavigationView, navController)
         activityHomeBinding.bottomNavigationView.setOnItemSelectedListener(this)
@@ -382,7 +385,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
         homeViewModel.notificationCountLiveData.observe(this, { nc ->
             nc?.let { notificationCount ->
                 if (notificationCount > 0) {
-                    activityHomeBinding.bottomNavigationView.getOrCreateBadge(R.id.menuNotification).number = notificationCount
+                    activityHomeBinding.bottomNavigationView.getOrCreateBadge(R.id.menuNotification).number =
+                        notificationCount
                 } else {
                     activityHomeBinding.bottomNavigationView.removeBadge(R.id.menuNotification)
                 }
@@ -821,7 +825,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
         navigateToScreenAfterLogin(HouseholdItemListActivity::class.java)
     }
 
-    private fun navigateToScreenAfterLogin(navigateToActivity: Class<*>? ) {
+    private fun navigateToScreenAfterLogin(navigateToActivity: Class<*>?) {
         if (UserUtils.isLogin()) {
             startActivity(Intent(this, navigateToActivity))
         } else {

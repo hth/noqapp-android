@@ -20,7 +20,7 @@ class SplashActivity : BaseActivity() {
         val animationView = findViewById<LottieAnimationView>(R.id.animation_view)
         animationView.setAnimation("data.json")
         animationView.playAnimation()
-        animationView.repeatCount = 1
+//        animationView.repeatCount = 1
         animationView.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(p0: Animator?) {
             }
@@ -47,8 +47,4 @@ class SplashActivity : BaseActivity() {
         finish()
     }
 
-    companion object {
-        private var tokenFCM = ""
-        private var deviceId = ""
-    }
 }

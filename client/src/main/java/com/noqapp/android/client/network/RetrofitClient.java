@@ -39,12 +39,10 @@ public class RetrofitClient {
                         .addHeader("x-r-mail", AppInitialize.getMail())
                         .addHeader("x-r-qid", AppInitialize.getUserProfile() == null ? "" : AppInitialize.getUserProfile().getQueueUserId()).build();
                 return chain.proceed(request);
-            }).addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS));
-
+            });
             if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-                logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
-
+                logging.setLevel(HttpLoggingInterceptor.Level.BODY);
                 builder.addInterceptor(logging);
             }
 
