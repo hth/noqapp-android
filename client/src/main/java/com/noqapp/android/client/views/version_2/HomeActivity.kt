@@ -52,7 +52,7 @@ import com.noqapp.android.common.model.types.MessageOriginEnum
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 import com.noqapp.android.common.pojos.MenuDrawer
-import com.noqapp.android.common.presenter.DeviceRegisterListener
+import com.noqapp.android.common.presenter.DeviceRegisterPresenter
 import com.noqapp.android.common.utils.NetworkUtil
 import com.noqapp.android.common.utils.PermissionUtils
 import com.noqapp.android.common.utils.TextToSpeechHelper
@@ -62,11 +62,9 @@ import com.noqapp.android.common.views.activities.AppsLinksActivity
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.ArrayList
 
-class HomeActivity : LocationBaseActivity(),
-    DeviceRegisterListener,
+class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     HomeFragmentInteractionListener,
     BottomNavigationView.OnNavigationItemSelectedListener, AppBlacklistPresenter {
     private val TAG = HomeActivity::class.java.simpleName
@@ -90,8 +88,8 @@ class HomeActivity : LocationBaseActivity(),
         longitude: Double?
     ) {
         activityHomeBinding.tvLocation.text = AppUtils.getLocationAsString(area, town)
-        locationArea = area!!
-        locationTown = town!!
+        locationArea = area ?: ""
+        locationTown = town ?: ""
         val searchStoreQuery = SearchQuery()
         area?.let {
             searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
@@ -122,7 +120,7 @@ class HomeActivity : LocationBaseActivity(),
     private var searchQuery: SearchQuery? = null
     private var checkIfAppIsSupported = true
 
-    private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
+    private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, ArrayList<String>>()
     private val MSG_IDS = "messageIds"
 
     private val homeViewModel: HomeViewModel by lazy {
@@ -591,7 +589,7 @@ class HomeActivity : LocationBaseActivity(),
                 navigateToScreenAfterLogin(CouponsActivity::class.java)
             }
             R.drawable.settings -> {
-                startActivity(Intent(this, PreferenceSettings::class.java))
+                navigateToScreenAfterLogin(PreferenceSettings::class.java)
             }
             R.drawable.ic_notification -> {
                 navController.navigate(R.id.notificationFragment)
@@ -651,9 +649,9 @@ class HomeActivity : LocationBaseActivity(),
         return true
     }
 
-    fun reCreateDeviceID(context: Activity, deviceRegisterListener: DeviceRegisterListener?) {
+    fun reCreateDeviceID(context: Activity, deviceRegisterPresenter: DeviceRegisterPresenter?) {
         if (NetworkUtil(context).isOnline) {
-            AppInitialize.fetchDeviceId(deviceRegisterListener)
+            AppInitialize.fetchDeviceId(deviceRegisterPresenter)
         } else {
             val builder = AlertDialog.Builder(context)
             val inflater = LayoutInflater.from(context)

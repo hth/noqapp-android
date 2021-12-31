@@ -3,6 +3,7 @@ package com.noqapp.android.client.views.version_2.fragments
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -54,7 +55,6 @@ class ChangeLocationFragmentNew : Fragment(),
         }
 
         setUpAutoCompleteTextView()
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -77,7 +77,11 @@ class ChangeLocationFragmentNew : Fragment(),
                 searchStoreQuery.scrollId = ""
                 homeViewModel.searchStoreQueryLiveData.value = searchStoreQuery
                 AppInitialize.setLocationChangedManually(true)
-                AppUtils.hideKeyBoard(activity)
+                try {
+                    AppUtils.hideKeyBoard(activity)
+                } catch (e: Exception) {
+                    Log.d("ChangeLocationFragment", "Fragment ChangeLocationFragmentNew not attached to an activity.")
+                }
                 findNavController().navigateUp()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -126,10 +130,12 @@ class ChangeLocationFragmentNew : Fragment(),
         searchStoreQuery.scrollId = ""
         homeViewModel.searchStoreQueryLiveData.value = searchStoreQuery
         AppInitialize.setLocationChangedManually(false)
-
-        AppUtils.hideKeyBoard(requireActivity())
+        try {
+            AppUtils.hideKeyBoard(requireActivity())
+        } catch (e: Exception) {
+            Log.d("ChangeLocationFragment", "Fragment ChangeLocationFragmentNew not attached to an activity.")
+        }
         findNavController().navigateUp()
         return
     }
-
 }

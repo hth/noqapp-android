@@ -11,11 +11,9 @@ import com.noqapp.android.client.databinding.FragmentPostHouseHoldItemDetailsBin
 import com.noqapp.android.client.views.fragments.BaseFragment
 import com.noqapp.android.client.views.version_2.market_place.householdItem.HouseholdItemViewModel
 import com.noqapp.android.common.pojos.HouseHoldItemEntity
-import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
 import android.content.Intent
 import android.widget.ArrayAdapter
-import android.widget.DatePicker
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -30,7 +28,7 @@ import com.noqapp.android.common.beans.JsonUserAddress
 import com.noqapp.android.common.model.types.category.HouseholdItemCategoryEnum
 import com.noqapp.android.common.model.types.category.ItemConditionEnum
 
-class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMapReadyCallback {
+class PostHouseHoldItemDetailsFragment : BaseFragment(), OnMapReadyCallback {
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -187,10 +185,6 @@ class PostHouseHoldItemDetailsFragment : BaseFragment(), OnDateSetListener, OnMa
             fragmentPostHouseHoldItemDetailsBinding.root, text,
             Snackbar.LENGTH_SHORT
         ).show()
-    }
-
-    override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-
     }
 
     override fun onMapReady(gm: GoogleMap?) {

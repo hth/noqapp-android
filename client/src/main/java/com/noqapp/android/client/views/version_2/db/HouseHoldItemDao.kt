@@ -7,13 +7,13 @@ import com.noqapp.android.common.pojos.HouseHoldItemEntity
 @Dao
 interface HouseHoldItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertHouseHoldItem(propertyRentalEntity: HouseHoldItemEntity?)
+    suspend fun insertHouseHoldItem(houseHoldItemEntity: HouseHoldItemEntity?)
 
     @Query("SELECT * FROM post_house_hold_item WHERE id=1")
     fun getHouseHoldItem(): LiveData<List<HouseHoldItemEntity>>
 
     @Update
-    suspend fun updateHouseHoldItem(propertyRentalEntity: HouseHoldItemEntity)
+    suspend fun updateHouseHoldItem(houseHoldItemEntity: HouseHoldItemEntity)
 
     @Query("DELETE FROM post_house_hold_item")
     suspend fun deleteHouseHoldItem()

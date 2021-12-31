@@ -77,7 +77,6 @@ class PropertyRentalViewModel : ViewModel() {
         jsonPropertyRental.city = city
         jsonPropertyRental.address = address
         jsonPropertyRental.rentalType = rentalTypeEnum
-        jsonPropertyRental.rentalAvailableDay = SDF_YYYY_MM_DD.format(Date())
         jsonPropertyRental.businessType = BusinessTypeEnum.PR
         jsonPropertyRental.coordinate = doubleArrayOf(latitude, longitude)
         jsonPropertyRental.productPrice = productPrice * 100

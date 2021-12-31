@@ -10,19 +10,26 @@ class PropertyRentalImageAdapter(
     val propertyRentalImages: MutableList<String>,
     val onClicked: (String) -> Unit
 ) : RecyclerView.Adapter<PropertyRentalImageAdapter.PropertyRentalImagesViewHolder>() {
-
+    var isClickEnable = true
     inner class PropertyRentalImagesViewHolder(private val itemImagesBinding: ItemImagesBinding) :
         RecyclerView.ViewHolder(itemImagesBinding.root) {
 
         fun bindImage(imagePath: String) {
             Picasso.get().load("file://$imagePath").into(itemImagesBinding.ivPropertyImage)
+            if(isClickEnable){
+                itemImagesBinding.ivDelete.visibility = android.view.View.VISIBLE
+            }else{
+                itemImagesBinding.ivDelete.visibility = android.view.View.INVISIBLE
+            }
         }
 
         init {
             itemImagesBinding.ivDelete.setOnClickListener {
-                onClicked(propertyRentalImages[absoluteAdapterPosition])
-                propertyRentalImages.removeAt(absoluteAdapterPosition)
-                notifyDataSetChanged()
+                if(isClickEnable) {
+                    onClicked(propertyRentalImages[absoluteAdapterPosition])
+                    propertyRentalImages.removeAt(absoluteAdapterPosition)
+                    notifyDataSetChanged()
+                }
             }
 
             itemImagesBinding.ivPropertyImage.setOnClickListener {

@@ -174,8 +174,10 @@ public class SplashScreen extends LocationBaseActivity implements DeviceRegister
                 mAlertDialog.dismiss();
                 finish();
             });
-            mAlertDialog.show();
-            Log.w(TAG, "No network found");
+            if (!isFinishing()) {
+                Log.w(TAG, "No network found");
+                mAlertDialog.show();
+            }
         }
     }
 

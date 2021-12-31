@@ -17,6 +17,7 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.activity.result.ActivityResult
@@ -30,6 +31,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.views.activities.AddAddressActivity
 import com.noqapp.android.common.beans.JsonUserAddress
+import com.noqapp.android.common.utils.CommonHelper
 import java.util.*
 
 class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnMapReadyCallback {
@@ -297,10 +299,10 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
 
     private fun validate(): Boolean {
         if (fragmentPostPropertyRentalDetails.etPrice.text.isNullOrEmpty()) {
-            showSnackBar("Please enter item price.")
+            showSnackBar("Please enter rent per month.")
             return false
         }else if (fragmentPostPropertyRentalDetails.etPrice.text.toString().toInt() <=0) {
-            showSnackBar("Item price cannot be 0 or less than 0.")
+            showSnackBar("Rent per month cannot be 0 or less than 0.")
             return false
         }else if (fragmentPostPropertyRentalDetails.etCarpetArea.text.isNullOrEmpty()) {
             showSnackBar("Please enter carpet area.")
@@ -328,20 +330,8 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
         mCalendar[Calendar.YEAR] = year
         mCalendar[Calendar.MONTH] = month
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-        val mon = if (month < 10) {
-            "0$month"
-        } else {
-            month.toString()
-        }
-
-        val day = if (dayOfMonth < 10) {
-            "0$dayOfMonth"
-        } else {
-            dayOfMonth.toString()
-        }
-
-        val selectedDate = "$year-$mon-$day"
+        val selectedDate = CommonHelper.SDF_YYYY_MM_DD.format(mCalendar.time)
+        Log.d("Date selected", selectedDate)
 
         fragmentPostPropertyRentalDetails.tvAvailableFrom.text = selectedDate
     }
