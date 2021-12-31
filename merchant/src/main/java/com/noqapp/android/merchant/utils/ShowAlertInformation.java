@@ -27,6 +27,7 @@ public class ShowAlertInformation {
             public void btnPositiveClick() {
                 //Do nothing
             }
+
             @Override
             public void btnNegativeClick() {
                 //Do nothing
@@ -40,7 +41,7 @@ public class ShowAlertInformation {
         LayoutInflater inflater = LayoutInflater.from(context);
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
-        TextView tvtitle =  customDialogView.findViewById(R.id.tvtitle);
+        TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
         TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
         View separator = customDialogView.findViewById(R.id.seperator);
         tvtitle.setText(title);
@@ -63,8 +64,8 @@ public class ShowAlertInformation {
         btn_yes.setOnClickListener(v -> AppUtils.openPlayStore(context));
         try {
             mAlertDialog.show();
-            resizeAlert(mAlertDialog,context);
-        } catch(Exception e){
+            resizeAlert(mAlertDialog, context);
+        } catch (Exception e) {
             // WindowManager$BadTokenException will be caught and the app would not display
             // the 'Force Close' message
         }
@@ -79,11 +80,12 @@ public class ShowAlertInformation {
         TextView tvtitle = customDialogView.findViewById(R.id.tvtitle);
         TextView tv_msg = customDialogView.findViewById(R.id.tv_msg);
         ImageView iv_icon = customDialogView.findViewById(R.id.iv_icon);
-        iv_icon.setBackground(ContextCompat.getDrawable(context,icon));
+        iv_icon.setBackground(ContextCompat.getDrawable(context, icon));
         tvtitle.setText(title);
         tv_msg.setText(message);
-        if (isGravityLeft)
+        if (isGravityLeft) {
             tv_msg.setGravity(Gravity.LEFT);
+        }
         builder.setView(customDialogView);
         final AlertDialog mAlertDialog = builder.create();
         mAlertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -93,15 +95,15 @@ public class ShowAlertInformation {
         btn_no.setOnClickListener(v -> mAlertDialog.dismiss());
         btn_yes.setOnClickListener(v -> mAlertDialog.dismiss());
         mAlertDialog.show();
-        resizeAlert(mAlertDialog,context);
+        resizeAlert(mAlertDialog, context);
     }
 
     public static void showThemeDialog(Context context, String title, String message, int icon) {
-        showThemeDialogWithIcon(context, title, message, false,  icon);
+        showThemeDialogWithIcon(context, title, message, false, icon);
     }
 
 
-    public static void resizeAlert(AlertDialog dialog, Context context){
+    public static void resizeAlert(AlertDialog dialog, Context context) {
         try {
 //            DisplayMetrics displayMetrics = new DisplayMetrics();
 //            ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -118,7 +120,7 @@ public class ShowAlertInformation {
 //
 //            // Apply the newly created layout parameters to the alert dialog window
 //            dialog.getWindow().setAttributes(layoutParams);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

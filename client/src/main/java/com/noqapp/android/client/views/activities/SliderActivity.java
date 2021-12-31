@@ -43,6 +43,7 @@ public class SliderActivity extends AppCompatActivity {
         } else {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
+
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
         page_position = getIntent().getIntExtra("pos", 0);
         init();

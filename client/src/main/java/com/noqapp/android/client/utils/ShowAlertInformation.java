@@ -25,7 +25,7 @@ public class ShowAlertInformation {
     }
 
     public static void showAuthenticErrorDialog(Activity context, Function0 loginAgain) {
-        ShowAlertInformation.showThemeDialogWithListener(context, context.getString(R.string.authentication_fail_title), context.getString(R.string.authentication_fail_msg), false,loginAgain);
+        ShowAlertInformation.showThemeDialogWithListener(context, context.getString(R.string.authentication_fail_title), context.getString(R.string.authentication_fail_msg), false, loginAgain);
     }
 
     public static void showErrorDialog(Context context, String error) {
@@ -140,7 +140,7 @@ public class ShowAlertInformation {
         } catch (Exception e) {
             // WindowManager$BadTokenException will be caught and the app would not display
             // the 'Force Close' message
-            Log.d("ShowAlertInformation", "Error while showing the dialog"+e.getMessage());
+            Log.d("ShowAlertInformation", "Error while showing the dialog" + e.getMessage());
         }
     }
 
@@ -171,7 +171,7 @@ public class ShowAlertInformation {
         } catch (Exception e) {
             // WindowManager$BadTokenException will be caught and the app would not display
             // the 'Force Close' message
-            Log.d("ShowAlertInformation", "Error while showing the dialog"+e.getMessage());
+            Log.d("ShowAlertInformation", "Error while showing the dialog" + e.getMessage());
         }
     }
 

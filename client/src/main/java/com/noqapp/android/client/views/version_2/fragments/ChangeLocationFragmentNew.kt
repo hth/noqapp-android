@@ -55,7 +55,6 @@ class ChangeLocationFragmentNew : Fragment(),
         }
 
         setUpAutoCompleteTextView()
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -78,9 +77,9 @@ class ChangeLocationFragmentNew : Fragment(),
                 searchStoreQuery.scrollId = ""
                 homeViewModel.searchStoreQueryLiveData.value = searchStoreQuery
                 AppInitialize.setLocationChangedManually(true)
-                try{
+                try {
                     AppUtils.hideKeyBoard(activity)
-                }catch (e: Exception){
+                } catch (e: Exception) {
                     Log.d("ChangeLocationFragment", "Fragment ChangeLocationFragmentNew not attached to an activity.")
                 }
                 findNavController().navigateUp()
@@ -131,13 +130,12 @@ class ChangeLocationFragmentNew : Fragment(),
         searchStoreQuery.scrollId = ""
         homeViewModel.searchStoreQueryLiveData.value = searchStoreQuery
         AppInitialize.setLocationChangedManually(false)
-        try{
+        try {
             AppUtils.hideKeyBoard(requireActivity())
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.d("ChangeLocationFragment", "Fragment ChangeLocationFragmentNew not attached to an activity.")
         }
         findNavController().navigateUp()
         return
     }
-
 }
