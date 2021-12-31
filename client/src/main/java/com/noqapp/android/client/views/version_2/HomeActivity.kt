@@ -52,7 +52,7 @@ import com.noqapp.android.common.model.types.MessageOriginEnum
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 import com.noqapp.android.common.pojos.MenuDrawer
-import com.noqapp.android.common.presenter.DeviceRegisterPresenter
+import com.noqapp.android.common.presenter.DeviceRegisterListener
 import com.noqapp.android.common.utils.NetworkUtil
 import com.noqapp.android.common.utils.PermissionUtils
 import com.noqapp.android.common.utils.TextToSpeechHelper
@@ -64,7 +64,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 
-class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
+class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
     HomeFragmentInteractionListener,
     BottomNavigationView.OnNavigationItemSelectedListener, AppBlacklistPresenter {
     private val TAG = HomeActivity::class.java.simpleName
@@ -649,7 +649,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
         return true
     }
 
-    fun reCreateDeviceID(context: Activity, deviceRegisterPresenter: DeviceRegisterPresenter?) {
+    fun reCreateDeviceID(context: Activity, deviceRegisterPresenter: DeviceRegisterListener?) {
         if (NetworkUtil(context).isOnline) {
             AppInitialize.fetchDeviceId(deviceRegisterPresenter)
         } else {

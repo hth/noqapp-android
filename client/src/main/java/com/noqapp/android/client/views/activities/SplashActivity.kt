@@ -7,9 +7,8 @@ import android.view.View
 import com.airbnb.lottie.LottieAnimationView
 import com.noqapp.android.client.R
 import com.noqapp.android.client.views.version_2.HomeActivity
-import org.apache.commons.lang3.StringUtils
 
-class SplashActivity : BaseActivity(){
+class SplashActivity : BaseActivity() {
 
     private val TAG = SplashActivity::class.java.simpleName
 
@@ -21,7 +20,7 @@ class SplashActivity : BaseActivity(){
         val animationView = findViewById<LottieAnimationView>(R.id.animation_view)
         animationView.setAnimation("data.json")
         animationView.playAnimation()
-        animationView.repeatCount = 4
+        animationView.repeatCount = 1
         animationView.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(p0: Animator?) {
             }
@@ -41,17 +40,11 @@ class SplashActivity : BaseActivity(){
     }
 
 
-
-
-
-
     private fun callLaunchScreen() {
-        if (!StringUtils.isBlank(deviceId)) {
-            val i = Intent(this, HomeActivity::class.java)
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(i)
-            finish()
-        }
+        val i = Intent(this, HomeActivity::class.java)
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(i)
+        finish()
     }
 
     companion object {
