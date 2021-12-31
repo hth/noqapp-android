@@ -62,9 +62,7 @@ import com.noqapp.android.common.views.activities.AppsLinksActivity
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.RuntimeException
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.ArrayList
 
 class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     HomeFragmentInteractionListener,
@@ -122,7 +120,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterPresenter,
     private var searchQuery: SearchQuery? = null
     private var checkIfAppIsSupported = true
 
-    private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, java.util.ArrayList<String>>()
+    private val cacheMsgIds = CacheBuilder.newBuilder().maximumSize(1).build<String, ArrayList<String>>()
     private val MSG_IDS = "messageIds"
 
     private val homeViewModel: HomeViewModel by lazy {
