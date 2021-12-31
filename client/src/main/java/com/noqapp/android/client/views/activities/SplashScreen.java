@@ -29,13 +29,13 @@ import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonUserAddress;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.common.presenter.DeviceRegisterListener;
 import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.NetworkUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class SplashScreen extends LocationBaseActivity implements DeviceRegisterPresenter {
+public class SplashScreen extends LocationBaseActivity implements DeviceRegisterListener {
 
     private String TAG = SplashScreen.class.getSimpleName();
     private static String tokenFCM = "";

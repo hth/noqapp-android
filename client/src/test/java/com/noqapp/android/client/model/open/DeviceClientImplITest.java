@@ -5,7 +5,7 @@ import com.noqapp.android.client.presenter.AppBlacklistPresenter;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.body.DeviceToken;
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum;
-import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.common.presenter.DeviceRegisterListener;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,14 +25,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class DeviceClientImplITest extends ITest {
 
     @Mock private AppBlacklistPresenter appBlacklistPresenter;
-    @Mock private DeviceRegisterPresenter deviceRegisterPresenter;
+    @Mock private DeviceRegisterListener deviceRegisterListener;
     private DeviceClientImpl deviceClientImpl;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         this.deviceClientImpl = new DeviceClientImpl();
         this.deviceClientImpl.setAppBlacklistPresenter(appBlacklistPresenter);
-        this.deviceClientImpl.setDeviceRegisterPresenter(deviceRegisterPresenter);
+        this.deviceClientImpl.setDeviceRegisterPresenter(deviceRegisterListener);
     }
 
     @Test

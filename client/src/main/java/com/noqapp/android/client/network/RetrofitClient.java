@@ -19,32 +19,30 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  */
 public class RetrofitClient {
     private static Retrofit retrofit = null;
-    private static HttpLoggingInterceptor logging = null;
-    private static long TIME_OUT = 35;
 
     public static Retrofit getClient() {
         if (null == retrofit) {
+            long TIME_OUT = 35;
             OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .readTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS);
 
             builder.addInterceptor(chain -> {
                 Request request = chain.request().newBuilder()
-                        .addHeader("x-r-ver", BuildConfig.VERSION_NAME)
-                        .addHeader("x-r-fla", BuildConfig.APP_FLAVOR)
-                        .addHeader("x-r-mod", Build.MODEL + ", " + Build.BRAND + ", " + Build.MANUFACTURER)
-                        .addHeader("x-r-lat", String.valueOf(AppInitialize.location.getLatitude()))
-                        .addHeader("x-r-lng", String.valueOf(AppInitialize.location.getLongitude()))
-                        .addHeader("x-r-did", AppInitialize.getDeviceId() == null ? "" : AppInitialize.getDeviceId())
-                        .addHeader("x-r-mail", AppInitialize.getMail())
-                        .addHeader("x-r-qid", AppInitialize.getUserProfile() == null ? "" : AppInitialize.getUserProfile().getQueueUserId()).build();
+                    .addHeader("x-r-ver", BuildConfig.VERSION_NAME)
+                    .addHeader("x-r-fla", BuildConfig.APP_FLAVOR)
+                    .addHeader("x-r-mod", Build.MODEL + ", " + Build.BRAND + ", " + Build.MANUFACTURER)
+                    .addHeader("x-r-lat", String.valueOf(AppInitialize.location.getLatitude()))
+                    .addHeader("x-r-lng", String.valueOf(AppInitialize.location.getLongitude()))
+                    .addHeader("x-r-did", AppInitialize.getDeviceId() == null ? "" : AppInitialize.getDeviceId())
+                    .addHeader("x-r-mail", AppInitialize.getMail())
+                    .addHeader("x-r-qid", AppInitialize.getUserProfile() == null ? "" : AppInitialize.getUserProfile().getQueueUserId()).build();
                 return chain.proceed(request);
-            }).addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS));
-
+            });
+            
             if (BuildConfig.DEBUG) {
-                logging = new HttpLoggingInterceptor();
-                logging.setLevel(HttpLoggingInterceptor.Level.HEADERS);
-
+                HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+                logging.setLevel(HttpLoggingInterceptor.Level.BODY);
                 builder.addInterceptor(logging);
             }
 

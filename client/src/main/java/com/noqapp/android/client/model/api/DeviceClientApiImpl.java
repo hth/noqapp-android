@@ -10,7 +10,7 @@ import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.common.beans.DeviceRegistered;
 import com.noqapp.android.common.beans.body.DeviceToken;
-import com.noqapp.android.common.presenter.DeviceRegisterPresenter;
+import com.noqapp.android.common.presenter.DeviceRegisterListener;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,10 +20,10 @@ public class DeviceClientApiImpl {
     private final String TAG = DeviceClientApiImpl.class.getSimpleName();
     private static final DeviceClientApi DEVICE_CLIENT;
 
-    private DeviceRegisterPresenter deviceRegisterPresenter;
+    private DeviceRegisterListener deviceRegisterListener;
 
-    public void setDeviceRegisterPresenter(DeviceRegisterPresenter deviceRegisterPresenter) {
-        this.deviceRegisterPresenter = deviceRegisterPresenter;
+    public void setDeviceRegisterPresenter(DeviceRegisterListener deviceRegisterListener) {
+        this.deviceRegisterListener = deviceRegisterListener;
     }
 
     static {
@@ -49,16 +49,16 @@ public class DeviceClientApiImpl {
                 if (response.code() == Constants.SERVER_RESPONSE_CODE_SUCCESS) {
                     if (null != response.body() && null == response.body().getError()) {
                         Log.d(TAG, "Registered device " + response.body());
-                        deviceRegisterPresenter.deviceRegisterResponse(response.body());
+                        deviceRegisterListener.deviceRegisterResponse(response.body());
                     } else {
                         Log.e(TAG, "Empty body");
-                        deviceRegisterPresenter.responseErrorPresenter(response.body().getError());
+                        deviceRegisterListener.responseErrorPresenter(response.body().getError());
                     }
                 } else {
                     if (response.code() == Constants.INVALID_CREDENTIAL) {
-                        deviceRegisterPresenter.authenticationFailure();
+                        deviceRegisterListener.authenticationFailure();
                     } else {
-                        deviceRegisterPresenter.responseErrorPresenter(response.code());
+                        deviceRegisterListener.responseErrorPresenter(response.code());
                     }
                 }
             }
@@ -66,7 +66,7 @@ public class DeviceClientApiImpl {
             @Override
             public void onFailure(@NonNull Call<DeviceRegistered> call, @NonNull Throwable t) {
                 Log.e(TAG, "Failure device register" + t.getLocalizedMessage(), t);
-                deviceRegisterPresenter.deviceRegisterError();
+                deviceRegisterListener.deviceRegisterError();
             }
         });
     }
