@@ -299,10 +299,10 @@ class PostPropertyRentalDetailsFragment : BaseFragment(), OnDateSetListener, OnM
 
     private fun validate(): Boolean {
         if (fragmentPostPropertyRentalDetails.etPrice.text.isNullOrEmpty()) {
-            showSnackBar("Please enter item price.")
+            showSnackBar("Please enter rent per month.")
             return false
         }else if (fragmentPostPropertyRentalDetails.etPrice.text.toString().toInt() <=0) {
-            showSnackBar("Item price cannot be 0 or less than 0.")
+            showSnackBar("Rent per month cannot be 0 or less than 0.")
             return false
         }else if (fragmentPostPropertyRentalDetails.etCarpetArea.text.isNullOrEmpty()) {
             showSnackBar("Please enter carpet area.")
