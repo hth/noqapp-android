@@ -56,6 +56,7 @@ class PostHouseholdItemReviewFragment : BaseFragment() {
 
     private fun setUpRecyclerView() {
         propertyRentalImageAdapter = PropertyRentalImageAdapter(mutableListOf()) {}
+        propertyRentalImageAdapter.isClickEnable = false
         fragmentPostHouseHoldItemReviewBinding.rvSelectedImages.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         fragmentPostHouseHoldItemReviewBinding.rvSelectedImages.setHasFixedSize(true)
         fragmentPostHouseHoldItemReviewBinding.rvSelectedImages.addItemDecoration(RecyclerViewItemDecorator(10))

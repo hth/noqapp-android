@@ -54,6 +54,7 @@ class PostPropertyRentalReviewFragment : BaseFragment() {
 
     private fun setUpRecyclerView() {
         propertyRentalImageAdapter = PropertyRentalImageAdapter(mutableListOf()) {}
+        propertyRentalImageAdapter.isClickEnable = false
         fragmentPostPropertyRentalReview.rvSelectedImages.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         fragmentPostPropertyRentalReview.rvSelectedImages.setHasFixedSize(true)
         fragmentPostPropertyRentalReview.rvSelectedImages.adapter = propertyRentalImageAdapter
