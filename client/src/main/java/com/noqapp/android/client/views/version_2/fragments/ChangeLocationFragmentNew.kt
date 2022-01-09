@@ -19,7 +19,7 @@ import com.noqapp.android.client.location.LocationManager
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.AnalyticsEvents
 import com.noqapp.android.client.utils.AppUtils
-import com.noqapp.android.client.views.activities.AppInitialize
+import com.noqapp.android.client.views.activities.NoqApplication
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 
@@ -76,7 +76,7 @@ class ChangeLocationFragmentNew : Fragment(),
                 searchStoreQuery.filters = ""
                 searchStoreQuery.scrollId = ""
                 homeViewModel.searchStoreQueryLiveData.value = searchStoreQuery
-                AppInitialize.setLocationChangedManually(true)
+                NoqApplication.setLocationChangedManually(true)
                 try {
                     AppUtils.hideKeyBoard(activity)
                 } catch (e: Exception) {
@@ -129,7 +129,7 @@ class ChangeLocationFragmentNew : Fragment(),
         searchStoreQuery.filters = ""
         searchStoreQuery.scrollId = ""
         homeViewModel.searchStoreQueryLiveData.value = searchStoreQuery
-        AppInitialize.setLocationChangedManually(false)
+        NoqApplication.setLocationChangedManually(false)
         try {
             AppUtils.hideKeyBoard(requireActivity())
         } catch (e: Exception) {

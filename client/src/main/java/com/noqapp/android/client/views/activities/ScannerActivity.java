@@ -119,7 +119,7 @@ public abstract class ScannerActivity extends BaseActivity implements ClientInQu
                                     barcodeResult(codeQR[3], contents);
                                     Bundle params = new Bundle();
                                     params.putString("codeQR", codeQR[3]);
-                                    AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SCAN_STORE_CODE_QR_SCREEN, params);
+                                    NoqApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SCAN_STORE_CODE_QR_SCREEN, params);
                                 }
                             } catch (Exception e) {
                                 Log.e(TAG, "Failed parsing codeQR reason=" + e.getLocalizedMessage(), e);

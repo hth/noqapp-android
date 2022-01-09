@@ -87,7 +87,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
         actionbarBack = findViewById(R.id.actionbarBack);
         tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         iv_home.setVisibility(isHomeVisible ? View.VISIBLE : View.INVISIBLE);
-        if (AppInitialize.isLockMode) {
+        if (NoqApplication.isLockMode) {
             iv_home.setVisibility(View.INVISIBLE);
         }
         actionbarBack.setOnClickListener((View v) -> finish());
@@ -180,7 +180,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
 
     protected void enableFavourite(String codeQR) {
         this.codeQR = codeQR;
-        isFavourite = AppInitialize.getFavouriteList().contains(codeQR);
+        isFavourite = NoqApplication.getFavouriteList().contains(codeQR);
         iv_favourite.setVisibility(View.VISIBLE);
         iv_favourite.setBackground(isFavourite
             ? ContextCompat.getDrawable(this, R.drawable.heart_fill)
@@ -202,13 +202,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
         dismissProgress();
         if (null != jsonResponse) {
             if (jsonResponse.getResponse() == Constants.SUCCESS) {
-                ArrayList<String> favouriteList = AppInitialize.getFavouriteList();
+                ArrayList<String> favouriteList = NoqApplication.getFavouriteList();
                 if (isFavourite) {
                     favouriteList.remove(codeQR);
                 } else {
                     favouriteList.add(codeQR);
                 }
-                AppInitialize.saveFavouriteList(favouriteList);
+                NoqApplication.saveFavouriteList(favouriteList);
                 enableFavourite(codeQR);
                 new CustomToast().showToast(this, "Favourite updated successfully!!!");
             } else {

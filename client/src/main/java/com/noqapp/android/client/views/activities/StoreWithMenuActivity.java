@@ -74,7 +74,7 @@ public class StoreWithMenuActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoqApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_store_with_menu);
         initActionsViews(false);
@@ -384,7 +384,7 @@ public class StoreWithMenuActivity
             showKioskModeDialog.setDialogClickListener(new ShowKioskModeDialog.DialogClickListener() {
                 @Override
                 public void btnPositiveClick(boolean isFeedBackScreen) {
-                    AppInitialize.isLockMode = true;
+                    NoqApplication.isLockMode = true;
                     KioskModeInfo kioskModeInfo = new KioskModeInfo();
                     kioskModeInfo.setKioskCodeQR(bizStoreElastic.getCodeQR());
                     kioskModeInfo.setKioskModeEnable(true);
@@ -392,14 +392,14 @@ public class StoreWithMenuActivity
                     kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
                     kioskModeInfo.setBizName(bizStoreElastic.getBusinessName());
                     kioskModeInfo.setFeedbackScreen(isFeedBackScreen);
-                    AppInitialize.setKioskModeInfo(kioskModeInfo);
+                    NoqApplication.setKioskModeInfo(kioskModeInfo);
 
-                    if (AppInitialize.getKioskModeInfo().isFeedbackScreen()) {
+                    if (NoqApplication.getKioskModeInfo().isFeedbackScreen()) {
                         Intent in = new Intent(StoreWithMenuActivity.this, SurveyKioskModeActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR, AppInitialize.getKioskModeInfo().getKioskCodeQR());
+                        in.putExtra(IBConstant.KEY_CODE_QR, NoqApplication.getKioskModeInfo().getKioskCodeQR());
                         startActivity(in);
                     } else {
-                        AppInitialize.clearPreferences();
+                        NoqApplication.clearPreferences();
                         Intent in = new Intent(StoreWithMenuActivity.this, StoreWithMenuKioskActivity.class);
                         in.putExtra(IBConstant.KEY_CODE_QR, bizStoreElastic.getCodeQR());
                         startActivity(in);
@@ -412,7 +412,7 @@ public class StoreWithMenuActivity
                     //Do nothing
                 }
             });
-            showKioskModeDialog.displayDialog(AppInitialize.getUserProfile().getUserLevel().getDescription());
+            showKioskModeDialog.displayDialog(NoqApplication.getUserProfile().getUserLevel().getDescription());
         });
         // Added temporary due to textview click issue 
         tv_enable_kiosk.performClick();

@@ -36,7 +36,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoqApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_verify);
         tv_header = findViewById(R.id.tv_header);
@@ -120,7 +120,7 @@ public class ChangeEmailActivity extends BaseActivity implements View.OnClickLis
     public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "profile :" + profile.toString());
-            AppInitialize.commitProfile(profile, email, auth);
+            NoqApplication.commitProfile(profile, email, auth);
             finish();
         } else {
             //Rejected from  server

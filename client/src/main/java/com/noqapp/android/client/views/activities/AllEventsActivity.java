@@ -20,7 +20,7 @@ public class AllEventsActivity extends BaseActivity implements EventsAdapter.OnI
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoqApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all);
         initActionsViews(true);

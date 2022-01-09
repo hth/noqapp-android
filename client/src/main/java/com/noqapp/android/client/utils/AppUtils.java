@@ -42,8 +42,7 @@ import com.noqapp.android.client.presenter.beans.JsonStore;
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue;
 import com.noqapp.android.client.presenter.beans.StoreHourElastic;
 import com.noqapp.android.client.views.activities.AllDayTimingActivity;
-import com.noqapp.android.client.views.activities.AppInitialize;
-import com.noqapp.android.client.views.version_2.HomeActivity;
+import com.noqapp.android.client.views.activities.NoqApplication;
 import com.noqapp.android.common.beans.JsonHour;
 import com.noqapp.android.common.beans.JsonProfile;
 import com.noqapp.android.common.customviews.CustomToast;
@@ -453,7 +452,7 @@ public class AppUtils extends CommonHelper {
     }
 
     public static void authenticationProcessing(Activity activity, Function0 loginAgainAuthentication) {
-        AppInitialize.clearPreferences();
+        NoqApplication.clearPreferences();
         ShowAlertInformation.showAuthenticErrorDialog(activity, loginAgainAuthentication);
     }
 
@@ -582,7 +581,7 @@ public class AppUtils extends CommonHelper {
     }
 
     public static boolean showKioskMode(BizStoreElastic bizStoreElastic) {
-        JsonProfile jsonProfile = AppInitialize.getUserProfile();
+        JsonProfile jsonProfile = NoqApplication.getUserProfile();
         if (null != jsonProfile && null != jsonProfile.getBizNameId() && StringUtils.equals(jsonProfile.getBizNameId(), bizStoreElastic.getBizNameId())) {
             if (bizStoreElastic.getBusinessType() == BusinessTypeEnum.DO) {
                 return Q_SUPERVISOR == jsonProfile.getUserLevel();
@@ -620,8 +619,8 @@ public class AppUtils extends CommonHelper {
         if (!TextUtils.isEmpty(jsonQueue.getGeoHash())) {
             float lat_s = (float) GeoHashUtils.decodeLatitude(jsonQueue.getGeoHash());
             float long_s = (float) GeoHashUtils.decodeLongitude(jsonQueue.getGeoHash());
-            float lat_d = (float) AppInitialize.location.getLatitude();
-            float long_d = (float) AppInitialize.location.getLongitude();
+            float lat_d = (float) NoqApplication.location.getLatitude();
+            float long_d = (float) NoqApplication.location.getLongitude();
             float distance = (float) calculateDistance(lat_s, long_s, lat_d, long_d);
             switch (jsonQueue.getBusinessType()) {
                 case DO:
@@ -663,7 +662,7 @@ public class AppUtils extends CommonHelper {
         for (int i = 0; i < data.size(); i++) {
             codeQRs.add(data.get(i).getCodeQR());
         }
-        AppInitialize.saveFavouriteList(codeQRs);
+        NoqApplication.saveFavouriteList(codeQRs);
     }
 
     public static String getLocationAsString(String area, String town) {

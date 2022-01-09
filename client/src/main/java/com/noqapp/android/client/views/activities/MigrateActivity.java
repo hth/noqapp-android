@@ -23,7 +23,7 @@ public class MigrateActivity extends OTPActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoqApplication.isLockMode);
         super.onCreate(savedInstanceState);
         activity = this;
         tv_toolbar_title.setText("Migrate Number");
@@ -56,7 +56,7 @@ public class MigrateActivity extends OTPActivity {
             isValid = false;
         } else {
             if (PhoneFormatterUtil.phoneNumberWithCountryCode(edt_phoneNo.getText().toString(), countryShortName)
-                .equals(PhoneFormatterUtil.phoneNumberWithCountryCode(AppInitialize.getPhoneNo(), AppInitialize.getCountryShortName()))) {
+                .equals(PhoneFormatterUtil.phoneNumberWithCountryCode(NoqApplication.getPhoneNo(), NoqApplication.getCountryShortName()))) {
                 edt_phoneNo.setError(getString(R.string.error_mobile_no_same));
                 isValid = false;
             }
@@ -67,7 +67,7 @@ public class MigrateActivity extends OTPActivity {
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.d(TAG, "profile :" + profile.toString());
-        AppInitialize.commitProfile(profile, email, auth);
+        NoqApplication.commitProfile(profile, email, auth);
         finish();//close the current activity
         dismissProgress();
     }

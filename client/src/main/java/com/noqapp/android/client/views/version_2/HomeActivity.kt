@@ -94,7 +94,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppInitialize.setLocationChangedManually(false)
+        NoqApplication.setLocationChangedManually(false)
         activityHomeBinding = ActivityHomeBinding.inflate(LayoutInflater.from(this))
         setContentView(activityHomeBinding.root)
         setSupportActionBar(activityHomeBinding.toolbar)
@@ -114,7 +114,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
         observeValues()
 
         FirebaseMessaging.getInstance().token.addOnSuccessListener(this) { token: String? ->
-            AppInitialize.setTokenFCM(token)
+            NoqApplication.setTokenFCM(token)
             reCreateDeviceID(this, this)
         }
     }
@@ -170,11 +170,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
     }
 
     private fun showLoginScreen() {
-        if (AppInitialize.getShowHelper()) {
+        if (NoqApplication.getShowHelper()) {
             activityHomeBinding.btnChangeLanguage.setOnClickListener {
                 val claIntent = Intent(this, ChangeLanguageActivity::class.java)
                 startActivity(claIntent)
-                AppInitialize.setShowHelper(true)
+                NoqApplication.setShowHelper(true)
             }
             activityHomeBinding.rlHelper.visibility = View.VISIBLE
             activityHomeBinding.btnSkip.setOnClickListener { v: View? ->
@@ -185,7 +185,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
                 val loginIntent = Intent(this, LoginActivity::class.java)
                 startActivity(loginIntent)
             }
-            AppInitialize.setShowHelper(false)
+            NoqApplication.setShowHelper(false)
         } else {
             if (isRateUsFirstTime) {
                 RateTheAppManager().appLaunched(this)
@@ -256,7 +256,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
                 blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(blinkerIntent)
 
-                if (AppInitialize.isMsgAnnouncementEnable()) {
+                if (NoqApplication.isMsgAnnouncementEnable()) {
                     if (foregroundNotification.jsonTextToSpeeches != null) {
                         makeAnnouncement(
                             foregroundNotification.jsonTextToSpeeches!!,
@@ -271,7 +271,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
                     blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(blinkerIntent)
 
-                    if (AppInitialize.isMsgAnnouncementEnable()) {
+                    if (NoqApplication.isMsgAnnouncementEnable()) {
                         if (foregroundNotification.jsonTextToSpeeches != null) {
                             makeAnnouncement(
                                 foregroundNotification.jsonTextToSpeeches!!,
@@ -319,8 +319,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
 
     private fun updateDrawerUI() {
         if (UserUtils.isLogin()) {
-            navHeaderMainBinding.tvEmail.text = AppInitialize.getActualMail()
-            navHeaderMainBinding.tvName.text = AppInitialize.getUserName()
+            navHeaderMainBinding.tvEmail.text = NoqApplication.getActualMail()
+            navHeaderMainBinding.tvName.text = NoqApplication.getUserName()
         } else {
             navHeaderMainBinding.tvEmail.text = getString(R.string.txt_please_login)
             navHeaderMainBinding.tvName.text = getString(R.string.txt_guest_user)
@@ -328,12 +328,12 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
 
         Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(navHeaderMainBinding.ivProfile)
         try {
-            if (!TextUtils.isEmpty(AppInitialize.getUserProfileUri())) {
+            if (!TextUtils.isEmpty(NoqApplication.getUserProfileUri())) {
                 Picasso.get()
                     .load(
                         AppUtils.getImageUrls(
                             BuildConfig.PROFILE_BUCKET,
-                            AppInitialize.getUserProfileUri()
+                            NoqApplication.getUserProfileUri()
                         )
                     )
                     .placeholder(ImageUtils.getProfilePlaceholder(this))
@@ -593,7 +593,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
                 val showDialog = ShowCustomDialog(this, true)
                 showDialog.setDialogClickListener(object : ShowCustomDialog.DialogClickListener {
                     override fun btnPositiveClick() {
-                        AppInitialize.clearPreferences()
+                        NoqApplication.clearPreferences()
                         homeViewModel.clearTokenAndQueue()
                         homeViewModel.clearForegroundNotifications()
                         homeViewModel.clearReviewData()
@@ -646,7 +646,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
 
     fun reCreateDeviceID(context: Activity, deviceRegisterPresenter: DeviceRegisterListener?) {
         if (NetworkUtil(context).isOnline) {
-            AppInitialize.fetchDeviceId(deviceRegisterPresenter)
+            NoqApplication.fetchDeviceId(deviceRegisterPresenter)
         } else {
             val builder = AlertDialog.Builder(context)
             val inflater = LayoutInflater.from(context)
@@ -683,7 +683,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
 
     override fun deviceRegisterResponse(deviceRegistered: DeviceRegistered?) {
         /* dismissProgress(); no progress bar silent call here */
-        AppInitialize.processRegisterDeviceIdResponse(deviceRegistered, this)
+        NoqApplication.processRegisterDeviceIdResponse(deviceRegistered, this)
         updateDrawerUI()
     }
 

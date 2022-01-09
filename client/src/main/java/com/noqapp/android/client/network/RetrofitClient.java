@@ -3,7 +3,7 @@ package com.noqapp.android.client.network;
 import android.os.Build;
 
 import com.noqapp.android.client.BuildConfig;
-import com.noqapp.android.client.views.activities.AppInitialize;
+import com.noqapp.android.client.views.activities.NoqApplication;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,11 +33,11 @@ public class RetrofitClient {
                         .addHeader("x-r-ver", BuildConfig.VERSION_NAME)
                         .addHeader("x-r-fla", BuildConfig.APP_FLAVOR)
                         .addHeader("x-r-mod", Build.MODEL + ", " + Build.BRAND + ", " + Build.MANUFACTURER)
-                        .addHeader("x-r-lat", String.valueOf(AppInitialize.location.getLatitude()))
-                        .addHeader("x-r-lng", String.valueOf(AppInitialize.location.getLongitude()))
-                        .addHeader("x-r-did", AppInitialize.getDeviceId() == null ? "" : AppInitialize.getDeviceId())
-                        .addHeader("x-r-mail", AppInitialize.getMail())
-                        .addHeader("x-r-qid", AppInitialize.getUserProfile() == null ? "" : AppInitialize.getUserProfile().getQueueUserId()).build();
+                        .addHeader("x-r-lat", String.valueOf(NoqApplication.location.getLatitude()))
+                        .addHeader("x-r-lng", String.valueOf(NoqApplication.location.getLongitude()))
+                        .addHeader("x-r-did", NoqApplication.getDeviceId() == null ? "" : NoqApplication.getDeviceId())
+                        .addHeader("x-r-mail", NoqApplication.getMail())
+                        .addHeader("x-r-qid", NoqApplication.getUserProfile() == null ? "" : NoqApplication.getUserProfile().getQueueUserId()).build();
                 return chain.proceed(request);
             });
             if (BuildConfig.DEBUG) {

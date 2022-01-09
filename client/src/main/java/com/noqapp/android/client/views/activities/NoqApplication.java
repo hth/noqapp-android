@@ -41,8 +41,10 @@ import static com.noqapp.android.client.model.APIConstant.Key.XR_MAIL;
 /**
  * Created by chandra on 5/20/17.
  */
-public class AppInitialize extends MultiDexApplication implements DeviceRegisterListener {
-    private static final String TAG = AppInitialize.class.getSimpleName();
+public class NoqApplication extends MultiDexApplication implements DeviceRegisterListener {
+
+
+    private static final String TAG = NoqApplication.class.getSimpleName();
     public static SharedPreferences preferences;
     public static final String PREKEY_IS_NOTIFICATION_SOUND_ENABLE = "isNotificationSoundEnable";
     public static final String PREKEY_IS_NOTIFICATION_RECEIVE_ENABLE = "isNotificationReceiveEnable";
@@ -74,9 +76,9 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     public static String area = "";
     public static String town = "";
     public static boolean isLockMode = false;
-    private static AppInitialize appInitialize;
+    private static NoqApplication noqApplication;
 
-    public AppInitialize() {
+    public NoqApplication() {
         super();
     }
 
@@ -105,7 +107,7 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         //https://stackoverflow.com/questions/26178212/first-launch-of-activity-with-google-maps-is-very-slow
         MapsInitializer.initialize(this);
         isLockMode = getKioskModeInfo().isKioskModeEnable();
-        appInitialize = this;
+        noqApplication = this;
     }
 
     public static boolean isNotificationSoundEnable() {
@@ -412,14 +414,14 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     }
 
     public static void fetchDeviceId() {
-        fetchDeviceId(appInitialize);
+        fetchDeviceId(noqApplication);
     }
 
     public static void fetchDeviceId(DeviceRegisterListener deviceRegisterListener) {
         DeviceToken deviceToken = new DeviceToken(
-                AppInitialize.getTokenFCM(),
+                NoqApplication.getTokenFCM(),
                 Constants.appVersion(),
-                CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude()));
+                CommonHelper.getLocation(NoqApplication.location.getLatitude(), NoqApplication.location.getLongitude()));
         if (UserUtils.isLogin()) {
             DeviceClientApiImpl deviceClientApi = new DeviceClientApiImpl();
             deviceClientApi.setDeviceRegisterPresenter(deviceRegisterListener);
@@ -435,18 +437,18 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         if (1 == deviceRegistered.getRegistered()) {
             Log.d(TAG, "Device register success");
             JsonUserAddress jsonUserAddress = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), context);
-            AppInitialize.cityName = jsonUserAddress.getLocationAsString();
-            Log.d(TAG, "Launch device register City Name=" + AppInitialize.cityName);
+            NoqApplication.cityName = jsonUserAddress.getLocationAsString();
+            Log.d(TAG, "Launch device register City Name=" + NoqApplication.cityName);
 
-            LocationPref locationPref = AppInitialize.getLocationPreference()
+            LocationPref locationPref = NoqApplication.getLocationPreference()
                     .setArea(jsonUserAddress.getArea())
                     .setTown(jsonUserAddress.getTown())
                     .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
                     .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
-            AppInitialize.setLocationPreference(locationPref);
-            AppInitialize.setDeviceID(deviceRegistered.getDeviceId());
-            AppInitialize.location.setLatitude(locationPref.getLatitude());
-            AppInitialize.location.setLongitude(locationPref.getLongitude());
+            NoqApplication.setLocationPreference(locationPref);
+            NoqApplication.setDeviceID(deviceRegistered.getDeviceId());
+            NoqApplication.location.setLatitude(locationPref.getLatitude());
+            NoqApplication.location.setLongitude(locationPref.getLongitude());
         } else {
             Log.e(TAG, "Device register error: " + deviceRegistered.toString());
             try {

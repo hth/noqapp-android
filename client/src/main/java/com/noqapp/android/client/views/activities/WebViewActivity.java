@@ -36,7 +36,7 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoqApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
         initActionsViews(true);

@@ -83,7 +83,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoqApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_edit_profile);
 
@@ -162,7 +162,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             if (isDependent) {
                 setDependentProfileImageUrl("");
             } else {
-                AppInitialize.setUserProfileUri("");
+                NoqApplication.setUserProfileUri("");
             }
             new CustomToast().showToast(this, "Profile image removed successfully!");
         } else {
@@ -261,7 +261,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                                 if (isDependent) {
                                     setDependentProfileImageUrl(convertedPath);
                                 } else {
-                                    AppInitialize.setUserProfileUri(convertedPath);
+                                    NoqApplication.setUserProfileUri(convertedPath);
                                 }
                                 showProgress();
                                 setProgressMessage("Updating profile image");
@@ -318,14 +318,14 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         clientProfileApiImpl.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                     } else {
                         Registration registration = new Registration();
-                        registration.setPhone(PhoneFormatterUtil.phoneNumberWithCountryCode(AppInitialize.getPhoneNo(), AppInitialize.getCountryShortName()));
+                        registration.setPhone(PhoneFormatterUtil.phoneNumberWithCountryCode(NoqApplication.getPhoneNo(), NoqApplication.getCountryShortName()));
                         registration.setFirstName(name);
                         registration.setMail("");
                         registration.setPassword("");
                         registration.setBirthday(AppUtils.convertDOBToValidFormat(birthday));
                         registration.setGender(gender);
                         registration.setTimeZoneId(TimeZone.getDefault().getID());
-                        registration.setCountryShortName(AppInitialize.getCountryShortName());
+                        registration.setCountryShortName(NoqApplication.getCountryShortName());
                         registration.setInviteCode("");
                         DependentApiImpl dependentApiImpl = new DependentApiImpl(this);
                         dependentApiImpl.addDependency(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), registration);
@@ -339,7 +339,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     updateProfile.setBirthday(AppUtils.convertDOBToValidFormat(birthday));
                     updateProfile.setGender(gender);
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
-                    updateProfile.setQueueUserId(AppInitialize.getUserProfile().getQueueUserId());
+                    updateProfile.setQueueUserId(NoqApplication.getUserProfile().getQueueUserId());
                     clientProfileApiImpl.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
             } else {
@@ -352,7 +352,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
-        AppInitialize.commitProfile(profile, email, auth);
+        NoqApplication.commitProfile(profile, email, auth);
         dismissProgress();
         new CustomToast().showToast(this, "Profile updated successfully");
         finish();
@@ -367,7 +367,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     @Override
     public void dependencyResponse(JsonProfile profile) {
         Log.v("JsonProfile", profile.toString());
-        AppInitialize.setUserProfile(profile);
+        NoqApplication.setUserProfile(profile);
         dependentProfile = profile;
         dismissProgress();
         new CustomToast().showToast(this, "Dependent added successfully");
@@ -411,26 +411,26 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 qUserId = "";
             }
         } else {
-            edt_Name.setText(AppInitialize.getUserName());
-            tv_name.setText(AppInitialize.getUserName());
-            tvAddress.setText(AppInitialize.getAddress());
-            imageUrl = AppInitialize.getUserProfileUri();
-            qUserId = AppInitialize.getUserProfile().getQueueUserId();
-            if (AppInitialize.getGender().equals("M")) {
+            edt_Name.setText(NoqApplication.getUserName());
+            tv_name.setText(NoqApplication.getUserName());
+            tvAddress.setText(NoqApplication.getAddress());
+            imageUrl = NoqApplication.getUserProfileUri();
+            qUserId = NoqApplication.getUserProfile().getQueueUserId();
+            if (NoqApplication.getGender().equals("M")) {
                 onClick(tv_male);
-            } else if (AppInitialize.getGender().equals("T")) {
+            } else if (NoqApplication.getGender().equals("T")) {
                 onClick(tv_transgender);
             } else {
                 onClick(tv_female);
             }
             try {
-                tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(AppInitialize.getUserDOB())));
+                tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(NoqApplication.getUserDOB())));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        edt_phoneNo.setText(AppInitialize.getPhoneNo());
-        edt_Mail.setText(AppInitialize.getActualMail());
+        edt_phoneNo.setText(NoqApplication.getPhoneNo());
+        edt_Mail.setText(NoqApplication.getActualMail());
         edt_phoneNo.setEnabled(false);
         edt_Mail.setEnabled(false);
 
@@ -455,7 +455,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             isValid = false;
         }
         if (((null == dependentProfile && isDependent && nameList.contains(name)))
-                || (null == dependentProfile && !isDependent && !AppInitialize.getUserName().toUpperCase().equals(name) && nameList.contains(name))
+                || (null == dependentProfile && !isDependent && !NoqApplication.getUserName().toUpperCase().equals(name) && nameList.contains(name))
                 || (null != dependentProfile && !dependentProfile.getName().toUpperCase().equals(name) && nameList.contains(name))) {
             edt_Name.setError(getString(R.string.error_name_exist));
             isValid = false;
@@ -477,7 +477,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     }
 
     private void setDependentProfileImageUrl(String path) {
-        List<JsonProfile> jsonProfiles = AppInitialize.getUserProfile().getDependents();
+        List<JsonProfile> jsonProfiles = NoqApplication.getUserProfile().getDependents();
         if (null != jsonProfiles && jsonProfiles.size() > 0) {
             for (int j = 0; j < jsonProfiles.size(); j++) {
                 final JsonProfile jsonProfile = jsonProfiles.get(j);
@@ -487,9 +487,9 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 }
             }
         }
-        JsonProfile jsonProfile = AppInitialize.getUserProfile();
+        JsonProfile jsonProfile = NoqApplication.getUserProfile();
         jsonProfile.setDependents(jsonProfiles);
-        AppInitialize.setUserProfile(jsonProfile);
+        NoqApplication.setUserProfile(jsonProfile);
 
     }
 }

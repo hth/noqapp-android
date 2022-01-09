@@ -65,7 +65,7 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
             }
 
             R.id.rbAddress -> {
-                AppInitialize.setSelectedAddressId(jsonUserAddress.id)
+                NoqApplication.setSelectedAddressId(jsonUserAddress.id)
                 val intent = Intent()
                 intent.putExtra(Constants.JSON_USER_ADDRESS, jsonUserAddress)
                 setResult(Constants.REQUEST_CODE_SELECT_ADDRESS, intent)
@@ -106,14 +106,14 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
     }
 
     private fun showAddresses(addressList: List<JsonUserAddress>?) {
-        val jp = AppInitialize.getUserProfile()
+        val jp = NoqApplication.getUserProfile()
         jp.jsonUserAddresses = addressList
-        AppInitialize.setUserProfile(jp)
+        NoqApplication.setUserProfile(jp)
 
         addressList?.forEach {
             if (it.isPrimaryAddress){
                 primaryJsonUserAddress = it
-                AppInitialize.setAddress(it.address)
+                NoqApplication.setAddress(it.address)
                 return@forEach
             }
         }

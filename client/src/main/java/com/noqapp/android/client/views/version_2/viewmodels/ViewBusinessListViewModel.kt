@@ -8,7 +8,7 @@ import com.noqapp.android.client.presenter.SearchBusinessStorePresenter
 import com.noqapp.android.client.presenter.beans.BizStoreElasticList
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.UserUtils
-import com.noqapp.android.client.views.activities.AppInitialize
+import com.noqapp.android.client.views.activities.NoqApplication
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 
 class ViewBusinessListViewModel: ViewModel(), SearchBusinessStorePresenter {
@@ -23,7 +23,7 @@ class ViewBusinessListViewModel: ViewModel(), SearchBusinessStorePresenter {
         if (UserUtils.isLogin()) {
             searchApiImpl.business(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), searchQuery)
         } else {
-            searchImpl.business(AppInitialize.getDeviceId(), searchQuery)
+            searchImpl.business(NoqApplication.getDeviceId(), searchQuery)
         }
     }
 

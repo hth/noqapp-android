@@ -66,7 +66,7 @@ public class StoreDetailActivity extends BaseActivity implements StorePresenter 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoqApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_detail);
         tv_address = findViewById(R.id.tv_address);

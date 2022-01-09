@@ -77,7 +77,7 @@ public class BookAppointmentActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoqApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment);
         initActionsViews(true);
@@ -172,13 +172,13 @@ public class BookAppointmentActivity
         if (BusinessTypeEnum.DO == bizStoreElastic.getBusinessType() || BusinessTypeEnum.HS == bizStoreElastic.getBusinessType()) {
             List<JsonProfile> profileList = new LinkedList<>();
             DependentAdapter adapter = new DependentAdapter(this, profileList);
-            if (AppInitialize.getUserProfile().getDependents().size() > 0) {
+            if (NoqApplication.getUserProfile().getDependents().size() > 0) {
                 profileList.add(new JsonProfile().setName("Select Patient"));
-                profileList.add(AppInitialize.getUserProfile());
-                profileList.addAll(AppInitialize.getUserProfile().getDependents());
+                profileList.add(NoqApplication.getUserProfile());
+                profileList.addAll(NoqApplication.getUserProfile().getDependents());
             } else {
                 profileList.add(new JsonProfile().setName("Select Patient"));
-                profileList.add(AppInitialize.getUserProfile());
+                profileList.add(NoqApplication.getUserProfile());
             }
             tv_name.setVisibility(View.INVISIBLE);
             sp_name_list.setAdapter(adapter);
@@ -186,7 +186,7 @@ public class BookAppointmentActivity
         } else {
             List<JsonProfile> profileList = new ArrayList<>();
             profileList.add(new JsonProfile().setName("Select Person"));
-            profileList.add(AppInitialize.getUserProfile());
+            profileList.add(NoqApplication.getUserProfile());
             DependentAdapter adapter = new DependentAdapter(this, profileList);
             sp_name_list.setAdapter(adapter);
             tv_name.setText(getText(R.string.txt_booking_person));

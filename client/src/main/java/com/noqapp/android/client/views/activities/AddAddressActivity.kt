@@ -208,7 +208,7 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
                     locationAsString = this.area + ", " + this.town
                 }
                 addAddressBinding.tvLocality.text = locationAsString
-                addAddressBinding.etName.setText(AppInitialize.getUserProfile().name)
+                addAddressBinding.etName.setText(NoqApplication.getUserProfile().name)
 
                 addAddressBinding.etAddress.setText(addressOutput)
                 animateCamera(
@@ -234,8 +234,8 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
     override fun profileAddressResponse(jsonUserAddressList: JsonUserAddressList?) {
         val primaryAddress = jsonUserAddressList?.jsonUserAddresses?.last()
         primaryAddress?.let {
-            AppInitialize.setAddress(it.address)
-            AppInitialize.setSelectedAddressId(it.id)
+            NoqApplication.setAddress(it.address)
+            NoqApplication.setSelectedAddressId(it.id)
         }
 
         val intent = Intent()
