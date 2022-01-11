@@ -1,11 +1,16 @@
 package com.noqapp.android.client.views.version_2.viewmodels
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
+import com.noqapp.android.client.BuildConfig
+import com.noqapp.android.client.model.api.DeviceClientApiImpl
 import com.noqapp.android.client.model.api.FavouriteApiImpl
 import com.noqapp.android.client.model.api.TokenQueueApiImpl
 import com.noqapp.android.client.model.api.SearchApiImpl
+import com.noqapp.android.client.model.open.DeviceClientImpl
 import com.noqapp.android.client.model.open.SearchImpl
+import com.noqapp.android.client.model.response.api.NoQueeApi
 import com.noqapp.android.client.presenter.FavouriteListPresenter
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter
@@ -15,14 +20,22 @@ import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.NetworkUtils
 import com.noqapp.android.client.utils.ShowAlertInformation
 import com.noqapp.android.client.utils.UserUtils
+import com.noqapp.android.client.views.activities.NoqApplication
+import com.noqapp.android.client.views.pojos.LocationPref
 import com.noqapp.android.client.views.version_2.db.NoQueueAppDB
 import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
+import com.noqapp.android.common.beans.DeviceRegistered
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.beans.JsonSchedule
+import com.noqapp.android.common.beans.JsonUserAddress
+import com.noqapp.android.common.beans.body.DeviceToken
+import com.noqapp.android.common.customviews.CustomToast
 import com.noqapp.android.common.pojos.DisplayNotification
+import com.noqapp.android.common.utils.CommonHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 class HomeViewModel(val applicationContext: Application) : AndroidViewModel(applicationContext),
     SearchBusinessStorePresenter, TokenAndQueuePresenter, FavouriteListPresenter {
@@ -42,8 +55,12 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     private var searchApiImpl: SearchApiImpl
     private var tokenQueueApiImpl: TokenQueueApiImpl
 
+    private var noQueeApi: NoQueeApi
+
+
     val currentTokenAndQueueListLiveData: LiveData<List<JsonTokenAndQueue>> = liveData {
-        val tokenAndQueueList = NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueList()
+        val tokenAndQueueList =
+            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getCurrentQueueList()
         emitSource(tokenAndQueueList)
     }
 
@@ -53,12 +70,14 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     val historyTokenAndQueueListLiveData: LiveData<List<JsonTokenAndQueue>> = liveData {
-        val tokenAndQueueList = NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getHistoryQueueList()
+        val tokenAndQueueList =
+            NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().getHistoryQueueList()
         emitSource(tokenAndQueueList)
     }
 
     val notificationListLiveData: LiveData<List<DisplayNotification>> = liveData {
-        val notificationList = NoQueueAppDB.dbInstance(applicationContext).notificationDao().getNotificationsList()
+        val notificationList =
+            NoQueueAppDB.dbInstance(applicationContext).notificationDao().getNotificationsList()
         emitSource(notificationList)
     }
 
@@ -69,8 +88,9 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     val foregroundNotificationLiveData: LiveData<ForegroundNotificationModel> = liveData {
-        val foregroundNotification = NoQueueAppDB.dbInstance(applicationContext).foregroundNotificationDao()
-            .getForegroundNotification()
+        val foregroundNotification =
+            NoQueueAppDB.dbInstance(applicationContext).foregroundNotificationDao()
+                .getForegroundNotification()
         emitSource(foregroundNotification)
     }
 
@@ -81,6 +101,7 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         searchApiImpl = SearchApiImpl(this)
         tokenQueueApiImpl = TokenQueueApiImpl()
         tokenQueueApiImpl.setTokenAndQueuePresenter(this)
+        noQueeApi = NoqApplication.getNoQueeApi()
     }
 
     fun fetchNearMe(deviceId: String, searchQuery: SearchQuery) {
@@ -243,7 +264,12 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao()
-                    .updateCurrentListQueueObject(codeQR, servingNumber, displayServingNumber, token)
+                    .updateCurrentListQueueObject(
+                        codeQR,
+                        servingNumber,
+                        displayServingNumber,
+                        token
+                    )
             }
         }
     }
@@ -318,4 +344,60 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
             NoQueueAppDB.dbInstance(applicationContext).tokenAndQueueDao().clearTokenAndQueue()
         }
     }
+
+    fun callRegistrationService() {
+        val deviceToken = DeviceToken(
+            NoqApplication.getTokenFCM(),
+            Constants.appVersion(),
+            CommonHelper.getLocation(
+                NoqApplication.location.latitude,
+                NoqApplication.location.longitude
+            )
+        )
+
+        viewModelScope.launch {
+            var deviceRegistered:DeviceRegistered?
+
+            if (UserUtils.isLogin()) {
+                deviceRegistered = noQueeApi.register(
+                    UserUtils.getDeviceId(),
+                    Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR,
+                    UserUtils.getEmail(),
+                    UserUtils.getAuth(),
+                    deviceToken
+                )
+            } else {
+                deviceRegistered= noQueeApi.register(Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken)
+            }
+            if (1 == deviceRegistered?.registered) {
+
+                val jsonUserAddress = CommonHelper.getAddress(
+                    deviceRegistered?.geoPointOfQ.lat,
+                    deviceRegistered?.geoPointOfQ.lon,
+                    NoqApplication.noqApplication
+                )
+                NoqApplication.cityName = jsonUserAddress.locationAsString
+                val locationPref = NoqApplication.getLocationPreference()
+                    .setArea(jsonUserAddress.area)
+                    .setTown(jsonUserAddress.town)
+                    .setLatitude(deviceRegistered?.geoPointOfQ.lat)
+                    .setLongitude(deviceRegistered?.geoPointOfQ.lon)
+                NoqApplication.setLocationPreference(locationPref)
+                NoqApplication.setDeviceID(deviceRegistered?.deviceId)
+                NoqApplication.location.latitude = locationPref.latitude
+                NoqApplication.location.longitude = locationPref.longitude
+            } else {
+                try {
+                    CustomToast().showToast(NoqApplication.noqApplication, "Device registration error")
+                } catch (e: Exception) {
+
+                }
+            }
+
+
+        }
+
+    }
+
+
 }

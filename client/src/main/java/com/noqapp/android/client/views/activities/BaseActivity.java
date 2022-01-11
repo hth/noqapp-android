@@ -4,11 +4,16 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -47,6 +52,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
     private NetworkUtil networkUtil;
     protected boolean isFavourite = false;
     protected String codeQR = "";
+
+    ConnectivityManager connectivityManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,11 +165,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
     protected void hideSoftKeys(boolean isKioskMode) {
         if (isKioskMode) {
             final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE;
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE;
 
             getWindow().getDecorView().setSystemUiVisibility(flags);
             final View decorView = getWindow().getDecorView();
@@ -183,8 +190,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
         isFavourite = NoqApplication.getFavouriteList().contains(codeQR);
         iv_favourite.setVisibility(View.VISIBLE);
         iv_favourite.setBackground(isFavourite
-            ? ContextCompat.getDrawable(this, R.drawable.heart_fill)
-            : ContextCompat.getDrawable(this, R.drawable.heart_orange));
+                ? ContextCompat.getDrawable(this, R.drawable.heart_fill)
+                : ContextCompat.getDrawable(this, R.drawable.heart_orange));
     }
 
     private void markFavourite() {
@@ -217,5 +224,34 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
         } else {
             new CustomToast().showToast(this, "Favourite update failed!!!");
         }
+    }
+
+    protected void showNoNetworkAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        builder.setTitle(null);
+        View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
+        TextView tvTitle = customDialogView.findViewById(R.id.tvtitle);
+        TextView tvMsg = customDialogView.findViewById(R.id.tvMsg);
+        tvTitle.setText(getString(R.string.networkerror));
+        tvMsg.setText(getString(R.string.offline));
+        builder.setView(customDialogView);
+        AlertDialog mAlertDialog = builder.create();
+        mAlertDialog.setCanceledOnTouchOutside(false);
+        Button btnYes = customDialogView.findViewById(R.id.btn_yes);
+        btnYes.setOnClickListener(view -> {
+            mAlertDialog.dismiss();
+            finish();
+        });
+        mAlertDialog.show();
+    }
+
+    protected boolean isNetworkAvailable() {
+        if (connectivityManager == null) {
+            connectivityManager
+                    = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        }
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

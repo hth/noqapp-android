@@ -64,7 +64,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 
-class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
+class HomeActivity : LocationBaseActivity(),
     HomeFragmentInteractionListener,
     BottomNavigationView.OnNavigationItemSelectedListener, AppBlacklistPresenter {
     private val TAG = HomeActivity::class.java.simpleName
@@ -114,7 +114,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
 
         FirebaseMessaging.getInstance().token.addOnSuccessListener(this) { token: String? ->
             NoqApplication.setTokenFCM(token)
-            reCreateDeviceID(this, this)
+            reCreateDeviceID(this)
         }
     }
 
@@ -602,7 +602,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
                         homeViewModel.clearTokenAndQueue()
                         homeViewModel.clearForegroundNotifications()
                         homeViewModel.clearReviewData()
-                        reCreateDeviceID(this@HomeActivity, this@HomeActivity)
+                        reCreateDeviceID(this@HomeActivity)
                     }
 
                     override fun btnNegativeClick() {
@@ -649,33 +649,17 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
         return true
     }
 
-    fun reCreateDeviceID(context: Activity, deviceRegisterPresenter: DeviceRegisterListener?) {
-        if (NetworkUtil(context).isOnline) {
-            NoqApplication.fetchDeviceId(deviceRegisterPresenter)
+    fun reCreateDeviceID(context: Activity) {
+        if (isNetworkAvailable) {
+            homeViewModel.callRegistrationService();
         } else {
-            val builder = AlertDialog.Builder(context)
-            val inflater = LayoutInflater.from(context)
-            builder.setTitle(null)
-            val customDialogView = inflater.inflate(R.layout.dialog_general, null, false)
-            val tvTitle = customDialogView.findViewById<TextView>(R.id.tvtitle)
-            val tvMsg = customDialogView.findViewById<TextView>(R.id.tvMsg)
-            tvTitle.text = context.getString(R.string.networkerror)
-            tvMsg.text = context.getString(R.string.offline)
-            builder.setView(customDialogView)
-            val mAlertDialog = builder.create()
-            mAlertDialog.setCanceledOnTouchOutside(false)
-            val btnYes = customDialogView.findViewById<Button>(R.id.btn_yes)
-            btnYes.setOnClickListener { v: View? ->
-                mAlertDialog.dismiss()
-                context.finish()
-            }
-            mAlertDialog.show()
-            Log.w(TAG, "No network found")
+            showNoNetworkAlert();
         }
     }
 
     private fun setBadgeCount(context: Context, res: Int, badgeCount: Int): Drawable? {
-        val icon = ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable) as LayerDrawable?
+        val icon =
+            ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable) as LayerDrawable?
         val mainIcon = ContextCompat.getDrawable(context, res)
         val badge = BadgeDrawable(context)
         badge.setCount(badgeCount.toString())
@@ -685,15 +669,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
         return icon
     }
 
-    override fun deviceRegisterResponse(deviceRegistered: DeviceRegistered?) {
-        /* dismissProgress(); no progress bar silent call here */
-        NoqApplication.processRegisterDeviceIdResponse(deviceRegistered, this)
-        updateDrawerUI()
-    }
-
-    override fun deviceRegisterError() {
-
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
@@ -848,7 +823,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
             homeViewModel.viewModelScope.launch(Dispatchers.IO) {
                 val jsonTokenAndQueueArrayList = homeViewModel.getCurrentQueueObjectList(codeQR)
                 if (jsonTokenAndQueueArrayList?.size == 1) {
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
+                    FirebaseMessaging.getInstance()
+                        .unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
                 }
             }
         } else {

@@ -15,6 +15,8 @@ import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.client.model.APIConstant;
 import com.noqapp.android.client.model.api.DeviceClientApiImpl;
 import com.noqapp.android.client.model.open.DeviceClientImpl;
+import com.noqapp.android.client.model.response.api.NoQueeApi;
+import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.utils.Constants;
 import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
@@ -41,7 +43,7 @@ import static com.noqapp.android.client.model.APIConstant.Key.XR_MAIL;
 /**
  * Created by chandra on 5/20/17.
  */
-public class NoqApplication extends MultiDexApplication implements DeviceRegisterListener {
+public class NoqApplication extends MultiDexApplication {
 
 
     private static final String TAG = NoqApplication.class.getSimpleName();
@@ -76,7 +78,7 @@ public class NoqApplication extends MultiDexApplication implements DeviceRegiste
     public static String area = "";
     public static String town = "";
     public static boolean isLockMode = false;
-    private static NoqApplication noqApplication;
+    public static NoqApplication noqApplication;
 
     public NoqApplication() {
         super();
@@ -87,6 +89,8 @@ public class NoqApplication extends MultiDexApplication implements DeviceRegiste
     }
 
     private static FirebaseAnalytics fireBaseAnalytics;
+
+    private static NoQueeApi noQueeApi;
 
     /**
      * On application startup, override system default locale to which user set
@@ -108,7 +112,13 @@ public class NoqApplication extends MultiDexApplication implements DeviceRegiste
         MapsInitializer.initialize(this);
         isLockMode = getKioskModeInfo().isKioskModeEnable();
         noqApplication = this;
+         noQueeApi = RetrofitClient.getClient().create(NoQueeApi.class);
     }
+
+    public static NoQueeApi getNoQueeApi() {
+        return noQueeApi;
+    }
+
 
     public static boolean isNotificationSoundEnable() {
         Log.e("Sound enable", String.valueOf(preferences.getBoolean(PREKEY_IS_NOTIFICATION_SOUND_ENABLE, true)));
@@ -384,79 +394,6 @@ public class NoqApplication extends MultiDexApplication implements DeviceRegiste
 
     public static boolean isMsgAnnouncementEnable() {
         return preferences.getBoolean(PREKEY_IS_MSG_ANNOUNCE, true);
-    }
-
-    @Override
-    public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
-        processRegisterDeviceIdResponse(deviceRegistered, this);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        /* dismissProgress(); no progress bar silent call here */
-    }
-
-    @Override
-    public void deviceRegisterError() {
-        /* dismissProgress(); no progress bar silent call here */
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        /* dismissProgress(); no progress bar silent call here */
-        // new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        /* dismissProgress(); no progress bar silent call here */
-        // new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    public static void fetchDeviceId() {
-        fetchDeviceId(noqApplication);
-    }
-
-    public static void fetchDeviceId(DeviceRegisterListener deviceRegisterListener) {
-        DeviceToken deviceToken = new DeviceToken(
-                NoqApplication.getTokenFCM(),
-                Constants.appVersion(),
-                CommonHelper.getLocation(NoqApplication.location.getLatitude(), NoqApplication.location.getLongitude()));
-        if (UserUtils.isLogin()) {
-            DeviceClientApiImpl deviceClientApi = new DeviceClientApiImpl();
-            deviceClientApi.setDeviceRegisterPresenter(deviceRegisterListener);
-            deviceClientApi.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
-        } else {
-            DeviceClientImpl deviceRegistration = new DeviceClientImpl();
-            deviceRegistration.setDeviceRegisterPresenter(deviceRegisterListener);
-            deviceRegistration.register(deviceToken);
-        }
-    }
-
-    public static void processRegisterDeviceIdResponse(DeviceRegistered deviceRegistered, Context context) {
-        if (1 == deviceRegistered.getRegistered()) {
-            Log.d(TAG, "Device register success");
-            JsonUserAddress jsonUserAddress = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), context);
-            NoqApplication.cityName = jsonUserAddress.getLocationAsString();
-            Log.d(TAG, "Launch device register City Name=" + NoqApplication.cityName);
-
-            LocationPref locationPref = NoqApplication.getLocationPreference()
-                    .setArea(jsonUserAddress.getArea())
-                    .setTown(jsonUserAddress.getTown())
-                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
-            NoqApplication.setLocationPreference(locationPref);
-            NoqApplication.setDeviceID(deviceRegistered.getDeviceId());
-            NoqApplication.location.setLatitude(locationPref.getLatitude());
-            NoqApplication.location.setLongitude(locationPref.getLongitude());
-        } else {
-            Log.e(TAG, "Device register error: " + deviceRegistered.toString());
-            try {
-                new CustomToast().showToast(context, "Device registration error");
-            } catch (Exception e) {
-                Log.e(TAG, "BadTokenException exception caught while showing the window " + e.getLocalizedMessage());
-            }
-        }
     }
 
     public static void saveFavouriteList(List<String> list) {
