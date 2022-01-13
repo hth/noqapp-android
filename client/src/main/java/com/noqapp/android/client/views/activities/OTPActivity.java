@@ -68,7 +68,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         actionbarBack = findViewById(R.id.actionbarBack);
@@ -306,7 +306,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
                 Bundle params = new Bundle();
                 params.putBoolean("Phone", true);
-                NoqApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_LOGIN_SCREEN, params);
+                NoQueueClientApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_LOGIN_SCREEN, params);
 
             } else {
                 ShowAlertInformation.showNetworkDialog(this);

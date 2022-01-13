@@ -1,16 +1,13 @@
 package com.noqapp.android.client.views.version_2.viewmodels
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.noqapp.android.client.BuildConfig
-import com.noqapp.android.client.model.api.DeviceClientApiImpl
 import com.noqapp.android.client.model.api.FavouriteApiImpl
 import com.noqapp.android.client.model.api.TokenQueueApiImpl
 import com.noqapp.android.client.model.api.SearchApiImpl
-import com.noqapp.android.client.model.open.DeviceClientImpl
 import com.noqapp.android.client.model.open.SearchImpl
-import com.noqapp.android.client.model.response.api.NoQueeApi
+import com.noqapp.android.client.model.response.v3.api.NoQueueClientApi
 import com.noqapp.android.client.presenter.FavouriteListPresenter
 import com.noqapp.android.client.presenter.SearchBusinessStorePresenter
 import com.noqapp.android.client.presenter.TokenAndQueuePresenter
@@ -20,14 +17,12 @@ import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.NetworkUtils
 import com.noqapp.android.client.utils.ShowAlertInformation
 import com.noqapp.android.client.utils.UserUtils
-import com.noqapp.android.client.views.activities.NoqApplication
-import com.noqapp.android.client.views.pojos.LocationPref
+import com.noqapp.android.client.views.activities.NoQueueClientApplication
 import com.noqapp.android.client.views.version_2.db.NoQueueAppDB
 import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.common.beans.DeviceRegistered
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.beans.JsonSchedule
-import com.noqapp.android.common.beans.JsonUserAddress
 import com.noqapp.android.common.beans.body.DeviceToken
 import com.noqapp.android.common.customviews.CustomToast
 import com.noqapp.android.common.pojos.DisplayNotification
@@ -55,7 +50,7 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     private var searchApiImpl: SearchApiImpl
     private var tokenQueueApiImpl: TokenQueueApiImpl
 
-    private var noQueeApi: NoQueeApi
+    private var noQueueClientApi: NoQueueClientApi
 
 
     val currentTokenAndQueueListLiveData: LiveData<List<JsonTokenAndQueue>> = liveData {
@@ -101,7 +96,7 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         searchApiImpl = SearchApiImpl(this)
         tokenQueueApiImpl = TokenQueueApiImpl()
         tokenQueueApiImpl.setTokenAndQueuePresenter(this)
-        noQueeApi = NoqApplication.getNoQueeApi()
+        noQueueClientApi = NoQueueClientApplication.getNoQueueClientApi()
     }
 
     fun fetchNearMe(deviceId: String, searchQuery: SearchQuery) {
@@ -347,11 +342,11 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
 
     fun callRegistrationService() {
         val deviceToken = DeviceToken(
-            NoqApplication.getTokenFCM(),
+            NoQueueClientApplication.getTokenFCM(),
             Constants.appVersion(),
             CommonHelper.getLocation(
-                NoqApplication.location.latitude,
-                NoqApplication.location.longitude
+                NoQueueClientApplication.location.latitude,
+                NoQueueClientApplication.location.longitude
             )
         )
 
@@ -359,7 +354,7 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
             var deviceRegistered:DeviceRegistered?
 
             if (UserUtils.isLogin()) {
-                deviceRegistered = noQueeApi.register(
+                deviceRegistered = noQueueClientApi.register(
                     UserUtils.getDeviceId(),
                     Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR,
                     UserUtils.getEmail(),
@@ -367,28 +362,28 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
                     deviceToken
                 )
             } else {
-                deviceRegistered= noQueeApi.register(Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken)
+                deviceRegistered= noQueueClientApi.register(Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken)
             }
             if (1 == deviceRegistered?.registered) {
 
                 val jsonUserAddress = CommonHelper.getAddress(
                     deviceRegistered?.geoPointOfQ.lat,
                     deviceRegistered?.geoPointOfQ.lon,
-                    NoqApplication.noqApplication
+                    NoQueueClientApplication.noQueueClientApplication
                 )
-                NoqApplication.cityName = jsonUserAddress.locationAsString
-                val locationPref = NoqApplication.getLocationPreference()
+                NoQueueClientApplication.cityName = jsonUserAddress.locationAsString
+                val locationPref = NoQueueClientApplication.getLocationPreference()
                     .setArea(jsonUserAddress.area)
                     .setTown(jsonUserAddress.town)
                     .setLatitude(deviceRegistered?.geoPointOfQ.lat)
                     .setLongitude(deviceRegistered?.geoPointOfQ.lon)
-                NoqApplication.setLocationPreference(locationPref)
-                NoqApplication.setDeviceID(deviceRegistered?.deviceId)
-                NoqApplication.location.latitude = locationPref.latitude
-                NoqApplication.location.longitude = locationPref.longitude
+                NoQueueClientApplication.setLocationPreference(locationPref)
+                NoQueueClientApplication.setDeviceID(deviceRegistered?.deviceId)
+                NoQueueClientApplication.location.latitude = locationPref.latitude
+                NoQueueClientApplication.location.longitude = locationPref.longitude
             } else {
                 try {
-                    CustomToast().showToast(NoqApplication.noqApplication, "Device registration error")
+                    CustomToast().showToast(NoQueueClientApplication.noQueueClientApplication, "Device registration error")
                 } catch (e: Exception) {
 
                 }

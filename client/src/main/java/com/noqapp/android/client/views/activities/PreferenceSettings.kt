@@ -22,7 +22,7 @@ import com.noqapp.android.common.model.types.order.PaymentMethodEnum
 class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        hideSoftKeys(NoqApplication.isLockMode)
+        hideSoftKeys(NoQueueClientApplication.isLockMode)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification_settings)
         initActionsViews(true)
@@ -75,8 +75,8 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
         }
         btn_update.setOnClickListener {
             var jsonUserPreference: JsonUserPreference? = null
-            if (null != NoqApplication.getUserProfile() && null != NoqApplication.getUserProfile().jsonUserPreference) {
-                jsonUserPreference = NoqApplication.getUserProfile().jsonUserPreference
+            if (null != NoQueueClientApplication.getUserProfile() && null != NoQueueClientApplication.getUserProfile().jsonUserPreference) {
+                jsonUserPreference = NoQueueClientApplication.getUserProfile().jsonUserPreference
                 showProgress()
                 if (isHomeDelivery) {
                     jsonUserPreference?.deliveryMode = DeliveryModeEnum.HD
@@ -91,15 +91,15 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
                 clientPreferenceApiImpl.order(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonUserPreference)
             }
         }
-        sc_msg_announce.isChecked = NoqApplication.isMsgAnnouncementEnable()
+        sc_msg_announce.isChecked = NoQueueClientApplication.isMsgAnnouncementEnable()
 
         var jsonUserPreference: JsonUserPreference? = null
-        if (null != NoqApplication.getUserProfile() && null != NoqApplication.getUserProfile().jsonUserPreference) {
-            jsonUserPreference = NoqApplication.getUserProfile().jsonUserPreference
+        if (null != NoQueueClientApplication.getUserProfile() && null != NoQueueClientApplication.getUserProfile().jsonUserPreference) {
+            jsonUserPreference = NoQueueClientApplication.getUserProfile().jsonUserPreference
         }
         if (null == jsonUserPreference) {
-            sc_sms.isChecked = NoqApplication.isNotificationReceiveEnable()
-            sc_sound.isChecked = NoqApplication.isNotificationSoundEnable()
+            sc_sms.isChecked = NoQueueClientApplication.isNotificationReceiveEnable()
+            sc_sound.isChecked = NoQueueClientApplication.isNotificationSoundEnable()
         } else {
             sc_sms.isChecked = jsonUserPreference?.promotionalSMS == CommunicationModeEnum.R
             sc_sound.isChecked = jsonUserPreference?.firebaseNotification == CommunicationModeEnum.R
@@ -116,7 +116,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
             tv_online.performClick()
         }
         sc_sms.setOnCheckedChangeListener { _, isChecked ->
-            NoqApplication.setNotificationReceiveEnable(isChecked)
+            NoQueueClientApplication.setNotificationReceiveEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
                 CustomToast().showToast(this@PreferenceSettings, "Promotional SMS Enabled")
@@ -129,7 +129,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
         }
 
         sc_sound.setOnCheckedChangeListener { _, isChecked ->
-            NoqApplication.setNotificationSoundEnable(isChecked)
+            NoQueueClientApplication.setNotificationSoundEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
                 CustomToast().showToast(this@PreferenceSettings, "Notification Sound Enabled")
@@ -142,7 +142,7 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
         }
 
         sc_msg_announce.setOnCheckedChangeListener { _, isChecked ->
-            NoqApplication.setMsgAnnouncementEnable(isChecked)
+            NoQueueClientApplication.setMsgAnnouncementEnable(isChecked)
             if (isChecked) {
                 // The switch is enabled/checked
                 CustomToast().showToast(this@PreferenceSettings, "Message Announcement Enabled")
@@ -155,9 +155,9 @@ class PreferenceSettings : BaseActivity(), ClientPreferencePresenter {
 
     override fun clientPreferencePresenterResponse(jsonUserPreference: JsonUserPreference?) {
         dismissProgress()
-        val jsonProfile: JsonProfile = NoqApplication.getUserProfile()
+        val jsonProfile: JsonProfile = NoQueueClientApplication.getUserProfile()
         jsonProfile.jsonUserPreference = jsonUserPreference
-        NoqApplication.setUserProfile(jsonProfile)
+        NoQueueClientApplication.setUserProfile(jsonProfile)
         CustomToast().showToast(this@PreferenceSettings, "Settings updated successfully")
     }
 }

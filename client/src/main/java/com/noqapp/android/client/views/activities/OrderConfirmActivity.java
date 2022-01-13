@@ -106,7 +106,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_confirm);
 
@@ -166,7 +166,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                             OrderConfirmActivity.this,
                             "Payment cannot proceed as business has not set the price of the product");
                 } else {
-                    if (NoqApplication.isEmailVerified()) {
+                    if (NoQueueClientApplication.isEmailVerified()) {
                         if (isOnline()) {
                             showProgress();
                             setProgressMessage("Starting payment process..");
@@ -182,7 +182,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 }
             }
         });
-        NoqApplication.activityCommunicator = this;
+        NoQueueClientApplication.activityCommunicator = this;
         initActionsViews(true);
         iv_home.setOnClickListener((View v) -> {
             Intent goToA = new Intent(OrderConfirmActivity.this, HomeActivity.class);
@@ -209,7 +209,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                     if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getTransactionId()) {
                         Bundle params = new Bundle();
                         params.putString("Order_Id", jsonPurchaseOrder.getTransactionId());
-                        NoqApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_PLACE_ORDER, params);
+                        NoQueueClientApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_PLACE_ORDER, params);
                     }
                 }
             } else {
@@ -221,7 +221,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
             updateUI();
         }
         actionbarBack.setOnClickListener((View v) -> {
-            NoqApplication.activityCommunicator = null;
+            NoQueueClientApplication.activityCommunicator = null;
             iv_home.performClick();
         });
         btn_cancel_order.setOnClickListener((View v) -> {
@@ -267,7 +267,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 if (null != jsonPurchaseOrder && null != jsonPurchaseOrder.getTransactionId()) {
                     Bundle params = new Bundle();
                     params.putString("Order_Id", jsonPurchaseOrder.getTransactionId());
-                    NoqApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CANCEL_ORDER, params);
+                    NoQueueClientApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CANCEL_ORDER, params);
                 }
             }
         } else {
@@ -389,7 +389,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         //TODO   Revert After Corona crisis
         tv_estimated_time.setVisibility(View.INVISIBLE);
         //
-        LatLng source = new LatLng(NoqApplication.getLocationPreference().getLatitude(), NoqApplication.getLocationPreference().getLongitude());
+        LatLng source = new LatLng(NoQueueClientApplication.getLocationPreference().getLatitude(), NoQueueClientApplication.getLocationPreference().getLongitude());
         String geoHash = getIntent().getStringExtra("GeoHash");
         LatLng destination = new LatLng(GeoHashUtils.decodeLatitude(geoHash), GeoHashUtils.decodeLongitude(geoHash));
         replaceFragmentWithoutBackStack(R.id.frame_map, MapFragment.getInstance(source, destination));
@@ -412,7 +412,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     @Override
     public void onBackPressed() {
         iv_home.performClick();
-        NoqApplication.activityCommunicator = null;
+        NoQueueClientApplication.activityCommunicator = null;
     }
 
     @Override
@@ -461,7 +461,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        NoqApplication.activityCommunicator = null;
+        NoQueueClientApplication.activityCommunicator = null;
     }
 
     @Override
@@ -503,9 +503,9 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
         String orderId = jsonPurchaseOrder.getTransactionId();
         String orderAmount = jsonPurchaseOrder.getJsonResponseWithCFToken().getOrderAmount();
         String orderNote = "Test Order";
-        String customerName = NoqApplication.getCustomerNameWithQid(NoqApplication.getUserName(), NoqApplication.getUserProfile().getQueueUserId());
-        String customerPhone = NoqApplication.getOfficePhoneNo();
-        String customerEmail = NoqApplication.getOfficeMail();
+        String customerName = NoQueueClientApplication.getCustomerNameWithQid(NoQueueClientApplication.getUserName(), NoQueueClientApplication.getUserProfile().getQueueUserId());
+        String customerPhone = NoQueueClientApplication.getOfficePhoneNo();
+        String customerEmail = NoQueueClientApplication.getOfficeMail();
 
         Map<String, String> params = new HashMap<>();
         params.put(PARAM_APP_ID, appId);
@@ -570,7 +570,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
     }
 
     private void closeKioskScreen() {
-        if (NoqApplication.isLockMode) {
+        if (NoQueueClientApplication.isLockMode) {
             Handler handler = new Handler();
 
             handler.postDelayed(() -> {
@@ -716,7 +716,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                 Intent blinkerIntent = new Intent(OrderConfirmActivity.this, BlinkerActivity.class);
                 blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(blinkerIntent);
-                if (NoqApplication.isMsgAnnouncementEnable()) {
+                if (NoQueueClientApplication.isMsgAnnouncementEnable()) {
                     if (null != foregroundNotification.getJsonTextToSpeeches()) {
                         makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
                     }
@@ -728,7 +728,7 @@ public class OrderConfirmActivity extends BaseActivity implements PurchaseOrderP
                         Intent blinkerIntent = new Intent(OrderConfirmActivity.this, BlinkerActivity.class);
                         blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(blinkerIntent);
-                        if (NoqApplication.isMsgAnnouncementEnable()) {
+                        if (NoQueueClientApplication.isMsgAnnouncementEnable()) {
                             if (null != foregroundNotification.getJsonTextToSpeeches()) {
                                 makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
                             }

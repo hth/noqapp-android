@@ -148,7 +148,7 @@ public class AfterJoinActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_join);
 
@@ -282,7 +282,7 @@ public class AfterJoinActivity
         tokenQueueImpl = new TokenQueueImpl();
         tokenQueueApiImpl = new TokenQueueApiImpl();
         tokenQueueApiImpl.setQueueJsonPurchaseOrderPresenter(this);
-        NoqApplication.activityCommunicator = this;
+        NoQueueClientApplication.activityCommunicator = this;
         Intent bundle = getIntent();
         if (null != bundle) {
             jsonTokenAndQueue = (JsonTokenAndQueue) bundle.getSerializableExtra(IBConstant.KEY_JSON_TOKEN_QUEUE);
@@ -299,7 +299,7 @@ public class AfterJoinActivity
             queueUserId = bundle.getStringExtra("qUserId");
             List<JsonProfile> profileList = new ArrayList<>();
             if (UserUtils.isLogin()) {
-                profileList = NoqApplication.getAllProfileList();
+                profileList = NoQueueClientApplication.getAllProfileList();
             }
 
             afterJoinOrderViewModel.insertTokenAndQueue(jsonTokenAndQueue);
@@ -319,7 +319,7 @@ public class AfterJoinActivity
             }
             actionbarBack.setOnClickListener((View v) -> iv_home.performClick());
             iv_home.setOnClickListener((View v) -> {
-                NoqApplication.activityCommunicator = null;
+                NoQueueClientApplication.activityCommunicator = null;
                 Intent goToA = new Intent(AfterJoinActivity.this, HomeActivity.class);
                 startActivity(goToA);
                 finish();
@@ -472,7 +472,7 @@ public class AfterJoinActivity
                     String displayName = null != jsonTokenAndQueue ? jsonTokenAndQueue.getDisplayName() : "N/A";
                     Bundle params = new Bundle();
                     params.putString("Queue_Name", displayName);
-                    NoqApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CANCEL_QUEUE, params);
+                    NoQueueClientApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CANCEL_QUEUE, params);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
@@ -609,7 +609,7 @@ public class AfterJoinActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        NoqApplication.activityCommunicator = null;
+        NoQueueClientApplication.activityCommunicator = null;
     }
 
     @Override
@@ -766,16 +766,16 @@ public class AfterJoinActivity
     }
 
     private void triggerOnlinePayment() {
-        if (NoqApplication.isEmailVerified()) {
+        if (NoQueueClientApplication.isEmailVerified()) {
             String token = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getCftoken();
             String stage = BuildConfig.CASHFREE_STAGE;
             String appId = BuildConfig.CASHFREE_APP_ID;
             String orderId = jsonToken.getJsonPurchaseOrder().getTransactionId();
             String orderAmount = jsonToken.getJsonPurchaseOrder().getJsonResponseWithCFToken().getOrderAmount();
             String orderNote = "Order: " + queueUserId;
-            String customerName = NoqApplication.getCustomerNameWithQid(tv_name.getText().toString(), queueUserId);
-            String customerPhone = NoqApplication.getOfficePhoneNo();
-            String customerEmail = NoqApplication.getOfficeMail();
+            String customerName = NoQueueClientApplication.getCustomerNameWithQid(tv_name.getText().toString(), queueUserId);
+            String customerPhone = NoQueueClientApplication.getOfficePhoneNo();
+            String customerEmail = NoQueueClientApplication.getOfficeMail();
             Map<String, String> params = new HashMap<>();
             params.put(PARAM_APP_ID, appId);
             params.put(PARAM_ORDER_ID, orderId);
@@ -941,7 +941,7 @@ public class AfterJoinActivity
                 Intent blinkerIntent = new Intent(AfterJoinActivity.this, BlinkerActivity.class);
                 blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(blinkerIntent);
-                if (NoqApplication.isMsgAnnouncementEnable()) {
+                if (NoQueueClientApplication.isMsgAnnouncementEnable()) {
                     if (foregroundNotification.getJsonTextToSpeeches() != null) {
                         makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
                     }
@@ -951,7 +951,7 @@ public class AfterJoinActivity
                     Intent blinkerIntent = new Intent(AfterJoinActivity.this, BlinkerActivity.class);
                     blinkerIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(blinkerIntent);
-                    if (NoqApplication.isMsgAnnouncementEnable()) {
+                    if (NoQueueClientApplication.isMsgAnnouncementEnable()) {
                         if (foregroundNotification.getJsonTextToSpeeches() != null) {
                             makeAnnouncement(foregroundNotification.getJsonTextToSpeeches(), foregroundNotification.getMsgId());
                         }

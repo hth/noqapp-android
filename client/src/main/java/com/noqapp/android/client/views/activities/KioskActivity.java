@@ -67,7 +67,7 @@ public class KioskActivity extends BaseActivity implements QueuePresenter, Token
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kiosk_join);
         tv_timer = findViewById(R.id.tv_timer);
@@ -273,19 +273,19 @@ public class KioskActivity extends BaseActivity implements QueuePresenter, Token
     }
 
     private void callJoinAPI() {
-        if (!NoqApplication.isEmailVerified()) {
+        if (!NoQueueClientApplication.isEmailVerified()) {
             new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
         } else {
             KioskApiImpl kioskApiImpl = new KioskApiImpl();
             kioskApiImpl.setTokenPresenter(this);
-            JsonProfile jp = NoqApplication.getUserProfile();
+            JsonProfile jp = NoQueueClientApplication.getUserProfile();
             String queueUserId = ((JsonProfile) sp_name_list.getSelectedItem()).getQueueUserId();
             tv_name.setText(((JsonProfile) sp_name_list.getSelectedItem()).getName());
             String qUserId;
             String guardianId = null;
             List<JsonProfile> profileList = new ArrayList<>();
             if (UserUtils.isLogin()) {
-                profileList = NoqApplication.getAllProfileList();
+                profileList = NoQueueClientApplication.getAllProfileList();
             }
             JsonProfile jsonProfile = AppUtils.getJsonProfileQueueUserID(queueUserId, profileList);
             if (jp.getQueueUserId().equalsIgnoreCase(queueUserId)) {
@@ -300,7 +300,7 @@ public class KioskActivity extends BaseActivity implements QueuePresenter, Token
             if (AppUtils.isRelease()) {
                 Bundle params = new Bundle();
                 params.putString("Queue_Name", jsonQueue.getDisplayName());
-                NoqApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_KIOSK_SCREEN, params);
+                NoQueueClientApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_KIOSK_SCREEN, params);
             }
         }
     }
@@ -340,8 +340,8 @@ public class KioskActivity extends BaseActivity implements QueuePresenter, Token
         }
 
         if (UserUtils.isLogin()) {
-            List<JsonProfile> profileList = NoqApplication.getUserProfile().getDependents();
-            profileList.add(0, NoqApplication.getUserProfile());
+            List<JsonProfile> profileList = NoQueueClientApplication.getUserProfile().getDependents();
+            profileList.add(0, NoQueueClientApplication.getUserProfile());
             profileList.add(0, new JsonProfile().setName(getString(R.string.select_patient)));
             DependentAdapter adapter = new DependentAdapter(this, profileList);
             sp_name_list.setAdapter(adapter);

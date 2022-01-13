@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.version_2
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -12,7 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.ExpandableListView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -43,7 +41,6 @@ import com.noqapp.android.client.views.version_2.fragments.HomeFragmentInteracti
 import com.noqapp.android.client.views.version_2.market_place.householdItem.household_item_list.HouseholdItemListActivity
 import com.noqapp.android.client.views.version_2.market_place.propertyRental.property_rental_details.PropertyRentalListActivity
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
-import com.noqapp.android.common.beans.DeviceRegistered
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.beans.JsonLatestAppVersion
 import com.noqapp.android.common.customviews.CustomToast
@@ -52,8 +49,6 @@ import com.noqapp.android.common.model.types.MessageOriginEnum
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 import com.noqapp.android.common.pojos.MenuDrawer
-import com.noqapp.android.common.presenter.DeviceRegisterListener
-import com.noqapp.android.common.utils.NetworkUtil
 import com.noqapp.android.common.utils.PermissionUtils
 import com.noqapp.android.common.utils.TextToSpeechHelper
 import com.noqapp.android.common.utils.Version
@@ -93,7 +88,7 @@ class HomeActivity : LocationBaseActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        NoqApplication.setLocationChangedManually(false)
+        NoQueueClientApplication.setLocationChangedManually(false)
         activityHomeBinding = ActivityHomeBinding.inflate(LayoutInflater.from(this))
         setContentView(activityHomeBinding.root)
         setSupportActionBar(activityHomeBinding.toolbar)
@@ -113,7 +108,7 @@ class HomeActivity : LocationBaseActivity(),
         observeValues()
 
         FirebaseMessaging.getInstance().token.addOnSuccessListener(this) { token: String? ->
-            NoqApplication.setTokenFCM(token)
+            NoQueueClientApplication.setTokenFCM(token)
             reCreateDeviceID(this)
         }
     }
@@ -170,11 +165,11 @@ class HomeActivity : LocationBaseActivity(),
     }
 
     private fun showLoginScreen() {
-        if (NoqApplication.getShowHelper()) {
+        if (NoQueueClientApplication.getShowHelper()) {
             activityHomeBinding.btnChangeLanguage.setOnClickListener {
                 val claIntent = Intent(this, ChangeLanguageActivity::class.java)
                 startActivity(claIntent)
-                NoqApplication.setShowHelper(true)
+                NoQueueClientApplication.setShowHelper(true)
             }
             activityHomeBinding.rlHelper.visibility = View.VISIBLE
             activityHomeBinding.btnSkip.setOnClickListener { v: View? ->
@@ -185,7 +180,7 @@ class HomeActivity : LocationBaseActivity(),
                 val loginIntent = Intent(this, LoginActivity::class.java)
                 startActivity(loginIntent)
             }
-            NoqApplication.setShowHelper(false)
+            NoQueueClientApplication.setShowHelper(false)
         } else {
             if (isRateUsFirstTime) {
                 RateTheAppManager().appLaunched(this)
@@ -262,7 +257,7 @@ class HomeActivity : LocationBaseActivity(),
                 blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(blinkerIntent)
 
-                if (NoqApplication.isMsgAnnouncementEnable()) {
+                if (NoQueueClientApplication.isMsgAnnouncementEnable()) {
                     if (foregroundNotification.jsonTextToSpeeches != null) {
                         makeAnnouncement(
                             foregroundNotification.jsonTextToSpeeches!!,
@@ -277,7 +272,7 @@ class HomeActivity : LocationBaseActivity(),
                     blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(blinkerIntent)
 
-                    if (NoqApplication.isMsgAnnouncementEnable()) {
+                    if (NoQueueClientApplication.isMsgAnnouncementEnable()) {
                         if (foregroundNotification.jsonTextToSpeeches != null) {
                             makeAnnouncement(
                                 foregroundNotification.jsonTextToSpeeches!!,
@@ -325,8 +320,8 @@ class HomeActivity : LocationBaseActivity(),
 
     private fun updateDrawerUI() {
         if (UserUtils.isLogin()) {
-            navHeaderMainBinding.tvEmail.text = NoqApplication.getActualMail()
-            navHeaderMainBinding.tvName.text = NoqApplication.getUserName()
+            navHeaderMainBinding.tvEmail.text = NoQueueClientApplication.getActualMail()
+            navHeaderMainBinding.tvName.text = NoQueueClientApplication.getUserName()
         } else {
             navHeaderMainBinding.tvEmail.text = getString(R.string.txt_please_login)
             navHeaderMainBinding.tvName.text = getString(R.string.txt_guest_user)
@@ -334,12 +329,12 @@ class HomeActivity : LocationBaseActivity(),
 
         Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(navHeaderMainBinding.ivProfile)
         try {
-            if (!TextUtils.isEmpty(NoqApplication.getUserProfileUri())) {
+            if (!TextUtils.isEmpty(NoQueueClientApplication.getUserProfileUri())) {
                 Picasso.get()
                     .load(
                         AppUtils.getImageUrls(
                             BuildConfig.PROFILE_BUCKET,
-                            NoqApplication.getUserProfileUri()
+                            NoQueueClientApplication.getUserProfileUri()
                         )
                     )
                     .placeholder(ImageUtils.getProfilePlaceholder(this))
@@ -599,7 +594,7 @@ class HomeActivity : LocationBaseActivity(),
                 val showDialog = ShowCustomDialog(this, true)
                 showDialog.setDialogClickListener(object : ShowCustomDialog.DialogClickListener {
                     override fun btnPositiveClick() {
-                        NoqApplication.clearPreferences()
+                        NoQueueClientApplication.clearPreferences()
                         homeViewModel.clearTokenAndQueue()
                         homeViewModel.clearForegroundNotifications()
                         homeViewModel.clearReviewData()

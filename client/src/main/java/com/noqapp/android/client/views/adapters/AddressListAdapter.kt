@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.R
 import com.noqapp.android.client.databinding.AddressListItemBinding
 import com.noqapp.android.client.utils.ShowCustomDialog
-import com.noqapp.android.client.views.activities.NoqApplication
+import com.noqapp.android.client.views.activities.NoQueueClientApplication
 import com.noqapp.android.common.beans.JsonUserAddress
 
 /**
@@ -64,7 +64,7 @@ class AddressListAdapter(private val addressList: MutableList<JsonUserAddress>, 
                 showDialog.displayDialog("Delete Address", "Do you want to delete address from address list?")
             }
 
-            rbAddress.isChecked = jsonUserAddress.id == NoqApplication.getSelectedAddressId()
+            rbAddress.isChecked = jsonUserAddress.id == NoQueueClientApplication.getSelectedAddressId()
 
             rbAddress.setOnClickListener {
                 clickListener(jsonUserAddress, it)

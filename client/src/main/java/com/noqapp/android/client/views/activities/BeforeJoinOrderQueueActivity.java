@@ -80,7 +80,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_before_join_order_q);
         swipeRefreshLayout = findViewById(R.id.refresh);
@@ -370,7 +370,7 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
     }
 
     private void callJoinScreen() {
-        if (jsonQueue.isEnabledPayment() && !NoqApplication.isEmailVerified()) {
+        if (jsonQueue.isEnabledPayment() && !NoQueueClientApplication.isEmailVerified()) {
             new CustomToast().showToast(this, "To pay, email is mandatory. In your profile add and verify email");
         } else if (!AppUtils.isValidStoreDistanceForUser(jsonQueue)) {
             ShowCustomDialog showCustomDialog = new ShowCustomDialog(this, true);
@@ -384,16 +384,16 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
                     in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
                     in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
                     in.putExtra("qUserId",
-                        null == NoqApplication.getUserProfile().getQueueUserId()
+                        null == NoQueueClientApplication.getUserProfile().getQueueUserId()
                             ? ""
-                            : NoqApplication.getUserProfile().getQueueUserId());
+                            : NoQueueClientApplication.getUserProfile().getQueueUserId());
                     in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
                     startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
 
                     if (AppUtils.isRelease()) {
                         Bundle params = new Bundle();
                         params.putString("Queue_Name", jsonQueue.getDisplayName());
-                        NoqApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_SCREEN, params);
+                        NoQueueClientApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_SCREEN, params);
                     }
                 }
 
@@ -411,16 +411,16 @@ public class BeforeJoinOrderQueueActivity extends BaseActivity implements QueueP
             in.putExtra(IBConstant.KEY_JSON_TOKEN_QUEUE, jsonQueue.getJsonTokenAndQueue());
             in.putExtra(Constants.ACTIVITY_TO_CLOSE, true);
             in.putExtra("qUserId",
-                null == NoqApplication.getUserProfile().getQueueUserId()
+                null == NoQueueClientApplication.getUserProfile().getQueueUserId()
                     ? ""
-                    : NoqApplication.getUserProfile().getQueueUserId());
+                    : NoQueueClientApplication.getUserProfile().getQueueUserId());
             in.putExtra("imageUrl", getIntent().getStringExtra(IBConstant.KEY_IMAGE_URL));
             startActivityForResult(in, Constants.requestCodeAfterJoinQActivity);
 
             if (AppUtils.isRelease()) {
                 Bundle params = new Bundle();
                 params.putString("Queue_Name", jsonQueue.getDisplayName());
-                NoqApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_SCREEN, params);
+                NoQueueClientApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_JOIN_SCREEN, params);
             }
         }
     }

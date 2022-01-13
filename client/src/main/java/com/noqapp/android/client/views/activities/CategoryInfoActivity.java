@@ -124,7 +124,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getBundleExtra("bundle");
         if (null != bundle && bundle.getBoolean(IBConstant.KEY_IS_TEMPLE, false)) {
@@ -383,7 +383,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
             showKioskModeDialog.setDialogClickListener(new ShowKioskModeDialog.DialogClickListener() {
                 @Override
                 public void btnPositiveClick(boolean isFeedBackScreen) {
-                    NoqApplication.isLockMode = true;
+                    NoQueueClientApplication.isLockMode = true;
                     KioskModeInfo kioskModeInfo = new KioskModeInfo();
                     kioskModeInfo.setKioskCodeQR(bizStoreElastic.getCodeQR());
                     kioskModeInfo.setKioskModeEnable(true);
@@ -391,16 +391,16 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     kioskModeInfo.setBizNameId(bizStoreElastic.getBizNameId());
                     kioskModeInfo.setBizName(bizStoreElastic.getBusinessName());
                     kioskModeInfo.setFeedbackScreen(isFeedBackScreen);
-                    NoqApplication.setKioskModeInfo(kioskModeInfo);
+                    NoQueueClientApplication.setKioskModeInfo(kioskModeInfo);
 
-                    if (NoqApplication.getKioskModeInfo().isFeedbackScreen()) {
+                    if (NoQueueClientApplication.getKioskModeInfo().isFeedbackScreen()) {
                         Intent in = new Intent(CategoryInfoActivity.this, SurveyKioskModeActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR, NoqApplication.getKioskModeInfo().getKioskCodeQR());
+                        in.putExtra(IBConstant.KEY_CODE_QR, NoQueueClientApplication.getKioskModeInfo().getKioskCodeQR());
                         startActivity(in);
                     } else {
-                        NoqApplication.clearPreferences();
+                        NoQueueClientApplication.clearPreferences();
                         Intent in = new Intent(CategoryInfoActivity.this, CategoryInfoKioskModeActivity.class);
-                        in.putExtra(IBConstant.KEY_CODE_QR, NoqApplication.getKioskModeInfo().getKioskCodeQR());
+                        in.putExtra(IBConstant.KEY_CODE_QR, NoQueueClientApplication.getKioskModeInfo().getKioskCodeQR());
                         startActivity(in);
                     }
                     finish();
@@ -411,7 +411,7 @@ public class CategoryInfoActivity extends BaseActivity implements QueuePresenter
                     //Do nothing
                 }
             });
-            showKioskModeDialog.displayDialog(NoqApplication.getUserProfile().getUserLevel().getDescription());
+            showKioskModeDialog.displayDialog(NoQueueClientApplication.getUserProfile().getUserLevel().getDescription());
         });
     }
 
