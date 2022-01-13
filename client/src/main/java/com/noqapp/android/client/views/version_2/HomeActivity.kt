@@ -138,12 +138,13 @@ class HomeActivity : LocationBaseActivity(),
         latitude: Double?,
         longitude: Double?
     ) {
-        activityHomeBinding.tvLocation.text = AppUtils.getLocationAsString(area, town)
+        val locationAsString = AppUtils.getLocationAsString(area, town)
+        activityHomeBinding.tvLocation.text = locationAsString
         locationArea = area ?: ""
         locationTown = town ?: ""
         val searchStoreQuery = SearchQuery()
         area?.let {
-            searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
+            searchStoreQuery.cityName = locationAsString
         }
         latitude?.let {
             searchStoreQuery.latitude = it.toString()
