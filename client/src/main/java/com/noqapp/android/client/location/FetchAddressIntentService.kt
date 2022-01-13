@@ -165,7 +165,8 @@ class FetchAddressIntentService : JobIntentService() {
     private fun loadAddressFromJson(json: String?): String? {
         val gson = Gson()
         val readValue = gson.fromJson(json, GeoApiResponse::class.java)
-        val addressComponents = readValue.results?.get(0)?.address_components
+        val get = readValue.results?.get(0)
+        val addressComponents = get?.address_components
         addressComponents?.forEach { data ->
             data.types?.forEach {
                 if ("locality".equals(it)) {
@@ -173,7 +174,7 @@ class FetchAddressIntentService : JobIntentService() {
                 }
             }
         }
-        return null
+        return get?.formatted_address
     }
 
     private fun fetchAddressFromApi(latitude: Double, longitude: Double): String? {

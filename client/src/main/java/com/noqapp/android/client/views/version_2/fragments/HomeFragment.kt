@@ -52,8 +52,15 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
     private var searchQuery: SearchQuery? = null
     private var showRecentVisitsFirst = true
 
+
+    var nearMeList: List<BizStoreElastic>? = null
+    var favouritesList: List<BizStoreElastic>? = null
+
     private val homeViewModel: HomeViewModel by lazy {
-        ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application))[HomeViewModel::class.java]
+        ViewModelProvider(
+            requireActivity(),
+            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+        )[HomeViewModel::class.java]
     }
 
     override fun onAttach(context: Context) {
@@ -96,10 +103,22 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
                     if (it.position == 0) {
-                        homeViewModel.fetchFavouritesRecentVisitList()
+                        if (favouritesList == null || searchQuery == null) {
+                            if (UserUtils.isLogin()) {
+                                homeViewModel.fetchFavouritesRecentVisitList()
+                            } else {
+                                setEmptyData()
+                            }
+                        } else {
+                            setFavouritesData(favouritesList!!)
+                        }
                     } else {
                         searchQuery?.let { searchStoreQuery ->
-                            homeViewModel.fetchNearMe(UserUtils.getDeviceId(), searchStoreQuery)
+                            if (nearMeList == null || searchQuery == null) {
+                                homeViewModel.fetchNearMe(UserUtils.getDeviceId(), searchStoreQuery)
+                            } else {
+                                setNearmeData(nearMeList!!)
+                            }
                         }
                     }
                 }
@@ -109,25 +128,27 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                tab?.let {
-                    if (it.position == 0) {
-                        homeViewModel.fetchFavouritesRecentVisitList()
-                    } else {
-                        searchQuery?.let { searchStoreQuery ->
-                            homeViewModel.fetchNearMe(UserUtils.getDeviceId(), searchStoreQuery)
-                        }
-                    }
-                }
+//                tab?.let {
+//                    if (it.position == 0) {
+//                        homeViewModel.fetchFavouritesRecentVisitList()
+//                    } else {
+//                        searchQuery?.let { searchStoreQuery ->
+//                            homeViewModel.fetchNearMe(UserUtils.getDeviceId(), searchStoreQuery)
+//                        }
+//                    }
+//                }
             }
         })
 
         fragmentHomeNewBinding.clRestaurant.setOnClickListener {
-            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
+            val navigationDirections =
+                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.RS)
             findNavController().navigate(navigationDirections)
         }
 
         fragmentHomeNewBinding.clHospital.setOnClickListener {
-            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.HS)
+            val navigationDirections =
+                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.HS)
             findNavController().navigate(navigationDirections)
         }
 
@@ -140,12 +161,14 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
 
         fragmentHomeNewBinding.clGrocery.setOnClickListener {
-            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.GS)
+            val navigationDirections =
+                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.GS)
             findNavController().navigate(navigationDirections)
         }
 
         fragmentHomeNewBinding.clGenericStore.setOnClickListener {
-            val navigationDirections = HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.ST)
+            val navigationDirections =
+                HomeFragmentDirections.actionHomeToViewBusinessDestination(BusinessTypeEnum.ST)
             findNavController().navigate(navigationDirections)
         }
 
@@ -158,21 +181,54 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         }
     }
 
+
+    private fun setEmptyData() {
+        val storeInfoAdapter = StoreInfoAdapter(
+            emptyList(),
+            activity,
+            this, 0.0, 0.0
+        )
+        fragmentHomeNewBinding.rvRecentVisitsNearMe.adapter = storeInfoAdapter
+    }
+
+    private fun setNearmeData(nearMeList: List<BizStoreElastic>) {
+        val storeInfoAdapter = StoreInfoAdapter(
+            nearMeList,
+            activity,
+            this,
+            searchQuery!!.latitude.toDouble(),
+            searchQuery!!.longitude.toDouble()
+        )
+        fragmentHomeNewBinding.rvRecentVisitsNearMe.adapter = storeInfoAdapter
+    }
+
+    private fun setFavouritesData(favouritesList: List<BizStoreElastic>) {
+        val storeInfoAdapter = StoreInfoAdapter(
+            favouritesList,
+            activity,
+            this,
+            searchQuery!!.latitude.toDouble(),
+            searchQuery!!.longitude.toDouble()
+        )
+        fragmentHomeNewBinding.rvRecentVisitsNearMe.adapter = storeInfoAdapter
+        fragmentHomeNewBinding.pbRecentVisitsNearMe.visibility = View.GONE
+    }
+
     private fun observeValues() {
         homeViewModel.searchStoreQueryLiveData.observe(viewLifecycleOwner, {
             it.searchedOnBusinessType = BusinessTypeEnum.ZZ
             searchQuery = it
             fragmentHomeNewBinding.pbRecentVisitsNearMe.visibility = View.VISIBLE
-            if (showRecentVisitsFirst) {
-                showRecentVisitsFirst = false
-                homeViewModel.fetchFavouritesRecentVisitList()
-            } else {
-                fragmentHomeNewBinding.tabNearMeRecentVisits.selectTab(
-                    fragmentHomeNewBinding.tabNearMeRecentVisits.getTabAt(
-                        1
-                    )
-                )
-            }
+//            if (showRecentVisitsFirst) {
+//                showRecentVisitsFirst = false
+//                homeViewModel.fetchFavouritesRecentVisitList()
+//            } else {
+//                fragmentHomeNewBinding.tabNearMeRecentVisits.selectTab(
+//                    fragmentHomeNewBinding.tabNearMeRecentVisits.getTabAt(
+//                        1
+//                    )
+//                )
+//            }
         })
 
         homeViewModel.nearMeResponse.observe(viewLifecycleOwner, { bizStoreElasticList ->
@@ -187,6 +243,8 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
                             )
                         )
                     )
+
+                    nearMeList = it
                     val storeInfoAdapter = StoreInfoAdapter(
                         it,
                         activity,
@@ -204,6 +262,7 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
         homeViewModel.favoritesListResponseLiveData.observe(viewLifecycleOwner, { favoriteElastic ->
             favoriteElastic?.favoriteSuggested?.let {
                 searchQuery?.let { searchStoreQueryVal ->
+                    favouritesList = it
                     val storeInfoAdapter = StoreInfoAdapter(
                         it,
                         activity,
@@ -213,13 +272,13 @@ class HomeFragment : BaseFragment(), StoreInfoAdapter.OnItemClickListener {
                     )
                     fragmentHomeNewBinding.rvRecentVisitsNearMe.adapter = storeInfoAdapter
                     fragmentHomeNewBinding.pbRecentVisitsNearMe.visibility = View.GONE
-                    if (it.isNullOrEmpty()) {
-                        fragmentHomeNewBinding.tabNearMeRecentVisits.selectTab(
-                            fragmentHomeNewBinding.tabNearMeRecentVisits.getTabAt(
-                                1
-                            )
-                        )
-                    }
+//                    if (it.isNullOrEmpty()) {
+//                        fragmentHomeNewBinding.tabNearMeRecentVisits.selectTab(
+//                            fragmentHomeNewBinding.tabNearMeRecentVisits.getTabAt(
+//                                1
+//                            )
+//                        )
+//                    }
                 }
             }
         })
