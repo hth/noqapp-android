@@ -167,7 +167,7 @@
     <string name="authentication_fail_msg">कृपया फिर से लॉग-इन करें</string>
     <string name="barcode_error">यह कोड सही नहीं हैं।</string>
     <string name="barcode_error_msg">कोई व्यापारी इस NoQueue कोड से संबद्ध नहीं है।</string>
-    <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2021 \u00a9 NoQueue Inc\n</string>
+    <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2022 \u00a9 NoQueue Inc\n</string>
     <string name="alert">सावधान</string>
     <string name="wait_time">प्रतीक्षा समय</string>
     <string name="wait_time_formatted">प्रतीक्षा समय: %1$s</string>
