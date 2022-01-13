@@ -65,7 +65,7 @@ public class StoreWithMenuKioskActivity extends BaseActivity implements StorePre
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_store_with_menu_kiosk);
         initActionsViews(false);

@@ -28,7 +28,7 @@ public class LoginActivity extends OTPActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         activity = this;
         tv_toolbar_title.setText("Login");
@@ -68,8 +68,8 @@ public class LoginActivity extends OTPActivity {
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.d(TAG, "profile :" + profile.toString());
-        AppInitialize.commitProfile(profile, email, auth);
-        AppInitialize.setPreviousUserQID(profile.getQueueUserId());
+        NoQueueClientApplication.commitProfile(profile, email, auth);
+        NoQueueClientApplication.setPreviousUserQID(profile.getQueueUserId());
         Intent intent = new Intent(this, HomeActivity.class);
         intent.putExtra("fromLogin", true);
         startActivity(intent);

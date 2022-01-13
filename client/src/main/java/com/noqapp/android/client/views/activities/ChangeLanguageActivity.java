@@ -16,13 +16,12 @@ import com.noqapp.android.client.views.version_2.HomeActivity;
 import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Objects;
 
 public class ChangeLanguageActivity extends BaseActivity implements LanguageAdapter.OnItemClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_change_language);
         initActionsViews(false);

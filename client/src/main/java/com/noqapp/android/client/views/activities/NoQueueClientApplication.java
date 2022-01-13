@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Context;
+import static com.noqapp.android.client.model.APIConstant.Key.XR_MAIL;
+
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.text.TextUtils;
@@ -13,21 +14,13 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.client.model.APIConstant;
-import com.noqapp.android.client.model.api.DeviceClientApiImpl;
-import com.noqapp.android.client.model.open.DeviceClientImpl;
+import com.noqapp.android.client.model.response.v3.api.NoQueueClientApi;
+import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
 import com.noqapp.android.client.views.pojos.LocationPref;
-import com.noqapp.android.common.beans.DeviceRegistered;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.JsonUserAddress;
-import com.noqapp.android.common.beans.body.DeviceToken;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.presenter.DeviceRegisterListener;
-import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.FontsOverride;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -36,13 +29,12 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.noqapp.android.client.model.APIConstant.Key.XR_MAIL;
-
 /**
  * Created by chandra on 5/20/17.
  */
-public class AppInitialize extends MultiDexApplication implements DeviceRegisterListener {
-    private static final String TAG = AppInitialize.class.getSimpleName();
+public class NoQueueClientApplication extends MultiDexApplication {
+
+    private static final String TAG = NoQueueClientApplication.class.getSimpleName();
     public static SharedPreferences preferences;
     public static final String PREKEY_IS_NOTIFICATION_SOUND_ENABLE = "isNotificationSoundEnable";
     public static final String PREKEY_IS_NOTIFICATION_RECEIVE_ENABLE = "isNotificationReceiveEnable";
@@ -74,9 +66,9 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     public static String area = "";
     public static String town = "";
     public static boolean isLockMode = false;
-    private static AppInitialize appInitialize;
+    public static NoQueueClientApplication noQueueClientApplication;
 
-    public AppInitialize() {
+    public NoQueueClientApplication() {
         super();
     }
 
@@ -85,6 +77,8 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
     }
 
     private static FirebaseAnalytics fireBaseAnalytics;
+
+    private static NoQueueClientApi noQueueClientApi;
 
     /**
      * On application startup, override system default locale to which user set
@@ -105,7 +99,12 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
         //https://stackoverflow.com/questions/26178212/first-launch-of-activity-with-google-maps-is-very-slow
         MapsInitializer.initialize(this);
         isLockMode = getKioskModeInfo().isKioskModeEnable();
-        appInitialize = this;
+        noQueueClientApplication = this;
+         noQueueClientApi = RetrofitClient.getClient().create(NoQueueClientApi.class);
+    }
+
+    public static NoQueueClientApi getNoQueueClientApi() {
+        return noQueueClientApi;
     }
 
     public static boolean isNotificationSoundEnable() {
@@ -382,79 +381,6 @@ public class AppInitialize extends MultiDexApplication implements DeviceRegister
 
     public static boolean isMsgAnnouncementEnable() {
         return preferences.getBoolean(PREKEY_IS_MSG_ANNOUNCE, true);
-    }
-
-    @Override
-    public void deviceRegisterResponse(DeviceRegistered deviceRegistered) {
-        processRegisterDeviceIdResponse(deviceRegistered, this);
-    }
-
-    @Override
-    public void authenticationFailure() {
-        /* dismissProgress(); no progress bar silent call here */
-    }
-
-    @Override
-    public void deviceRegisterError() {
-        /* dismissProgress(); no progress bar silent call here */
-    }
-
-    @Override
-    public void responseErrorPresenter(ErrorEncounteredJson eej) {
-        /* dismissProgress(); no progress bar silent call here */
-        // new ErrorResponseHandler().processError(this, eej);
-    }
-
-    @Override
-    public void responseErrorPresenter(int errorCode) {
-        /* dismissProgress(); no progress bar silent call here */
-        // new ErrorResponseHandler().processFailureResponseCode(this, errorCode);
-    }
-
-    public static void fetchDeviceId() {
-        fetchDeviceId(appInitialize);
-    }
-
-    public static void fetchDeviceId(DeviceRegisterListener deviceRegisterListener) {
-        DeviceToken deviceToken = new DeviceToken(
-                AppInitialize.getTokenFCM(),
-                Constants.appVersion(),
-                CommonHelper.getLocation(AppInitialize.location.getLatitude(), AppInitialize.location.getLongitude()));
-        if (UserUtils.isLogin()) {
-            DeviceClientApiImpl deviceClientApi = new DeviceClientApiImpl();
-            deviceClientApi.setDeviceRegisterPresenter(deviceRegisterListener);
-            deviceClientApi.register(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), deviceToken);
-        } else {
-            DeviceClientImpl deviceRegistration = new DeviceClientImpl();
-            deviceRegistration.setDeviceRegisterPresenter(deviceRegisterListener);
-            deviceRegistration.register(deviceToken);
-        }
-    }
-
-    public static void processRegisterDeviceIdResponse(DeviceRegistered deviceRegistered, Context context) {
-        if (1 == deviceRegistered.getRegistered()) {
-            Log.d(TAG, "Device register success");
-            JsonUserAddress jsonUserAddress = CommonHelper.getAddress(deviceRegistered.getGeoPointOfQ().getLat(), deviceRegistered.getGeoPointOfQ().getLon(), context);
-            AppInitialize.cityName = jsonUserAddress.getLocationAsString();
-            Log.d(TAG, "Launch device register City Name=" + AppInitialize.cityName);
-
-            LocationPref locationPref = AppInitialize.getLocationPreference()
-                    .setArea(jsonUserAddress.getArea())
-                    .setTown(jsonUserAddress.getTown())
-                    .setLatitude(deviceRegistered.getGeoPointOfQ().getLat())
-                    .setLongitude(deviceRegistered.getGeoPointOfQ().getLon());
-            AppInitialize.setLocationPreference(locationPref);
-            AppInitialize.setDeviceID(deviceRegistered.getDeviceId());
-            AppInitialize.location.setLatitude(locationPref.getLatitude());
-            AppInitialize.location.setLongitude(locationPref.getLongitude());
-        } else {
-            Log.e(TAG, "Device register error: " + deviceRegistered.toString());
-            try {
-                new CustomToast().showToast(context, "Device registration error");
-            } catch (Exception e) {
-                Log.e(TAG, "BadTokenException exception caught while showing the window " + e.getLocalizedMessage());
-            }
-        }
     }
 
     public static void saveFavouriteList(List<String> list) {

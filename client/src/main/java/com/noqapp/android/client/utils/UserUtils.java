@@ -1,6 +1,6 @@
 package com.noqapp.android.client.utils;
 
-import com.noqapp.android.client.views.activities.AppInitialize;
+import com.noqapp.android.client.views.activities.NoQueueClientApplication;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,14 +16,14 @@ public class UserUtils {
     }
 
     public static String getEmail() {
-        return AppInitialize.getMail();
+        return NoQueueClientApplication.getMail();
     }
 
     public static String getAuth() {
-        return AppInitialize.getAuth();
+        return NoQueueClientApplication.getAuth();
     }
 
     public static String getDeviceId() {
-        return AppInitialize.getDeviceId();
+        return NoQueueClientApplication.getDeviceId();
     }
 }

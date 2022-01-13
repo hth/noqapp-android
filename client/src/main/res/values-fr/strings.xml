@@ -167,7 +167,7 @@
     <string name="authentication_fail_msg">Veuillez Re- connexioner </string>
     <string name="barcode_error">File d\'attente n\'est pas trouvé</string>
     <string name="barcode_error_msg">Aucun commerçant n’est associé à ce code Noqueue</string>
-    <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2021 \u00a9 NoQueue Inc</string>
+    <string name="copy_right">Website: https://noqapp.com\n\n NoQueue &#174; is a trademark of NoQueue Inc.\n 2022 \u00a9 NoQueue Inc</string>
     <string name="alert">L\'alerte</string>
     <string name="wait_time">Temps d\'attente</string>
     <string name="wait_time_formatted">Temps d\'attente: %1$s</string>

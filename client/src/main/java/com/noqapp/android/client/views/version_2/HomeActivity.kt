@@ -1,7 +1,6 @@
 package com.noqapp.android.client.views.version_2
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -12,7 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.ExpandableListView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -43,7 +41,6 @@ import com.noqapp.android.client.views.version_2.fragments.HomeFragmentInteracti
 import com.noqapp.android.client.views.version_2.market_place.householdItem.household_item_list.HouseholdItemListActivity
 import com.noqapp.android.client.views.version_2.market_place.propertyRental.property_rental_details.PropertyRentalListActivity
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
-import com.noqapp.android.common.beans.DeviceRegistered
 import com.noqapp.android.common.beans.ErrorEncounteredJson
 import com.noqapp.android.common.beans.JsonLatestAppVersion
 import com.noqapp.android.common.customviews.CustomToast
@@ -52,8 +49,6 @@ import com.noqapp.android.common.model.types.MessageOriginEnum
 import com.noqapp.android.common.model.types.MobileSystemErrorCodeEnum
 import com.noqapp.android.common.model.types.order.PurchaseOrderStateEnum
 import com.noqapp.android.common.pojos.MenuDrawer
-import com.noqapp.android.common.presenter.DeviceRegisterListener
-import com.noqapp.android.common.utils.NetworkUtil
 import com.noqapp.android.common.utils.PermissionUtils
 import com.noqapp.android.common.utils.TextToSpeechHelper
 import com.noqapp.android.common.utils.Version
@@ -64,7 +59,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 
-class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
+class HomeActivity : LocationBaseActivity(),
     HomeFragmentInteractionListener,
     BottomNavigationView.OnNavigationItemSelectedListener, AppBlacklistPresenter {
     private val TAG = HomeActivity::class.java.simpleName
@@ -93,7 +88,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppInitialize.setLocationChangedManually(false)
+        NoQueueClientApplication.setLocationChangedManually(false)
         activityHomeBinding = ActivityHomeBinding.inflate(LayoutInflater.from(this))
         setContentView(activityHomeBinding.root)
         setSupportActionBar(activityHomeBinding.toolbar)
@@ -113,8 +108,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
         observeValues()
 
         FirebaseMessaging.getInstance().token.addOnSuccessListener(this) { token: String? ->
-            AppInitialize.setTokenFCM(token)
-            reCreateDeviceID(this, this)
+            NoQueueClientApplication.setTokenFCM(token)
+            reCreateDeviceID(this)
         }
     }
 
@@ -138,12 +133,14 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
         latitude: Double?,
         longitude: Double?
     ) {
-        activityHomeBinding.tvLocation.text = AppUtils.getLocationAsString(area, town)
+        val locationAsString = AppUtils.getLocationAsString(area, town, district)
+        activityHomeBinding.tvLocation.text = locationAsString
         locationArea = area ?: ""
         locationTown = town ?: ""
+        locationDistrict = district ?: ""
         val searchStoreQuery = SearchQuery()
         area?.let {
-            searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
+            searchStoreQuery.cityName = locationAsString
         }
         latitude?.let {
             searchStoreQuery.latitude = it.toString()
@@ -169,11 +166,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
     }
 
     private fun showLoginScreen() {
-        if (AppInitialize.getShowHelper()) {
+        if (NoQueueClientApplication.getShowHelper()) {
             activityHomeBinding.btnChangeLanguage.setOnClickListener {
                 val claIntent = Intent(this, ChangeLanguageActivity::class.java)
                 startActivity(claIntent)
-                AppInitialize.setShowHelper(true)
+                NoQueueClientApplication.setShowHelper(true)
             }
             activityHomeBinding.rlHelper.visibility = View.VISIBLE
             activityHomeBinding.btnSkip.setOnClickListener { v: View? ->
@@ -184,7 +181,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
                 val loginIntent = Intent(this, LoginActivity::class.java)
                 startActivity(loginIntent)
             }
-            AppInitialize.setShowHelper(false)
+            NoQueueClientApplication.setShowHelper(false)
         } else {
             if (isRateUsFirstTime) {
                 RateTheAppManager().appLaunched(this)
@@ -261,7 +258,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
                 blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(blinkerIntent)
 
-                if (AppInitialize.isMsgAnnouncementEnable()) {
+                if (NoQueueClientApplication.isMsgAnnouncementEnable()) {
                     if (foregroundNotification.jsonTextToSpeeches != null) {
                         makeAnnouncement(
                             foregroundNotification.jsonTextToSpeeches!!,
@@ -276,7 +273,7 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
                     blinkerIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(blinkerIntent)
 
-                    if (AppInitialize.isMsgAnnouncementEnable()) {
+                    if (NoQueueClientApplication.isMsgAnnouncementEnable()) {
                         if (foregroundNotification.jsonTextToSpeeches != null) {
                             makeAnnouncement(
                                 foregroundNotification.jsonTextToSpeeches!!,
@@ -324,8 +321,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
 
     private fun updateDrawerUI() {
         if (UserUtils.isLogin()) {
-            navHeaderMainBinding.tvEmail.text = AppInitialize.getActualMail()
-            navHeaderMainBinding.tvName.text = AppInitialize.getUserName()
+            navHeaderMainBinding.tvEmail.text = NoQueueClientApplication.getActualMail()
+            navHeaderMainBinding.tvName.text = NoQueueClientApplication.getUserName()
         } else {
             navHeaderMainBinding.tvEmail.text = getString(R.string.txt_please_login)
             navHeaderMainBinding.tvName.text = getString(R.string.txt_guest_user)
@@ -333,12 +330,12 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
 
         Picasso.get().load(ImageUtils.getProfilePlaceholder()).into(navHeaderMainBinding.ivProfile)
         try {
-            if (!TextUtils.isEmpty(AppInitialize.getUserProfileUri())) {
+            if (!TextUtils.isEmpty(NoQueueClientApplication.getUserProfileUri())) {
                 Picasso.get()
                     .load(
                         AppUtils.getImageUrls(
                             BuildConfig.PROFILE_BUCKET,
-                            AppInitialize.getUserProfileUri()
+                            NoQueueClientApplication.getUserProfileUri()
                         )
                     )
                     .placeholder(ImageUtils.getProfilePlaceholder(this))
@@ -598,11 +595,11 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
                 val showDialog = ShowCustomDialog(this, true)
                 showDialog.setDialogClickListener(object : ShowCustomDialog.DialogClickListener {
                     override fun btnPositiveClick() {
-                        AppInitialize.clearPreferences()
+                        NoQueueClientApplication.clearPreferences()
                         homeViewModel.clearTokenAndQueue()
                         homeViewModel.clearForegroundNotifications()
                         homeViewModel.clearReviewData()
-                        reCreateDeviceID(this@HomeActivity, this@HomeActivity)
+                        reCreateDeviceID(this@HomeActivity)
                     }
 
                     override fun btnNegativeClick() {
@@ -649,33 +646,17 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
         return true
     }
 
-    fun reCreateDeviceID(context: Activity, deviceRegisterPresenter: DeviceRegisterListener?) {
-        if (NetworkUtil(context).isOnline) {
-            AppInitialize.fetchDeviceId(deviceRegisterPresenter)
+    fun reCreateDeviceID(context: Activity) {
+        if (isNetworkAvailable) {
+            homeViewModel.callRegistrationService();
         } else {
-            val builder = AlertDialog.Builder(context)
-            val inflater = LayoutInflater.from(context)
-            builder.setTitle(null)
-            val customDialogView = inflater.inflate(R.layout.dialog_general, null, false)
-            val tvTitle = customDialogView.findViewById<TextView>(R.id.tvtitle)
-            val tvMsg = customDialogView.findViewById<TextView>(R.id.tvMsg)
-            tvTitle.text = context.getString(R.string.networkerror)
-            tvMsg.text = context.getString(R.string.offline)
-            builder.setView(customDialogView)
-            val mAlertDialog = builder.create()
-            mAlertDialog.setCanceledOnTouchOutside(false)
-            val btnYes = customDialogView.findViewById<Button>(R.id.btn_yes)
-            btnYes.setOnClickListener { v: View? ->
-                mAlertDialog.dismiss()
-                context.finish()
-            }
-            mAlertDialog.show()
-            Log.w(TAG, "No network found")
+            showNoNetworkAlert();
         }
     }
 
     private fun setBadgeCount(context: Context, res: Int, badgeCount: Int): Drawable? {
-        val icon = ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable) as LayerDrawable?
+        val icon =
+            ContextCompat.getDrawable(context, R.drawable.ic_badge_drawable) as LayerDrawable?
         val mainIcon = ContextCompat.getDrawable(context, res)
         val badge = BadgeDrawable(context)
         badge.setCount(badgeCount.toString())
@@ -685,15 +666,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
         return icon
     }
 
-    override fun deviceRegisterResponse(deviceRegistered: DeviceRegistered?) {
-        /* dismissProgress(); no progress bar silent call here */
-        AppInitialize.processRegisterDeviceIdResponse(deviceRegistered, this)
-        updateDrawerUI()
-    }
-
-    override fun deviceRegisterError() {
-
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
@@ -848,7 +820,8 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
             homeViewModel.viewModelScope.launch(Dispatchers.IO) {
                 val jsonTokenAndQueueArrayList = homeViewModel.getCurrentQueueObjectList(codeQR)
                 if (jsonTokenAndQueueArrayList?.size == 1) {
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
+                    FirebaseMessaging.getInstance()
+                        .unsubscribeFromTopic(jsonTokenAndQueue.topic + "_A")
                 }
             }
         } else {
@@ -898,5 +871,6 @@ class HomeActivity : LocationBaseActivity(), DeviceRegisterListener,
         var locationLongitude = 0.0
         var locationArea = ""
         var locationTown = ""
+        var locationDistrict = ""
     }
 }

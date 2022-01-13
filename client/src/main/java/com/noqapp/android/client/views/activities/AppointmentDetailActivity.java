@@ -35,7 +35,7 @@ public class AppointmentDetailActivity extends BaseActivity implements Appointme
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_details);
         initActionsViews(true);

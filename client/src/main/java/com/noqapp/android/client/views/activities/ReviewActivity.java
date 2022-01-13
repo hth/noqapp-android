@@ -64,7 +64,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
         initActionsViews(false);
@@ -139,7 +139,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                 tv_title.setText(StringUtils.capitalize(queueOrderType + " Detail"));
 
                 if (UserUtils.isLogin()) {
-                    List<JsonProfile> profileList = AppInitialize.getAllProfileList();
+                    List<JsonProfile> profileList = NoQueueClientApplication.getAllProfileList();
                     tv_details.setText(AppUtils.getNameFromQueueUserID(jtk.getQueueUserId(), profileList) + " with " + queueOrderType + " #" + jtk.getDisplayToken());
                 } else {
                     tv_details.setText("Guest user with " + queueOrderType + " #" + jtk.getDisplayToken());
@@ -168,7 +168,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
                 if (AppUtils.isRelease()) {
                     Bundle params = new Bundle();
                     params.putString("Business_Type", jtk.getBusinessType().getName());
-                    AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_REVIEW_SCREEN, params);
+                    NoQueueClientApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_REVIEW_SCREEN, params);
                 }
             }
         } else {
@@ -268,7 +268,7 @@ public class ReviewActivity extends BaseActivity implements ReviewPresenter {
     }
 
     private void returnResultBack() {
-        AppInitialize.setReviewShown(true);
+        NoQueueClientApplication.setReviewShown(true);
         Intent intent = new Intent();
         intent.putExtra(Constants.QRCODE, jtk.getCodeQR());
         intent.putExtra(Constants.TOKEN, String.valueOf(jtk.getToken()));

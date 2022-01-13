@@ -27,7 +27,7 @@
         android:required="false" />
 
     <application
-        android:name=".views.activities.AppInitialize"
+        android:name=".views.activities.NoQueueClientApplication"
         android:allowBackup="false"
         android:configChanges="locale"
         android:icon="@mipmap/launcher"

@@ -37,7 +37,7 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_favourites);
         initActionsViews(true);
@@ -112,8 +112,8 @@ public class FavouriteListActivity extends BaseActivity implements StoreInfoView
     @Override
     public void favouriteListResponse(FavoriteElastic favoriteElastic) {
         dismissProgress();
-        String lat = String.valueOf(AppInitialize.location.getLatitude());
-        String lng = String.valueOf(AppInitialize.location.getLongitude());
+        String lat = String.valueOf(NoQueueClientApplication.location.getLatitude());
+        String lng = String.valueOf(NoQueueClientApplication.location.getLongitude());
         List<BizStoreElastic> list = favoriteElastic.getFavoriteTagged();
         if (null != list && list.size() == 0) {
             rl_empty.setVisibility(View.VISIBLE);

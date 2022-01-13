@@ -28,7 +28,7 @@ import com.noqapp.android.client.model.fcm.JsonClientTokenAndQueueData
 import com.noqapp.android.client.presenter.beans.JsonTokenAndQueue
 import com.noqapp.android.client.presenter.beans.ReviewData
 import com.noqapp.android.client.utils.*
-import com.noqapp.android.client.views.activities.AppInitialize
+import com.noqapp.android.client.views.activities.NoQueueClientApplication
 import com.noqapp.android.client.views.receivers.AlarmReceiver
 import com.noqapp.android.client.views.version_2.HomeActivity
 import com.noqapp.android.client.views.version_2.db.NoQueueAppDB
@@ -406,8 +406,8 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                                 * this code is added to close the join & after join screen if the request is processed
                                 * Update the order screen/ Join Screen if open
                                 */
-                                if (AppInitialize.activityCommunicator != null) {
-                                    AppInitialize.activityCommunicator.requestProcessed(codeQR, token)
+                                if (NoQueueClientApplication.activityCommunicator != null) {
+                                    NoQueueClientApplication.activityCommunicator.requestProcessed(codeQR, token)
                                 }
                             }
                         } else if (jsonData is JsonTopicOrderData) {
@@ -1000,7 +1000,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
             val channelId = "channel-01"
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channelName = "Channel Name"
-                val importance = if (AppInitialize.isNotificationSoundEnable()) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_LOW
+                val importance = if (NoQueueClientApplication.isNotificationSoundEnable()) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_LOW
                 val mChannel = NotificationChannel(channelId, channelName, importance)
                 notificationManager.createNotificationChannel(mChannel)
             }
@@ -1014,7 +1014,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                 .setAutoCancel(true)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(messageBody))
                 .setLights(Color.parseColor("#ffb400"), 50, 10)
-            if (AppInitialize.isNotificationSoundEnable()) {
+            if (NoQueueClientApplication.isNotificationSoundEnable()) {
                 mBuilder.setSound(defaultSoundUri)
             } else {
                 mBuilder.priority = NotificationCompat.PRIORITY_LOW
@@ -1079,7 +1079,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
             val channelId = "channel-01"
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channelName = "Channel Name"
-                val importance = if (AppInitialize.isNotificationSoundEnable()) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_LOW
+                val importance = if (NoQueueClientApplication.isNotificationSoundEnable()) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_LOW
                 val mChannel = NotificationChannel(channelId, channelName, importance)
                 notificationManager.createNotificationChannel(mChannel)
             }
@@ -1093,7 +1093,7 @@ class NoQueueMessagingService : FirebaseMessagingService(), NotificationPresente
                 .setAutoCancel(true)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(messageBody))
                 .setLights(Color.parseColor("#ffb400"), 50, 10)
-            if (AppInitialize.isNotificationSoundEnable()) {
+            if (NoQueueClientApplication.isNotificationSoundEnable()) {
                 mBuilder.setSound(defaultSoundUri)
             } else {
                 mBuilder.priority = NotificationCompat.PRIORITY_LOW

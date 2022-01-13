@@ -15,9 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.noqapp.android.client.R;
 import com.noqapp.android.client.utils.AnalyticsEvents;
 import com.noqapp.android.client.utils.AppUtils;
-import com.noqapp.android.client.views.activities.AppInitialize;
+import com.noqapp.android.client.views.activities.NoQueueClientApplication;
 import com.noqapp.android.client.views.pojos.LanguageInfo;
-import com.noqapp.android.common.customviews.CustomToast;
 
 import java.util.List;
 
@@ -62,7 +61,7 @@ public class LanguageAdapter extends RecyclerView.Adapter {
                 if (AppUtils.isRelease()) {
                     Bundle params = new Bundle();
                     params.putString("Language", languageInfo.getLanguageTitle());
-                    AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CHANGE_LANGUAGE, params);
+                    NoQueueClientApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_CHANGE_LANGUAGE, params);
                 }
             }
         });

@@ -30,7 +30,6 @@ import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.common.customviews.CustomToast;
 import com.noqapp.android.common.utils.PhoneFormatterUtil;
 
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public abstract class OTPActivity extends BaseActivity implements ProfilePresenter {
@@ -69,7 +68,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         actionbarBack = findViewById(R.id.actionbarBack);
@@ -307,7 +306,7 @@ public abstract class OTPActivity extends BaseActivity implements ProfilePresent
 
                 Bundle params = new Bundle();
                 params.putBoolean("Phone", true);
-                AppInitialize.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_LOGIN_SCREEN, params);
+                NoQueueClientApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_LOGIN_SCREEN, params);
 
             } else {
                 ShowAlertInformation.showNetworkDialog(this);

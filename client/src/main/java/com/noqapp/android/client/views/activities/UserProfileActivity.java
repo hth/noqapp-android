@@ -58,7 +58,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         tv_name = findViewById(R.id.tv_name);
@@ -112,7 +112,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     private void loadProfilePic() {
-        AppUtils.loadProfilePic(iv_profile, AppInitialize.getUserProfileUri(), this);
+        AppUtils.loadProfilePic(iv_profile, NoQueueClientApplication.getUserProfileUri(), this);
     }
 
     @Override
@@ -141,7 +141,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             case R.id.tv_modify_email:
                 Intent changeEmail = new Intent(this, ChangeEmailActivity.class);
                 changeEmail.putExtra("email", edt_Mail.getText().toString());
-                changeEmail.putExtra("isValidated", AppInitialize.getUserProfile().isAccountValidated());
+                changeEmail.putExtra("isValidated", NoQueueClientApplication.getUserProfile().isAccountValidated());
                 startActivity(changeEmail);
                 break;
 
@@ -152,7 +152,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
-        AppInitialize.commitProfile(profile, email, auth);
+        NoQueueClientApplication.commitProfile(profile, email, auth);
         dismissProgress();
         updateUI();
     }
@@ -169,7 +169,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         if (null != eej) {
             if (eej.getSystemErrorCode().equals(MobileSystemErrorCodeEnum.ACCOUNT_INACTIVE.getCode())) {
                 new CustomToast().showToast(this, getString(R.string.error_account_block));
-                AppInitialize.clearPreferences();
+                NoQueueClientApplication.clearPreferences();
                 dismissProgress();
                 finish();//close the current activity
             } else {
@@ -179,8 +179,8 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
     }
 
     private void updateUI() {
-        if (AppInitialize.getUserProfile() != null && AppInitialize.getUserProfile().getUserLevel() != null) {
-            if (AppInitialize.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
+        if (NoQueueClientApplication.getUserProfile() != null && NoQueueClientApplication.getUserProfile().getUserLevel() != null) {
+            if (NoQueueClientApplication.getUserProfile().getUserLevel() == UserLevelEnum.S_MANAGER) {
                 tv_info.setText("Max 10 allowed");
             } else {
                 tv_info.setText("Max 5 allowed");
@@ -190,13 +190,13 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             authenticationFailure();
         }
 
-        edt_Name.setText(AppInitialize.getUserName());
-        tv_name.setText(AppInitialize.getUserName());
-        edt_phoneNo.setText(AppInitialize.getPhoneNo());
-        edt_Mail.setText(AppInitialize.getActualMail());
-        tv_email_verification.setVisibility(AppInitialize.showEmailVerificationField() ? View.VISIBLE : View.GONE);
-        tv_modify_email.setVisibility(AppInitialize.getUserProfile().isAccountValidated() ? View.GONE : View.VISIBLE);
-        if (AppInitialize.getMail().endsWith(Constants.MAIL_NOQAPP_COM)) {
+        edt_Name.setText(NoQueueClientApplication.getUserName());
+        tv_name.setText(NoQueueClientApplication.getUserName());
+        edt_phoneNo.setText(NoQueueClientApplication.getPhoneNo());
+        edt_Mail.setText(NoQueueClientApplication.getActualMail());
+        tv_email_verification.setVisibility(NoQueueClientApplication.showEmailVerificationField() ? View.VISIBLE : View.GONE);
+        tv_modify_email.setVisibility(NoQueueClientApplication.getUserProfile().isAccountValidated() ? View.GONE : View.VISIBLE);
+        if (NoQueueClientApplication.getMail().endsWith(Constants.MAIL_NOQAPP_COM)) {
             tv_email_verification.setVisibility(View.VISIBLE);
             tv_email_verification.setText("Please add your Email Id");
         }
@@ -205,11 +205,11 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
         edt_Mail.setClickable(true);
         edt_Name.setEnabled(false);
         tv_birthday.setEnabled(false);
-        tvAddress.setText(AppInitialize.getAddress());
+        tvAddress.setText(NoQueueClientApplication.getAddress());
         int id;
-        if (AppInitialize.getGender().equals(GenderEnum.M.name())) {
+        if (NoQueueClientApplication.getGender().equals(GenderEnum.M.name())) {
             id = R.id.tv_male;
-        } else if (AppInitialize.getGender().equals(GenderEnum.T.name())) {
+        } else if (NoQueueClientApplication.getGender().equals(GenderEnum.T.name())) {
             id = R.id.tv_transgender;
         } else {
             id = R.id.tv_female;
@@ -247,13 +247,13 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
                 break;
         }
         try {
-            tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(AppInitialize.getUserDOB())));
+            tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(NoQueueClientApplication.getUserDOB())));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        List<JsonProfile> jsonProfiles = AppInitialize.getUserProfile().getDependents();
+        List<JsonProfile> jsonProfiles = NoQueueClientApplication.getUserProfile().getDependents();
         nameList.clear();
-        nameList.add(AppInitialize.getUserName().toUpperCase());
+        nameList.add(NoQueueClientApplication.getUserName().toUpperCase());
         ll_dependent.removeAllViews();
         if (null != jsonProfiles && jsonProfiles.size() > 0) {
             for (int j = 0; j < jsonProfiles.size(); j++) {
@@ -275,7 +275,7 @@ public class UserProfileActivity extends ProfileActivity implements View.OnClick
             }
         }
         loadProfilePic();
-        tv_age.setText(CommonHelper.calculateAge(AppInitialize.getUserDOB()) + " (" + gender + ")");
+        tv_age.setText(CommonHelper.calculateAge(NoQueueClientApplication.getUserDOB()) + " (" + gender + ")");
     }
 
     @Override

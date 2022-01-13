@@ -18,7 +18,7 @@ public class AllFeedsActivity extends BaseActivity implements FeedAdapter.OnItem
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all);
         initActionsViews(false);

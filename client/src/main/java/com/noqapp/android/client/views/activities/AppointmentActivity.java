@@ -12,7 +12,7 @@ import com.noqapp.android.client.views.fragments.UpcomingAppointmentFragment;
 public class AppointmentActivity extends TabbedActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         tv_toolbar_title.setText(getString(R.string.txt_appointments));
     }

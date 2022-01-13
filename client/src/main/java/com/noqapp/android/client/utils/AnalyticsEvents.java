@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.noqapp.android.client.views.activities.AppInitialize;
+import com.noqapp.android.client.views.activities.NoQueueClientApplication;
 
 public class AnalyticsEvents {
     private static final String TAG = AnalyticsEvents.class.getSimpleName();
@@ -33,7 +33,7 @@ public class AnalyticsEvents {
         try {
             Bundle params = new Bundle();
             params.putString(FirebaseAnalytics.Param.CONTENT, event);
-            AppInitialize.getFireBaseAnalytics().logEvent(event, params);
+            NoQueueClientApplication.getFireBaseAnalytics().logEvent(event, params);
         } catch (Exception e) {
             Log.e(TAG, "Failed logging event " + e.getLocalizedMessage());
         }

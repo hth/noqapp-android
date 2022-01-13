@@ -83,7 +83,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(AppInitialize.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_edit_profile);
 
@@ -162,7 +162,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             if (isDependent) {
                 setDependentProfileImageUrl("");
             } else {
-                AppInitialize.setUserProfileUri("");
+                NoQueueClientApplication.setUserProfileUri("");
             }
             new CustomToast().showToast(this, "Profile image removed successfully!");
         } else {
@@ -261,7 +261,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                                 if (isDependent) {
                                     setDependentProfileImageUrl(convertedPath);
                                 } else {
-                                    AppInitialize.setUserProfileUri(convertedPath);
+                                    NoQueueClientApplication.setUserProfileUri(convertedPath);
                                 }
                                 showProgress();
                                 setProgressMessage("Updating profile image");
@@ -318,14 +318,14 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                         clientProfileApiImpl.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                     } else {
                         Registration registration = new Registration();
-                        registration.setPhone(PhoneFormatterUtil.phoneNumberWithCountryCode(AppInitialize.getPhoneNo(), AppInitialize.getCountryShortName()));
+                        registration.setPhone(PhoneFormatterUtil.phoneNumberWithCountryCode(NoQueueClientApplication.getPhoneNo(), NoQueueClientApplication.getCountryShortName()));
                         registration.setFirstName(name);
                         registration.setMail("");
                         registration.setPassword("");
                         registration.setBirthday(AppUtils.convertDOBToValidFormat(birthday));
                         registration.setGender(gender);
                         registration.setTimeZoneId(TimeZone.getDefault().getID());
-                        registration.setCountryShortName(AppInitialize.getCountryShortName());
+                        registration.setCountryShortName(NoQueueClientApplication.getCountryShortName());
                         registration.setInviteCode("");
                         DependentApiImpl dependentApiImpl = new DependentApiImpl(this);
                         dependentApiImpl.addDependency(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), registration);
@@ -339,7 +339,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                     updateProfile.setBirthday(AppUtils.convertDOBToValidFormat(birthday));
                     updateProfile.setGender(gender);
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
-                    updateProfile.setQueueUserId(AppInitialize.getUserProfile().getQueueUserId());
+                    updateProfile.setQueueUserId(NoQueueClientApplication.getUserProfile().getQueueUserId());
                     clientProfileApiImpl.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
             } else {
@@ -352,7 +352,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
-        AppInitialize.commitProfile(profile, email, auth);
+        NoQueueClientApplication.commitProfile(profile, email, auth);
         dismissProgress();
         new CustomToast().showToast(this, "Profile updated successfully");
         finish();
@@ -367,7 +367,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     @Override
     public void dependencyResponse(JsonProfile profile) {
         Log.v("JsonProfile", profile.toString());
-        AppInitialize.setUserProfile(profile);
+        NoQueueClientApplication.setUserProfile(profile);
         dependentProfile = profile;
         dismissProgress();
         new CustomToast().showToast(this, "Dependent added successfully");
@@ -411,26 +411,26 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 qUserId = "";
             }
         } else {
-            edt_Name.setText(AppInitialize.getUserName());
-            tv_name.setText(AppInitialize.getUserName());
-            tvAddress.setText(AppInitialize.getAddress());
-            imageUrl = AppInitialize.getUserProfileUri();
-            qUserId = AppInitialize.getUserProfile().getQueueUserId();
-            if (AppInitialize.getGender().equals("M")) {
+            edt_Name.setText(NoQueueClientApplication.getUserName());
+            tv_name.setText(NoQueueClientApplication.getUserName());
+            tvAddress.setText(NoQueueClientApplication.getAddress());
+            imageUrl = NoQueueClientApplication.getUserProfileUri();
+            qUserId = NoQueueClientApplication.getUserProfile().getQueueUserId();
+            if (NoQueueClientApplication.getGender().equals("M")) {
                 onClick(tv_male);
-            } else if (AppInitialize.getGender().equals("T")) {
+            } else if (NoQueueClientApplication.getGender().equals("T")) {
                 onClick(tv_transgender);
             } else {
                 onClick(tv_female);
             }
             try {
-                tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(AppInitialize.getUserDOB())));
+                tv_birthday.setText(CommonHelper.SDF_DOB_FROM_UI.format(CommonHelper.SDF_YYYY_MM_DD.parse(NoQueueClientApplication.getUserDOB())));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        edt_phoneNo.setText(AppInitialize.getPhoneNo());
-        edt_Mail.setText(AppInitialize.getActualMail());
+        edt_phoneNo.setText(NoQueueClientApplication.getPhoneNo());
+        edt_Mail.setText(NoQueueClientApplication.getActualMail());
         edt_phoneNo.setEnabled(false);
         edt_Mail.setEnabled(false);
 
@@ -455,7 +455,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
             isValid = false;
         }
         if (((null == dependentProfile && isDependent && nameList.contains(name)))
-                || (null == dependentProfile && !isDependent && !AppInitialize.getUserName().toUpperCase().equals(name) && nameList.contains(name))
+                || (null == dependentProfile && !isDependent && !NoQueueClientApplication.getUserName().toUpperCase().equals(name) && nameList.contains(name))
                 || (null != dependentProfile && !dependentProfile.getName().toUpperCase().equals(name) && nameList.contains(name))) {
             edt_Name.setError(getString(R.string.error_name_exist));
             isValid = false;
@@ -477,7 +477,7 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
     }
 
     private void setDependentProfileImageUrl(String path) {
-        List<JsonProfile> jsonProfiles = AppInitialize.getUserProfile().getDependents();
+        List<JsonProfile> jsonProfiles = NoQueueClientApplication.getUserProfile().getDependents();
         if (null != jsonProfiles && jsonProfiles.size() > 0) {
             for (int j = 0; j < jsonProfiles.size(); j++) {
                 final JsonProfile jsonProfile = jsonProfiles.get(j);
@@ -487,9 +487,9 @@ public class UserProfileEditActivity extends ProfileActivity implements View.OnC
                 }
             }
         }
-        JsonProfile jsonProfile = AppInitialize.getUserProfile();
+        JsonProfile jsonProfile = NoQueueClientApplication.getUserProfile();
         jsonProfile.setDependents(jsonProfiles);
-        AppInitialize.setUserProfile(jsonProfile);
+        NoQueueClientApplication.setUserProfile(jsonProfile);
 
     }
 }

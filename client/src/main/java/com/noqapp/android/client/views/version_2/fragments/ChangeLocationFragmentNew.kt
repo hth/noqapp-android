@@ -19,7 +19,7 @@ import com.noqapp.android.client.location.LocationManager
 import com.noqapp.android.client.presenter.beans.body.SearchQuery
 import com.noqapp.android.client.utils.AnalyticsEvents
 import com.noqapp.android.client.utils.AppUtils
-import com.noqapp.android.client.views.activities.AppInitialize
+import com.noqapp.android.client.views.activities.NoQueueClientApplication
 import com.noqapp.android.client.views.adapters.GooglePlacesAutocompleteAdapter
 import com.noqapp.android.client.views.version_2.viewmodels.HomeViewModel
 
@@ -76,7 +76,7 @@ class ChangeLocationFragmentNew : Fragment(),
                 searchStoreQuery.filters = ""
                 searchStoreQuery.scrollId = ""
                 homeViewModel.searchStoreQueryLiveData.value = searchStoreQuery
-                AppInitialize.setLocationChangedManually(true)
+                NoQueueClientApplication.setLocationChangedManually(true)
                 try {
                     AppUtils.hideKeyBoard(activity)
                 } catch (e: Exception) {
@@ -123,13 +123,13 @@ class ChangeLocationFragmentNew : Fragment(),
         AppUtils.setAutoCompleteText(changeLocationBinding.autoCompleteTextView, town)
 
         val searchStoreQuery = SearchQuery()
-        searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
+        searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town, district)
         searchStoreQuery.latitude = latitude.toString()
         searchStoreQuery.longitude = longitude.toString()
         searchStoreQuery.filters = ""
         searchStoreQuery.scrollId = ""
         homeViewModel.searchStoreQueryLiveData.value = searchStoreQuery
-        AppInitialize.setLocationChangedManually(false)
+        NoQueueClientApplication.setLocationChangedManually(false)
         try {
             AppUtils.hideKeyBoard(requireActivity())
         } catch (e: Exception) {

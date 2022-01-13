@@ -65,7 +65,7 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
             }
 
             R.id.rbAddress -> {
-                AppInitialize.setSelectedAddressId(jsonUserAddress.id)
+                NoQueueClientApplication.setSelectedAddressId(jsonUserAddress.id)
                 val intent = Intent()
                 intent.putExtra(Constants.JSON_USER_ADDRESS, jsonUserAddress)
                 setResult(Constants.REQUEST_CODE_SELECT_ADDRESS, intent)
@@ -106,14 +106,14 @@ class AddressListActivity : BaseActivity(), ProfileAddressPresenter {
     }
 
     private fun showAddresses(addressList: List<JsonUserAddress>?) {
-        val jp = AppInitialize.getUserProfile()
+        val jp = NoQueueClientApplication.getUserProfile()
         jp.jsonUserAddresses = addressList
-        AppInitialize.setUserProfile(jp)
+        NoQueueClientApplication.setUserProfile(jp)
 
         addressList?.forEach {
             if (it.isPrimaryAddress){
                 primaryJsonUserAddress = it
-                AppInitialize.setAddress(it.address)
+                NoQueueClientApplication.setAddress(it.address)
                 return@forEach
             }
         }
