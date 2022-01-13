@@ -64,7 +64,8 @@ class HouseholdItemListActivity : BaseActivity() {
         val searchStoreQuery = SearchQuery()
         val area = HomeActivity.locationArea
         val town = HomeActivity.locationTown
-        searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
+        val district = HomeActivity.locationDistrict
+        searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town, district)
         searchStoreQuery.latitude = HomeActivity.locationLatitude.toString()
         searchStoreQuery.longitude = HomeActivity.locationLongitude.toString()
 

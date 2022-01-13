@@ -143,7 +143,7 @@ class FetchAddressIntentService : JobIntentService() {
 //            if (results[0] <= 1000) {
 //                Log.i(TAG, "New address found is less than 1 km")
 //            } else {
-            Log.i(TAG, "New address found and updated '$area', '$town'")
+            Log.d(TAG, "New address found and updated '$area', '$town', '$district', '$state', '$latitude', '$longitude'")
             deliverResultToReceiver(
                 Constants.LocationConstants.SUCCESS_RESULT,
                 addressStr,
@@ -178,11 +178,9 @@ class FetchAddressIntentService : JobIntentService() {
     }
 
     private fun fetchAddressFromApi(latitude: Double, longitude: Double): String? {
-        val url =
-            "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=" + getString(
+        val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=" + getString(
                 R.string.google_maps_key
             )
-
         val streamUrl = URL(url)
         val urlConnection: HttpURLConnection = streamUrl.openConnection() as HttpURLConnection
         try {

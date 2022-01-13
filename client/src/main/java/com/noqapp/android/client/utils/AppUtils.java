@@ -665,13 +665,18 @@ public class AppUtils extends CommonHelper {
         NoQueueClientApplication.saveFavouriteList(codeQRs);
     }
 
-    public static String getLocationAsString(String area, String town) {
+    public static String getLocationAsString(String area, String town, String district) {
         if (StringUtils.isNotBlank(area) && StringUtils.isNotBlank(town)) {
             return area + ", " + town;
         } else if (StringUtils.isNotBlank(area)) {
             return area;
         }
-        return StringUtils.isNotBlank(town) ? town : "";
+
+        if (StringUtils.isNotBlank(town)) {
+            return town;
+        } else {
+            return district;
+        }
     }
 
     public static SpannableString halfTextBold(String boldText, String normalText) {
