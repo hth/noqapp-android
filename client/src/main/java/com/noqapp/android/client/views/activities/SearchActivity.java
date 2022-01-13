@@ -73,7 +73,7 @@ public class SearchActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         RecyclerView rv_search = findViewById(R.id.rv_search);
@@ -153,7 +153,7 @@ public class SearchActivity
             }
             return false;
         });
-        if (NoqApplication.isLockMode) {
+        if (NoQueueClientApplication.isLockMode) {
             tv_auto.setVisibility(View.GONE);
             autoCompleteTextView.setVisibility(View.GONE);
             edt_search.setText(getIntent().getStringExtra("searchString"));
@@ -162,14 +162,14 @@ public class SearchActivity
         if (AppUtils.isRelease()) {
             Bundle params = new Bundle();
             params.putString(FirebaseAnalytics.Param.SEARCH_TERM, AnalyticsEvents.EVENT_SEARCH);
-            NoqApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SEARCH, params);
+            NoQueueClientApplication.getFireBaseAnalytics().logEvent(AnalyticsEvents.EVENT_SEARCH, params);
         }
         edt_search.requestFocus();
     }
 
     private void initDefaultLatLng() {
         if (null == lat || lng == null) {
-            LocationPref locationPref = NoqApplication.getLocationPreference();
+            LocationPref locationPref = NoQueueClientApplication.getLocationPreference();
             lat = String.valueOf(locationPref.getLatitude());
             lng = String.valueOf(locationPref.getLongitude());
             city = locationPref.getLocationAsString();
@@ -234,7 +234,7 @@ public class SearchActivity
             case BK:
             case HS:
             case PW:
-                if (NoqApplication.isLockMode) {
+                if (NoQueueClientApplication.isLockMode) {
                     in = new Intent(this, KioskActivity.class);
                 } else {
                     in = new Intent(this, BeforeJoinActivity.class);
@@ -352,7 +352,7 @@ public class SearchActivity
 
 
     private void applySearch() {
-        if (NoqApplication.isLockMode) {
+        if (NoQueueClientApplication.isLockMode) {
             performKioskSearch();
         } else {
             performSearch();
@@ -362,7 +362,7 @@ public class SearchActivity
     @Override
     public Unit invoke(String address, String countryShortName, String area, String town, String district, String state, String stateShortName, Double latitude, Double longitude) {
         if (latitude == 0 && longitude == 0) {
-            LocationPref locationPref = NoqApplication.getLocationPreference();
+            LocationPref locationPref = NoQueueClientApplication.getLocationPreference();
             lat = String.valueOf(locationPref.getLatitude());
             lng = String.valueOf(locationPref.getLongitude());
             this.area = locationPref.getArea();

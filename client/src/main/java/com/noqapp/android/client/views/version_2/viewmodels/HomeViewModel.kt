@@ -17,7 +17,7 @@ import com.noqapp.android.client.utils.Constants
 import com.noqapp.android.client.utils.NetworkUtils
 import com.noqapp.android.client.utils.ShowAlertInformation
 import com.noqapp.android.client.utils.UserUtils
-import com.noqapp.android.client.views.activities.NoqApplication
+import com.noqapp.android.client.views.activities.NoQueueClientApplication
 import com.noqapp.android.client.views.version_2.db.NoQueueAppDB
 import com.noqapp.android.client.views.version_2.db.helper_models.ForegroundNotificationModel
 import com.noqapp.android.common.beans.DeviceRegistered
@@ -96,7 +96,7 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         searchApiImpl = SearchApiImpl(this)
         tokenQueueApiImpl = TokenQueueApiImpl()
         tokenQueueApiImpl.setTokenAndQueuePresenter(this)
-        noQueueClientApi = NoqApplication.getNoQueueClientApi()
+        noQueueClientApi = NoQueueClientApplication.getNoQueueClientApi()
     }
 
     fun fetchNearMe(deviceId: String, searchQuery: SearchQuery) {
@@ -342,11 +342,11 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
 
     fun callRegistrationService() {
         val deviceToken = DeviceToken(
-            NoqApplication.getTokenFCM(),
+            NoQueueClientApplication.getTokenFCM(),
             Constants.appVersion(),
             CommonHelper.getLocation(
-                NoqApplication.location.latitude,
-                NoqApplication.location.longitude
+                NoQueueClientApplication.location.latitude,
+                NoQueueClientApplication.location.longitude
             )
         )
 
@@ -369,21 +369,21 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
                 val jsonUserAddress = CommonHelper.getAddress(
                     deviceRegistered?.geoPointOfQ.lat,
                     deviceRegistered?.geoPointOfQ.lon,
-                    NoqApplication.noqApplication
+                    NoQueueClientApplication.noQueueClientApplication
                 )
-                NoqApplication.cityName = jsonUserAddress.locationAsString
-                val locationPref = NoqApplication.getLocationPreference()
+                NoQueueClientApplication.cityName = jsonUserAddress.locationAsString
+                val locationPref = NoQueueClientApplication.getLocationPreference()
                     .setArea(jsonUserAddress.area)
                     .setTown(jsonUserAddress.town)
                     .setLatitude(deviceRegistered?.geoPointOfQ.lat)
                     .setLongitude(deviceRegistered?.geoPointOfQ.lon)
-                NoqApplication.setLocationPreference(locationPref)
-                NoqApplication.setDeviceID(deviceRegistered?.deviceId)
-                NoqApplication.location.latitude = locationPref.latitude
-                NoqApplication.location.longitude = locationPref.longitude
+                NoQueueClientApplication.setLocationPreference(locationPref)
+                NoQueueClientApplication.setDeviceID(deviceRegistered?.deviceId)
+                NoQueueClientApplication.location.latitude = locationPref.latitude
+                NoQueueClientApplication.location.longitude = locationPref.longitude
             } else {
                 try {
-                    CustomToast().showToast(NoqApplication.noqApplication, "Device registration error")
+                    CustomToast().showToast(NoQueueClientApplication.noQueueClientApplication, "Device registration error")
                 } catch (e: Exception) {
 
                 }

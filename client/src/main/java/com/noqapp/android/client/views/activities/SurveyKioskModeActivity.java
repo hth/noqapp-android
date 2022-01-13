@@ -37,7 +37,7 @@ public class SurveyKioskModeActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback_kiosk);
         rv_languages = findViewById(R.id.rv_languages);
@@ -49,7 +49,7 @@ public class SurveyKioskModeActivity
         initActionsViews(false);
         actionbarBack.setVisibility(View.INVISIBLE);
         TextView tv_store_name = findViewById(R.id.tv_store_name);
-        tv_store_name.setText(NoqApplication.getKioskModeInfo().getBizName());
+        tv_store_name.setText(NoQueueClientApplication.getKioskModeInfo().getBizName());
         String codeQR = getIntent().getStringExtra(IBConstant.KEY_CODE_QR);
         if (!TextUtils.isEmpty(codeQR)) {
             if (NetworkUtils.isConnectingToInternet(this)) {

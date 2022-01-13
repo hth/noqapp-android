@@ -47,7 +47,7 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_survey);
         initActionsViews(false);
@@ -145,8 +145,8 @@ public class SurveyActivity extends BaseActivity implements ResponsePresenter, V
                     Survey survey = new Survey();
                     survey.setBizNameId(jsonQuestionnaire.getBizNameId());
                     survey.setQuestionnaireId(jsonQuestionnaire.getQuestionnaireId());
-                    survey.setCodeQR(NoqApplication.getKioskModeInfo().getKioskCodeQR());
-                    survey.setBizStoreId(NoqApplication.getUserProfile().getCodeQRAndBizStoreIds().get(NoqApplication.getKioskModeInfo().getKioskCodeQR()));
+                    survey.setCodeQR(NoQueueClientApplication.getKioskModeInfo().getKioskCodeQR());
+                    survey.setBizStoreId(NoQueueClientApplication.getUserProfile().getCodeQRAndBizStoreIds().get(NoQueueClientApplication.getKioskModeInfo().getKioskCodeQR()));
                     survey.setOverallRating(selectPos);
                     survey.setDetailedResponse(getFormData());
                     surveyResponseImpl.surveyResponse(UserUtils.getDeviceId(), survey);

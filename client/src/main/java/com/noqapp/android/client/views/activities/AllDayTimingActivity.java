@@ -21,7 +21,7 @@ public class AllDayTimingActivity extends BaseActivity implements StoreHoursPres
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_day_timing);
         listview = findViewById(R.id.listview);

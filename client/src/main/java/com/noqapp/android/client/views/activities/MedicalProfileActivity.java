@@ -57,7 +57,7 @@ public class MedicalProfileActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_profile);
         initActionsViews(true);

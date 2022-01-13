@@ -15,7 +15,7 @@ import com.noqapp.android.client.views.fragments.MyCouponsFragment;
 public class CouponsActivity extends TabbedActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         tv_toolbar_title.setText(getString(R.string.offers));
     }

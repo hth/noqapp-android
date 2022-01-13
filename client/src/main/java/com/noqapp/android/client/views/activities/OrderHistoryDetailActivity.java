@@ -36,7 +36,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_history_detail);
         initActionsViews(false);
@@ -67,7 +67,7 @@ public class OrderHistoryDetailActivity extends BaseActivity {
         if (jsonPurchaseOrder.getBusinessType() == BusinessTypeEnum.PH) {   // to avoid crash it is added for  Pharmacy order place from merchant side directly
             jsonPurchaseOrder.setOrderPrice("0");
         }
-        List<JsonProfile> profileList = NoqApplication.getAllProfileList();
+        List<JsonProfile> profileList = NoQueueClientApplication.getAllProfileList();
         tv_name.setText(AppUtils.getNameFromQueueUserID(jsonPurchaseOrder.getQueueUserId(), profileList));
         if (tv_name.getText().toString().equals("")) {
             tv_name.setText("Guest User");

@@ -40,7 +40,7 @@ public class AllReviewsActivity extends BaseActivity implements AllReviewPresent
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_all_review);
         initActionsViews(true);

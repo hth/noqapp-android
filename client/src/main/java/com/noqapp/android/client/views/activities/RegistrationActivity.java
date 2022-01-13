@@ -53,7 +53,7 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ImageView actionbarBack = findViewById(R.id.actionbarBack);
@@ -113,8 +113,8 @@ public class RegistrationActivity extends BaseActivity implements ProfilePresent
     public void profileResponse(JsonProfile profile, String email, String auth) {
         if (profile.getError() == null) {
             Log.d(TAG, "Profile: " + profile.toString());
-            NoqApplication.commitProfile(profile, email, auth);
-            NoqApplication.setPreviousUserQID(profile.getQueueUserId());
+            NoQueueClientApplication.commitProfile(profile, email, auth);
+            NoQueueClientApplication.setPreviousUserQID(profile.getQueueUserId());
             finish();
         } else {
             //Rejected from  server

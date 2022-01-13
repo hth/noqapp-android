@@ -61,7 +61,7 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_info_kiosk);
         rv_categories = findViewById(R.id.rv_categories);
@@ -112,9 +112,9 @@ public class CategoryInfoKioskModeActivity extends BaseActivity implements Queue
         AppUtils.hideKeyBoard(CategoryInfoKioskModeActivity.this);
         Intent in_search = new Intent(CategoryInfoKioskModeActivity.this, SearchActivity.class);
         in_search.putExtra("scrollId", "");
-        in_search.putExtra("lat", String.valueOf(NoqApplication.location.getLatitude()));
-        in_search.putExtra("lng", String.valueOf(NoqApplication.location.getLongitude()));
-        in_search.putExtra("city", NoqApplication.cityName);
+        in_search.putExtra("lat", String.valueOf(NoQueueClientApplication.location.getLatitude()));
+        in_search.putExtra("lng", String.valueOf(NoQueueClientApplication.location.getLongitude()));
+        in_search.putExtra("city", NoQueueClientApplication.cityName);
         in_search.putExtra("searchString", searchString);
         in_search.putExtra("codeQR", bizStoreElastic.getCodeQR());
         startActivity(in_search);

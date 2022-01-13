@@ -32,9 +32,9 @@ import java.util.List;
 /**
  * Created by chandra on 5/20/17.
  */
-public class NoqApplication extends MultiDexApplication {
+public class NoQueueClientApplication extends MultiDexApplication {
 
-    private static final String TAG = NoqApplication.class.getSimpleName();
+    private static final String TAG = NoQueueClientApplication.class.getSimpleName();
     public static SharedPreferences preferences;
     public static final String PREKEY_IS_NOTIFICATION_SOUND_ENABLE = "isNotificationSoundEnable";
     public static final String PREKEY_IS_NOTIFICATION_RECEIVE_ENABLE = "isNotificationReceiveEnable";
@@ -66,9 +66,9 @@ public class NoqApplication extends MultiDexApplication {
     public static String area = "";
     public static String town = "";
     public static boolean isLockMode = false;
-    public static NoqApplication noqApplication;
+    public static NoQueueClientApplication noQueueClientApplication;
 
-    public NoqApplication() {
+    public NoQueueClientApplication() {
         super();
     }
 
@@ -99,7 +99,7 @@ public class NoqApplication extends MultiDexApplication {
         //https://stackoverflow.com/questions/26178212/first-launch-of-activity-with-google-maps-is-very-slow
         MapsInitializer.initialize(this);
         isLockMode = getKioskModeInfo().isKioskModeEnable();
-        noqApplication = this;
+        noQueueClientApplication = this;
          noQueueClientApi = RetrofitClient.getClient().create(NoQueueClientApi.class);
     }
 

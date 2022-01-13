@@ -21,7 +21,7 @@ import com.noqapp.android.client.presenter.beans.body.Location;
 import com.noqapp.android.client.utils.IBConstant;
 import com.noqapp.android.client.utils.ShowAlertInformation;
 import com.noqapp.android.client.utils.UserUtils;
-import com.noqapp.android.client.views.activities.NoqApplication;
+import com.noqapp.android.client.views.activities.NoQueueClientApplication;
 import com.noqapp.android.client.views.adapters.AllCouponsAdapter;
 import com.noqapp.android.client.views.pojos.LocationPref;
 import com.noqapp.android.common.beans.JsonCoupon;
@@ -63,16 +63,16 @@ public class AllCouponsFragment
             ClientCouponApiImpl clientCouponApiImpl = new ClientCouponApiImpl();
             clientCouponApiImpl.setCouponPresenter(this);
             Location location = new Location();
-            if (TextUtils.isEmpty(NoqApplication.cityName)) {
-                LocationPref locationPref = NoqApplication.getLocationPreference();
+            if (TextUtils.isEmpty(NoQueueClientApplication.cityName)) {
+                LocationPref locationPref = NoQueueClientApplication.getLocationPreference();
                 location.setLatitude(String.valueOf(locationPref.getLatitude()))
                     .setLongitude(String.valueOf(locationPref.getLongitude()))
                     .setCityName(locationPref.getLocationAsString());
                 tv_location_enable.setVisibility(View.VISIBLE);
             } else {
-                location.setLatitude(String.valueOf(NoqApplication.location.getLatitude()))
-                    .setLongitude(String.valueOf(NoqApplication.location.getLongitude()))
-                    .setCityName(NoqApplication.cityName);
+                location.setLatitude(String.valueOf(NoQueueClientApplication.location.getLatitude()))
+                    .setLongitude(String.valueOf(NoQueueClientApplication.location.getLongitude()))
+                    .setCityName(NoQueueClientApplication.cityName);
                 tv_location_enable.setVisibility(View.GONE);
             }
             String codeQR = getArguments().getString(IBConstant.KEY_CODE_QR, null);

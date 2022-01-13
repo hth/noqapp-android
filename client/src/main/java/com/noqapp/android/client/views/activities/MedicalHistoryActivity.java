@@ -39,7 +39,7 @@ public class MedicalHistoryActivity extends BaseActivity implements MedicalRecor
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_history);
         listview = findViewById(R.id.listview);

@@ -45,7 +45,7 @@ public class HospitalVisitScheduleActivity extends BaseActivity implements Hospi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_immunization);
         initActionsViews(true);

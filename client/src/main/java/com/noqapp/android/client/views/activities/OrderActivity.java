@@ -113,7 +113,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        hideSoftKeys(NoqApplication.isLockMode);
+        hideSoftKeys(NoQueueClientApplication.isLockMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
         afterJoinOrderViewModel = new ViewModelProvider(this).get(AfterJoinOrderViewModel.class);
@@ -160,7 +160,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
             acrb_take_away.setChecked(false);
         }
 
-        JsonUserPreference jsonUserPreference = NoqApplication.getUserProfile().getJsonUserPreference();
+        JsonUserPreference jsonUserPreference = NoQueueClientApplication.getUserProfile().getJsonUserPreference();
         if (jsonUserPreference != null)
             if (jsonUserPreference.getDeliveryMode() == DeliveryModeEnum.HD) {
                 acrb_home_delivery.setChecked(true);
@@ -181,13 +181,13 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                 acrb_online.setChecked(true);
             }
 
-        if (null != NoqApplication.getUserProfile() && null != NoqApplication.getUserProfile().getJsonUserAddresses()) {
-            List<JsonUserAddress> jsonUserAddressList = NoqApplication.getUserProfile().getJsonUserAddresses();
+        if (null != NoQueueClientApplication.getUserProfile() && null != NoQueueClientApplication.getUserProfile().getJsonUserAddresses()) {
+            List<JsonUserAddress> jsonUserAddressList = NoQueueClientApplication.getUserProfile().getJsonUserAddresses();
             for (int i = 0; i < jsonUserAddressList.size(); i++) {
                 if (jsonUserAddressList.get(i).isPrimaryAddress()) {
                     jsonUserAddress = jsonUserAddressList.get(i);
                     tv_address.setText(jsonUserAddress.getAddress());
-                    NoqApplication.setSelectedAddressId(jsonUserAddress.getId());
+                    NoQueueClientApplication.setSelectedAddressId(jsonUserAddress.getId());
                     break;
                 }
             }
@@ -281,7 +281,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         checkProductWithZeroPrice();
 
         tv_place_order.setOnClickListener((View v) -> {
-            if (NoqApplication.getUserProfile().isAccountValidated()) {
+            if (NoQueueClientApplication.getUserProfile().isAccountValidated()) {
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 3000) {
                     return;
                 }
@@ -306,7 +306,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                                     .setUserAddressId(acrb_home_delivery.isChecked() ? jsonUserAddress.getId() : null)
                                     .setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO)
                                     .setPaymentMode(null) //not required here
-                                    .setCustomerPhone(NoqApplication.getPhoneNo())
+                                    .setCustomerPhone(NoQueueClientApplication.getPhoneNo())
                                     .setAdditionalNote(StringUtils.isBlank(edt_optional.getText().toString()) ? null : edt_optional.getText().toString());
                             purchaseOrderApiImpl.purchase(UserUtils.getDeviceId(), UserUtils.getEmail(), UserUtils.getAuth(), jsonPurchaseOrder);
                             enableDisableOrderButton(false);
@@ -386,7 +386,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private boolean validateForm() {
         boolean isValid = true;
         tv_address.setError(null);
-        if (!NoqApplication.isEmailVerified()) {
+        if (!NoQueueClientApplication.isEmailVerified()) {
             ShowAlertInformation.showInfoDisplayDialog(this, "Email Required", "To pay, email is mandatory. In your profile add and verify email");
             isValid = false;
         }
@@ -438,14 +438,14 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
                     triggerCashPayment();
                 }
                 clientProfileApiImpl.setProfilePresenter(this);
-                if (TextUtils.isEmpty(NoqApplication.getAddress())) {
+                if (TextUtils.isEmpty(NoQueueClientApplication.getAddress())) {
                     String address = tv_address.getText().toString();
                     UpdateProfile updateProfile = new UpdateProfile();
-                    updateProfile.setFirstName(NoqApplication.getUserName());
-                    updateProfile.setBirthday(NoqApplication.getUserDOB());
-                    updateProfile.setGender(NoqApplication.getGender());
+                    updateProfile.setFirstName(NoQueueClientApplication.getUserName());
+                    updateProfile.setBirthday(NoQueueClientApplication.getUserDOB());
+                    updateProfile.setGender(NoQueueClientApplication.getGender());
                     updateProfile.setTimeZoneId(TimeZone.getDefault().getID());
-                    updateProfile.setQueueUserId(NoqApplication.getUserProfile().getQueueUserId());
+                    updateProfile.setQueueUserId(NoQueueClientApplication.getUserProfile().getQueueUserId());
                     clientProfileApiImpl.updateProfile(UserUtils.getEmail(), UserUtils.getAuth(), updateProfile);
                 }
             } else {
@@ -499,7 +499,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void profileResponse(JsonProfile profile, String email, String auth) {
         Log.v("JsonProfile", profile.toString());
-        NoqApplication.commitProfile(profile, email, auth);
+        NoQueueClientApplication.commitProfile(profile, email, auth);
     }
 
     @Override
@@ -586,9 +586,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
         String orderId = jsonPurchaseOrderServer.getTransactionId();
         String orderAmount = jsonPurchaseOrderServer.getJsonResponseWithCFToken().getOrderAmount();
         String orderNote = "Test Order";
-        String customerName = NoqApplication.getCustomerNameWithQid(NoqApplication.getUserName(), NoqApplication.getUserProfile().getQueueUserId());
-        String customerPhone = NoqApplication.getOfficePhoneNo();
-        String customerEmail = NoqApplication.getOfficeMail();
+        String customerName = NoQueueClientApplication.getCustomerNameWithQid(NoQueueClientApplication.getUserName(), NoQueueClientApplication.getUserProfile().getQueueUserId());
+        String customerPhone = NoQueueClientApplication.getOfficePhoneNo();
+        String customerEmail = NoQueueClientApplication.getOfficeMail();
 
         Map<String, String> params = new HashMap<>();
         params.put(PARAM_APP_ID, appId);
@@ -664,7 +664,7 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     private void callAddressPreference() {
         ClientPreferenceApiImpl clientProfileApiCall = new ClientPreferenceApiImpl();
         clientProfileApiCall.setClientPreferencePresenter(this);
-        JsonUserPreference jsonUserPreference = NoqApplication.getUserProfile().getJsonUserPreference();
+        JsonUserPreference jsonUserPreference = NoQueueClientApplication.getUserProfile().getJsonUserPreference();
         jsonUserPreference.setDeliveryMode(acrb_home_delivery.isChecked() ? DeliveryModeEnum.HD : DeliveryModeEnum.TO);
         jsonUserPreference.setPaymentMethod(acrb_cash.isChecked() ? PaymentMethodEnum.CA : PaymentMethodEnum.EL);
         if (null != jsonUserAddress) {
@@ -676,9 +676,9 @@ public class OrderActivity extends BaseActivity implements PurchaseOrderPresente
     @Override
     public void clientPreferencePresenterResponse(JsonUserPreference jsonUserPreference) {
         if (null != jsonUserPreference) {
-            JsonProfile jp = NoqApplication.getUserProfile();
+            JsonProfile jp = NoQueueClientApplication.getUserProfile();
             jp.setJsonUserPreference(jsonUserPreference);
-            NoqApplication.setUserProfile(jp);
+            NoQueueClientApplication.setUserProfile(jp);
         }
     }
 }
