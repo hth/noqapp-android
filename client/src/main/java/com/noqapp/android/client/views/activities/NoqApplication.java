@@ -1,6 +1,7 @@
 package com.noqapp.android.client.views.activities;
 
-import android.content.Context;
+import static com.noqapp.android.client.model.APIConstant.Key.XR_MAIL;
+
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.text.TextUtils;
@@ -13,23 +14,13 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.noqapp.android.client.model.APIConstant;
-import com.noqapp.android.client.model.api.DeviceClientApiImpl;
-import com.noqapp.android.client.model.open.DeviceClientImpl;
-import com.noqapp.android.client.model.response.api.NoQueeApi;
+import com.noqapp.android.client.model.response.v3.api.NoQueueClientApi;
 import com.noqapp.android.client.network.RetrofitClient;
 import com.noqapp.android.client.utils.Constants;
-import com.noqapp.android.client.utils.UserUtils;
 import com.noqapp.android.client.views.interfaces.ActivityCommunicator;
 import com.noqapp.android.client.views.pojos.KioskModeInfo;
 import com.noqapp.android.client.views.pojos.LocationPref;
-import com.noqapp.android.common.beans.DeviceRegistered;
-import com.noqapp.android.common.beans.ErrorEncounteredJson;
 import com.noqapp.android.common.beans.JsonProfile;
-import com.noqapp.android.common.beans.JsonUserAddress;
-import com.noqapp.android.common.beans.body.DeviceToken;
-import com.noqapp.android.common.customviews.CustomToast;
-import com.noqapp.android.common.presenter.DeviceRegisterListener;
-import com.noqapp.android.common.utils.CommonHelper;
 import com.noqapp.android.common.utils.FontsOverride;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -38,13 +29,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.noqapp.android.client.model.APIConstant.Key.XR_MAIL;
-
 /**
  * Created by chandra on 5/20/17.
  */
 public class NoqApplication extends MultiDexApplication {
-
 
     private static final String TAG = NoqApplication.class.getSimpleName();
     public static SharedPreferences preferences;
@@ -90,7 +78,7 @@ public class NoqApplication extends MultiDexApplication {
 
     private static FirebaseAnalytics fireBaseAnalytics;
 
-    private static NoQueeApi noQueeApi;
+    private static NoQueueClientApi noQueueClientApi;
 
     /**
      * On application startup, override system default locale to which user set
@@ -112,13 +100,12 @@ public class NoqApplication extends MultiDexApplication {
         MapsInitializer.initialize(this);
         isLockMode = getKioskModeInfo().isKioskModeEnable();
         noqApplication = this;
-         noQueeApi = RetrofitClient.getClient().create(NoQueeApi.class);
+         noQueueClientApi = RetrofitClient.getClient().create(NoQueueClientApi.class);
     }
 
-    public static NoQueeApi getNoQueeApi() {
-        return noQueeApi;
+    public static NoQueueClientApi getNoQueueClientApi() {
+        return noQueueClientApi;
     }
-
 
     public static boolean isNotificationSoundEnable() {
         Log.e("Sound enable", String.valueOf(preferences.getBoolean(PREKEY_IS_NOTIFICATION_SOUND_ENABLE, true)));
