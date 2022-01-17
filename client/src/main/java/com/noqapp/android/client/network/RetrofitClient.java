@@ -20,7 +20,6 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 public class RetrofitClient {
     private static Retrofit retrofit = null;
 
-
     public static Retrofit getClient() {
         if (null == retrofit) {
             long TIME_OUT = 35;
@@ -40,6 +39,7 @@ public class RetrofitClient {
                                        .addHeader("x-r-qid", NoQueueClientApplication.getUserProfile() == null ? "" : NoQueueClientApplication.getUserProfile().getQueueUserId()).build();
                 return chain.proceed(request);
             });
+
             if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
                 logging.setLevel(HttpLoggingInterceptor.Level.BODY);

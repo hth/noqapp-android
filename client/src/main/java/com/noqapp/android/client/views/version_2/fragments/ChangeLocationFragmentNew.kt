@@ -123,7 +123,7 @@ class ChangeLocationFragmentNew : Fragment(),
         AppUtils.setAutoCompleteText(changeLocationBinding.autoCompleteTextView, town)
 
         val searchStoreQuery = SearchQuery()
-        searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town)
+        searchStoreQuery.cityName = AppUtils.getLocationAsString(area, town, district)
         searchStoreQuery.latitude = latitude.toString()
         searchStoreQuery.longitude = longitude.toString()
         searchStoreQuery.filters = ""
