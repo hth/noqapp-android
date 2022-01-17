@@ -7,6 +7,7 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -60,10 +61,16 @@ public abstract class LocationBaseActivity extends BaseActivity {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+        getCurrentLocation();
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         Log.d("Location tag", "service started");
-        getCurrentLocation();
+
     }
 
     public void getCurrentLocation() {
