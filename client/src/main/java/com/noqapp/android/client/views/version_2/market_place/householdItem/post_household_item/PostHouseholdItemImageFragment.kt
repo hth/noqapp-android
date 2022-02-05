@@ -30,12 +30,14 @@ class PostHouseHoldItemImageFragment : ImageUploadFragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        fragmentPostPropertyRentalUpload = FragmentUploadPropertyRentalImagesBinding.inflate(inflater, container, false)
-        householdItemViewModel = ViewModelProvider(requireActivity())[HouseholdItemViewModel::class.java]
+        fragmentPostPropertyRentalUpload =
+            FragmentUploadPropertyRentalImagesBinding.inflate(inflater, container, false)
+        householdItemViewModel =
+            ViewModelProvider(requireActivity())[HouseholdItemViewModel::class.java]
         return fragmentPostPropertyRentalUpload.root
     }
 
@@ -51,12 +53,12 @@ class PostHouseHoldItemImageFragment : ImageUploadFragment() {
 
     private fun observeData() {
         householdItemViewModel.getHouseHoldItem(requireContext())
-                .observe(viewLifecycleOwner, {
-                    if (it.isNotEmpty()) {
-                        houseHoldItemEntity = it[0]
-                        propertyRentalImageAdapter.addAllImages(houseHoldItemEntity.images)
-                    }
-                })
+            .observe(viewLifecycleOwner, {
+                if (it.isNotEmpty()) {
+                    houseHoldItemEntity = it[0]
+                    propertyRentalImageAdapter.addAllImages(houseHoldItemEntity.images)
+                }
+            })
     }
 
     private fun setUpRecyclerView() {
@@ -70,9 +72,12 @@ class PostHouseHoldItemImageFragment : ImageUploadFragment() {
             }
             householdItemViewModel.insertHouseHoldItem(requireContext(), houseHoldItemEntity)
         }
-        fragmentPostPropertyRentalUpload.rvSelectedImages.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        fragmentPostPropertyRentalUpload.rvSelectedImages.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         fragmentPostPropertyRentalUpload.rvSelectedImages.setHasFixedSize(true)
-        fragmentPostPropertyRentalUpload.rvSelectedImages.addItemDecoration(RecyclerViewItemDecorator(10))
+        fragmentPostPropertyRentalUpload.rvSelectedImages.addItemDecoration(
+            RecyclerViewItemDecorator(10)
+        )
         fragmentPostPropertyRentalUpload.rvSelectedImages.adapter = propertyRentalImageAdapter
     }
 

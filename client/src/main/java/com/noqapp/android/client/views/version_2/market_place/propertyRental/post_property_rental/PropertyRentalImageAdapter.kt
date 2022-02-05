@@ -1,10 +1,27 @@
 package com.noqapp.android.client.views.version_2.market_place.propertyRental.post_property_rental
 
+import android.R.attr
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.noqapp.android.client.databinding.ItemImagesBinding
 import com.squareup.picasso.Picasso
+import com.bumptech.glide.request.RequestOptions
+
+import android.R.attr.path
+import android.graphics.drawable.Drawable
+import android.util.Log
+
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.Target
+import com.noqapp.android.client.utils.ImageUtils
+import java.io.File
+import android.graphics.BitmapFactory
+
+import android.media.ThumbnailUtils
+
+import android.graphics.Bitmap
+
 
 class PropertyRentalImageAdapter(
     val propertyRentalImages: MutableList<String>,
@@ -12,21 +29,44 @@ class PropertyRentalImageAdapter(
 ) : RecyclerView.Adapter<PropertyRentalImageAdapter.PropertyRentalImagesViewHolder>() {
 
     var isClickEnable = true
+
     inner class PropertyRentalImagesViewHolder(private val itemImagesBinding: ItemImagesBinding) :
         RecyclerView.ViewHolder(itemImagesBinding.root) {
 
         fun bindImage(imagePath: String) {
-            Picasso.get().load("file://$imagePath").into(itemImagesBinding.ivPropertyImage)
-            if(isClickEnable){
+            var thumbnail = ImageUtils.getThumbnail(
+                itemImagesBinding.ivPropertyImage.context.contentResolver,
+                imagePath
+            )
+            if (thumbnail != null) {
+                itemImagesBinding.ivPropertyImage.setImageBitmap(thumbnail)
+            } else {
+                val THUMBSIZE = 64
+                var thumb = ThumbnailUtils.extractThumbnail(
+                    BitmapFactory.decodeFile(imagePath),
+                    THUMBSIZE, THUMBSIZE
+                )
+                if (thumb != null) {
+                    itemImagesBinding.ivPropertyImage.setImageBitmap(thumb)
+                } else {
+                    Glide
+                        .with(itemImagesBinding.ivPropertyImage.context)
+                        .load(imagePath)
+                        .apply(RequestOptions().override(80, 80))
+                        .into(itemImagesBinding.ivPropertyImage)
+                }
+            }
+
+            if (isClickEnable) {
                 itemImagesBinding.ivDelete.visibility = android.view.View.VISIBLE
-            }else{
+            } else {
                 itemImagesBinding.ivDelete.visibility = android.view.View.INVISIBLE
             }
         }
 
         init {
             itemImagesBinding.ivDelete.setOnClickListener {
-                if(isClickEnable) {
+                if (isClickEnable) {
                     onClicked(propertyRentalImages[absoluteAdapterPosition])
                     propertyRentalImages.removeAt(absoluteAdapterPosition)
                     notifyDataSetChanged()

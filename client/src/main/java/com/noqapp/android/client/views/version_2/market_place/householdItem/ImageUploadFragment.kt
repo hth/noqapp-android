@@ -68,6 +68,9 @@ open class ImageUploadFragment : BaseFragment() {
         }
     }
 
+
+
+
     open fun getRealPathFromURI(contentUri: Uri?): String? {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = requireActivity().managedQuery(contentUri, proj, null, null, null)
@@ -209,8 +212,9 @@ open class ImageUploadFragment : BaseFragment() {
         } else if (requestCode == REQUEST_PICK_IMAGE && resultCode == Activity.RESULT_OK) {
             val photoUri: Uri? = data?.data
             // Load the image located at photoUri into selectedImage
-            val selectedImage = loadFromUri(photoUri)
-            fragmentPostPropertyRentalUpload.ivHeadImage.setImageBitmap(selectedImage)
+
+//            val selectedImage = loadFromUri(photoUri)
+//            fragmentPostPropertyRentalUpload.ivHeadImage.setImageBitmap(selectedImage)
             getRealPathFromURI(photoUri)?.let {
                 saveImage(it)
             }
