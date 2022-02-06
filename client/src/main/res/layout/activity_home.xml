@@ -211,7 +211,7 @@
             android:background="@color/black_transparent"
             android:clickable="true"
             android:focusable="true"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_location_access_required"

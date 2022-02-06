@@ -94,7 +94,7 @@ class HomeActivity : LocationBaseActivity(),
         setSupportActionBar(activityHomeBinding.toolbar)
 
         setUpExpandableList(UserUtils.isLogin())
-
+        getCurrentLocation()
         if (checkIfAppIsSupported) {
             checkIfAppIsSupportedAnyMore()
         }

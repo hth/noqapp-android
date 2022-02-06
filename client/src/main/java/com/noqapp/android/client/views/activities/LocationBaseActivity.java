@@ -60,11 +60,8 @@ public abstract class LocationBaseActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        getCurrentLocation();
-    }
+
+
 
     @Override
     protected void onStart() {

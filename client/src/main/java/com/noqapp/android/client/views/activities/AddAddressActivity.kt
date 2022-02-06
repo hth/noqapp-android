@@ -62,7 +62,7 @@ class AddAddressActivity : LocationBaseActivity(), OnMapReadyCallback, ProfileAd
                 addAddressBinding.btnAddAddress.text = getString(R.string.txt_set_address)
             }
         }
-
+        getCurrentLocation()
         addAddressBinding.toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
