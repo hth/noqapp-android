@@ -71,21 +71,26 @@ class FetchAddressIntentService : JobIntentService() {
             addresses = geocoder.getFromLocation(latitude, longitude, 1)
         } catch (ioException: IOException) {
             val json = fetchAddressFromApi(latitude, longitude)
-            val addressData: String? = loadAddressFromJson(json)
-            if (addressData != null) {
-                deliverResultToReceiver(
-                    Constants.LocationConstants.SUCCESS_RESULT, "", "",
-                    "",
-                    addressData,
-                    "",
-                    "",
-                    "",
-                    latitude,
-                    longitude
-                )
-                return
+            if (json != null) {
+                val addressData: String? = loadAddressFromJson(json)
+                if (addressData != null) {
+                    deliverResultToReceiver(
+                        Constants.LocationConstants.SUCCESS_RESULT, "", "",
+                        "",
+                        addressData,
+                        "",
+                        "",
+                        "",
+                        latitude,
+                        longitude
+                    )
+                    return
+                } else {
+                    errorMessage = getString(R.string.service_not_available)
+                }
             } else {
                 errorMessage = getString(R.string.service_not_available)
+
             }
         } catch (illegalArgumentException: IllegalArgumentException) {
             errorMessage = getString(R.string.invalid_lat_long_used)
@@ -143,7 +148,10 @@ class FetchAddressIntentService : JobIntentService() {
 //            if (results[0] <= 1000) {
 //                Log.i(TAG, "New address found is less than 1 km")
 //            } else {
-            Log.d(TAG, "New address found and updated '$area', '$town', '$district', '$state', '$latitude', '$longitude'")
+            Log.d(
+                TAG,
+                "New address found and updated '$area', '$town', '$district', '$state', '$latitude', '$longitude'"
+            )
             deliverResultToReceiver(
                 Constants.LocationConstants.SUCCESS_RESULT,
                 addressStr,
@@ -162,7 +170,7 @@ class FetchAddressIntentService : JobIntentService() {
         }
     }
 
-    private fun loadAddressFromJson(json: String?): String? {
+    private fun loadAddressFromJson(json: String): String? {
         val gson = Gson()
         val readValue = gson.fromJson(json, GeoApiResponse::class.java)
         val get = readValue.results?.get(0)
@@ -178,7 +186,8 @@ class FetchAddressIntentService : JobIntentService() {
     }
 
     private fun fetchAddressFromApi(latitude: Double, longitude: Double): String? {
-        val url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=" + getString(
+        val url =
+            "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=" + getString(
                 R.string.google_maps_key
             )
         val streamUrl = URL(url)
@@ -186,6 +195,8 @@ class FetchAddressIntentService : JobIntentService() {
         try {
             val ins: InputStream = BufferedInputStream(urlConnection.getInputStream())
             return convertStreamToString(ins)
+        } catch (e: Exception) {
+            e.printStackTrace()
         } finally {
             urlConnection.disconnect()
         }
