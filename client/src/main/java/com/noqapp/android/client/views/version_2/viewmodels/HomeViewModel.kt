@@ -104,11 +104,11 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
     }
 
     fun fetchActiveTokenQueueList() {
-        tokenQueueApiImpl.getAllJoinedQueues(
-            UserUtils.getDeviceId(),
-            UserUtils.getEmail(),
-            UserUtils.getAuth()
-        )
+            tokenQueueApiImpl.getAllJoinedQueues(
+                UserUtils.getDeviceId(),
+                UserUtils.getEmail(),
+                UserUtils.getAuth()
+            )
     }
 
     fun fetchFavouritesRecentVisitList() {
@@ -351,18 +351,28 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
         )
 
         viewModelScope.launch {
-            var deviceRegistered:DeviceRegistered?
+            var deviceRegistered: DeviceRegistered? = null
 
             if (UserUtils.isLogin()) {
-                deviceRegistered = noQueueClientApi.register(
-                    UserUtils.getDeviceId(),
-                    Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR,
-                    UserUtils.getEmail(),
-                    UserUtils.getAuth(),
-                    deviceToken
-                )
+                try {
+                    deviceRegistered = noQueueClientApi.register(
+                        UserUtils.getDeviceId(),
+                        Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR,
+                        UserUtils.getEmail(),
+                        UserUtils.getAuth(),
+                        deviceToken
+                    )
+                } catch (e: Exception) {
+                }
             } else {
-                deviceRegistered= noQueueClientApi.register(Constants.DEVICE_TYPE, BuildConfig.APP_FLAVOR, deviceToken)
+                try {
+                    deviceRegistered = noQueueClientApi.register(
+                        Constants.DEVICE_TYPE,
+                        BuildConfig.APP_FLAVOR,
+                        deviceToken
+                    )
+                } catch (e: Exception) {
+                }
             }
             if (1 == deviceRegistered?.registered) {
 
@@ -383,7 +393,10 @@ class HomeViewModel(val applicationContext: Application) : AndroidViewModel(appl
                 NoQueueClientApplication.location.longitude = locationPref.longitude
             } else {
                 try {
-                    CustomToast().showToast(NoQueueClientApplication.noQueueClientApplication, "Device registration error")
+                    CustomToast().showToast(
+                        NoQueueClientApplication.noQueueClientApplication,
+                        "Device registration error"
+                    )
                 } catch (e: Exception) {
 
                 }
