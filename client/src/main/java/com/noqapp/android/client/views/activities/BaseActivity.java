@@ -232,7 +232,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Response
         builder.setTitle(null);
         View customDialogView = inflater.inflate(R.layout.dialog_general, null, false);
         TextView tvTitle = customDialogView.findViewById(R.id.tvtitle);
-        TextView tvMsg = customDialogView.findViewById(R.id.tvMsg);
+        TextView tvMsg = customDialogView.findViewById(R.id.tv_msg);
         tvTitle.setText(getString(R.string.networkerror));
         tvMsg.setText(getString(R.string.offline));
         builder.setView(customDialogView);
