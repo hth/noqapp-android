@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -289,7 +290,9 @@ class HomeActivity : LocationBaseActivity(),
 
     private fun setListeners() {
         activityHomeBinding.tvLocation.setOnClickListener {
-            navController.navigate(R.id.changeLocationFragment)
+            lifecycleScope.launchWhenResumed {
+                navController.navigate(R.id.changeLocationFragment)
+            }
         }
 
         activityHomeBinding.btnAllowLocationAccess.setOnClickListener {
